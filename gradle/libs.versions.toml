@@ -1,0 +1,43 @@
+[versions]
+androidDesugarJdkLibs = "1.1.5"
+androidGradlePlugin = "7.3.1"
+androidxActivity = "1.6.1"
+androidxComposeBom = "2022.11.00"
+androidxComposeCompiler = "1.3.2"
+androidxCore = "1.9.0"
+androidxEspresso = "3.5.0"
+androidxLifecycleRuntime = "2.5.1"
+androidxTestExt = "1.1.4"
+androidxTestRules = "1.4.0"
+androidxTestRunner = "1.4.0"
+junit4 = "4.13.2"
+kotlin = "1.7.20"
+versionsChecker = "0.44.0"
+versionsUpdater = "0.7.0"
+
+[libraries]
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycleRuntime" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
+androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExt" }
+junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
+
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+versions-checker = { id = "com.github.ben-manes.versions", version.ref = "versionsChecker" }
+versions-updater = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionsUpdater" }
