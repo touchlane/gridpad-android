@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                     Column() {
                         Card(Modifier.size(width = 200.dp, height = 200.dp)) {
                             GridPad(
-                                cells = GridPadCells.Builder(rows = 3, columns = 3)
+                                cells = GridPadCells.Builder(rowCount = 3, columnCount = 3)
                                     .columnSize(0, GridPadCellSize.Fixed(22.dp))
                                     .columnSize(1, GridPadCellSize.Weight(2f))
                                     .columnSize(2, GridPadCellSize.Weight(3f))

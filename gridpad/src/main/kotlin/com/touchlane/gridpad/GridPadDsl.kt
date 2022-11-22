@@ -111,6 +111,7 @@ private data class CellPlaceInfo(val x: Int, val y: Int, val width: Int, val hei
 /**
  * Receiver scope which is used by [GridPad].
  */
+@GridPadScopeMarker
 sealed interface GridPadScope {
 
     /**

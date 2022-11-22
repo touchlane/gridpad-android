@@ -46,30 +46,56 @@ data class GridPadCells(
     /**
      * Calculated total size of all rows.
      */
-    val rowsTotalSize: TotalSize = rowSizes.calculateTotalSize()
+    internal val rowsTotalSize: TotalSize = rowSizes.calculateTotalSize()
 
     /**
      * Calculated total size of all columns.
      */
-    val columnsTotalSize: TotalSize = columnSizes.calculateTotalSize()
+    internal val columnsTotalSize: TotalSize = columnSizes.calculateTotalSize()
 
-    class Builder(rows: Int, columns: Int) {
+    /**
+     * @param rowCount grid row count
+     * @param columnCount grid column count
+     */
+    class Builder(rowCount: Int, columnCount: Int) {
 
-        private val rowSizes: MutableList<GridPadCellSize> = GridPadCellSize.weight(rows)
-        private val columnSizes: MutableList<GridPadCellSize> = GridPadCellSize.weight(columns)
+        private val rowSizes: MutableList<GridPadCellSize> = GridPadCellSize.weight(rowCount)
+        private val columnSizes: MutableList<GridPadCellSize> = GridPadCellSize.weight(columnCount)
 
+        /**
+         * Set size for specific row
+         *
+         * @param index index of row
+         * @param size row's size
+         */
         fun rowSize(index: Int, size: GridPadCellSize) = apply {
             rowSizes[index] = size
         }
 
+        /**
+         * Set size for all rows
+         *
+         * @param size rows size
+         */
         fun rowsSize(size: GridPadCellSize) = apply {
             rowSizes.fill(size)
         }
 
+        /**
+         * Set size for specific column
+         *
+         * @param index index of column
+         * @param size column's size
+         */
         fun columnSize(index: Int, size: GridPadCellSize) = apply {
             columnSizes[index] = size
         }
 
+        /**
+         * Set size for all columns
+         *
+         * @param size columns size
+         */
         fun columnsSize(size: GridPadCellSize) = apply {
             columnSizes.fill(size)
         }
@@ -97,7 +123,7 @@ private fun Iterable<GridPadCellSize>.calculateTotalSize(): TotalSize {
 /**
  * Total size for rows or columns information.
  */
-data class TotalSize(
+internal data class TotalSize(
     /**
      * Total weight for all rows or columns.
      * Can be 0 in cases where all rows or columns have [GridPadCellSize.Fixed] size.
@@ -111,15 +137,28 @@ data class TotalSize(
     val fixed: Dp
 )
 
+/**
+ * Class describes grid cell size
+ */
 @Stable
 sealed class GridPadCellSize {
 
+    /**
+     * Fixed grid cell size in Dp.
+     *
+     * @param size size in Dp, should be greater than 0
+     */
     data class Fixed(val size: Dp) : GridPadCellSize() {
         init {
             check(size.value > 0) { "size have to be > 0" }
         }
     }
 
+    /**
+     * Weight grid cell size.
+     *
+     * @param size size, should be greater than 0
+     */
     data class Weight(val size: Float = 1f) : GridPadCellSize() {
         init {
             check(size > 0) { "size have to be > 0" }
