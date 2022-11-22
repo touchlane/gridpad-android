@@ -18,5 +18,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "GridPad Example"
+rootProject.name = "GridPad"
 include(":app")

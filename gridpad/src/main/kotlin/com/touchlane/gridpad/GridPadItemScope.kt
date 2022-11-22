@@ -8,3 +8,5 @@ import androidx.compose.runtime.Stable
 @Stable
 @GridPadScopeMarker
 sealed interface GridPadItemScope
+
+object GridPadItemScopeImpl : GridPadItemScope

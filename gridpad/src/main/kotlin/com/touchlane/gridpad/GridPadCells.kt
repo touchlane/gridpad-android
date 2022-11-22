@@ -1,29 +1,62 @@
 package com.touchlane.gridpad
 
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlin.math.roundToInt
+import kotlinx.collections.immutable.ImmutableCollection
+import kotlinx.collections.immutable.toImmutableList
 
+/**
+ * Non-modifiable class that store information about grid: rows and columns count, size information.
+ */
 @Stable
 data class GridPadCells(
-    val rowSizes: Array<GridPadCellSize>, val columnSizes: Array<GridPadCellSize>
+    /**
+     * Contains information about size of each row
+     */
+    val rowSizes: ImmutableCollection<GridPadCellSize>,
+    /**
+     * Contains information about size of each column
+     */
+    val columnSizes: ImmutableCollection<GridPadCellSize>
 ) {
+    constructor(
+        rowSizes: Iterable<GridPadCellSize>, columnSizes: Iterable<GridPadCellSize>
+    ) : this(rowSizes = rowSizes.toImmutableList(), columnSizes = columnSizes.toImmutableList())
+
+    /**
+     * Creating a grid with [GridPadCellSize.Weight] sizes
+     * where [GridPadCellSize.Weight.size] equal 1.
+     */
+    constructor(rows: Int, columns: Int) : this(
+        rowSizes = GridPadCellSize.weight(rows),
+        columnSizes = GridPadCellSize.weight(columns)
+    )
+
+    /**
+     * Rows count. It's guaranteed that [rows] will be equal `rowSizes.size`
+     */
     val rows: Int = rowSizes.size
+
+    /**
+     * Columns count. It's guaranteed that [columns] will be equal `columnSizes.size`
+     */
     val columns: Int = columnSizes.size
+
+    /**
+     * Calculated total size of all rows.
+     */
     val rowsTotalSize: TotalSize = rowSizes.calculateTotalSize()
+
+    /**
+     * Calculated total size of all columns.
+     */
     val columnsTotalSize: TotalSize = columnSizes.calculateTotalSize()
 
     class Builder(rows: Int, columns: Int) {
 
-        private val rowSizes: Array<GridPadCellSize> = Array(rows) {
-            GridPadCellSize.Weight()
-        }
-
-        private val columnSizes: Array<GridPadCellSize> = Array(columns) {
-            GridPadCellSize.Weight()
-        }
+        private val rowSizes: MutableList<GridPadCellSize> = GridPadCellSize.weight(rows)
+        private val columnSizes: MutableList<GridPadCellSize> = GridPadCellSize.weight(columns)
 
         fun rowSize(index: Int, size: GridPadCellSize) = apply {
             rowSizes[index] = size
@@ -47,75 +80,9 @@ data class GridPadCells(
             )
         }
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as GridPadCells
-
-        if (rows != other.rows) return false
-        if (columns != other.columns) return false
-        if (!rowSizes.contentEquals(other.rowSizes)) return false
-        if (!columnSizes.contentEquals(other.columnSizes)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = rows
-        result = 31 * result + columns
-        result = 31 * result + rowSizes.contentHashCode()
-        result = 31 * result + columnSizes.contentHashCode()
-        return result
-    }
 }
 
-fun MeasureScope.calculateCellPlaces(
-    cells: GridPadCells,
-    width: Int,
-    height: Int
-): Array<Array<CellPlaceInfo>> {
-    val availableWeightWidth = width - cells.columnsTotalSize.fixed.roundToPx()
-    val availableWeightHeight = height - cells.rowsTotalSize.fixed.roundToPx()
-
-    //Calculate real cell widths
-    val columnWidths = cells.columnSizes.map { columnSize ->
-        when (columnSize) {
-            is GridPadCellSize.Fixed -> columnSize.size.roundToPx()
-            is GridPadCellSize.Weight -> (availableWeightWidth * columnSize.size / cells.columnsTotalSize.weight).roundToInt()
-        }
-    }
-
-    //Calculate real cell height
-    val columnHeights = cells.rowSizes.map { rowSize ->
-        when (rowSize) {
-            is GridPadCellSize.Fixed -> rowSize.size.roundToPx()
-            is GridPadCellSize.Weight -> (availableWeightHeight * rowSize.size / cells.rowsTotalSize.weight).roundToInt()
-        }
-    }
-
-    //Calculate grid with positions and cell sizes
-    var y = 0f
-    val cellPlaces = columnHeights.map { columnHeight ->
-        var x = 0f
-        val cellY = y
-        y += columnHeight
-        columnWidths.map { columnWidth ->
-            val cellX = x
-            x += columnWidth
-            CellPlaceInfo(
-                x = cellX.roundToInt(),
-                y = cellY.roundToInt(),
-                width = columnWidth,
-                height = columnHeight
-            )
-        }
-    }
-    return cellPlaces.map { it.toTypedArray() }.toTypedArray()
-}
-
-private fun Array<GridPadCellSize>.calculateTotalSize(): TotalSize {
+private fun Iterable<GridPadCellSize>.calculateTotalSize(): TotalSize {
     var totalWeightSize = 0f
     var totalFixedSize = 0f.dp
     forEach {
@@ -127,9 +94,22 @@ private fun Array<GridPadCellSize>.calculateTotalSize(): TotalSize {
     return TotalSize(weight = totalWeightSize, fixed = totalFixedSize)
 }
 
-data class TotalSize(val weight: Float, val fixed: Dp)
+/**
+ * Total size for rows or columns information.
+ */
+data class TotalSize(
+    /**
+     * Total weight for all rows or columns.
+     * Can be 0 in cases where all rows or columns have [GridPadCellSize.Fixed] size.
+     */
+    val weight: Float,
 
-data class CellPlaceInfo(val x: Int, val y: Int, val width: Int, val height: Int)
+    /**
+     * Total size for all rows or columns.
+     * Can be 0 in cases where all rows or columns have [GridPadCellSize.Weight] size.
+     */
+    val fixed: Dp
+)
 
 @Stable
 sealed class GridPadCellSize {
@@ -145,4 +125,26 @@ sealed class GridPadCellSize {
             check(size > 0) { "size have to be > 0" }
         }
     }
+
+    companion object
+}
+
+fun GridPadCellSize.Companion.fixed(count: Int, size: Dp): MutableList<GridPadCellSize> {
+    return mutableListOfElement(count, GridPadCellSize.Fixed(size = size))
+}
+
+fun GridPadCellSize.Companion.fixed(sizes: Array<Dp>): MutableList<GridPadCellSize> {
+    return sizes.map { GridPadCellSize.Fixed(size = it) }.toMutableList()
+}
+
+fun GridPadCellSize.Companion.weight(count: Int, size: Float = 1f): MutableList<GridPadCellSize> {
+    return mutableListOfElement(count, GridPadCellSize.Weight(size = size))
+}
+
+fun GridPadCellSize.Companion.weight(sizes: FloatArray): MutableList<GridPadCellSize> {
+    return sizes.map { GridPadCellSize.Weight(size = it) }.toMutableList()
+}
+
+private fun <T> mutableListOfElement(size: Int, fillElement: T): MutableList<T> {
+    return (0 until size).map { fillElement }.toMutableList()
 }
