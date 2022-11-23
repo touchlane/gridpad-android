@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.unit.Constraints
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 /**
@@ -55,9 +56,22 @@ fun GridPad(
             )
         }
 
-        // Set the size of the layout as big as it can
-        //TODO change to actual size in cases when all columns and rows are fixed
-        layout(constraints.maxWidth, constraints.maxHeight) {
+        //in cases when all columns have a fixed size, we limit layout width to the sum of them
+        val layoutWidth = if (cells.columnsTotalSize.weight == 0f) {
+            min(constraints.maxWidth, cells.columnsTotalSize.fixed.roundToPx())
+        } else {
+            constraints.maxWidth
+        }
+
+        //in cases when all rows have a fixed size, we limit layout height to the sum of them
+        val layoutHeight = if (cells.rowsTotalSize.weight == 0f) {
+            min(constraints.maxHeight, cells.rowsTotalSize.fixed.roundToPx())
+        } else {
+            constraints.maxHeight
+        }
+
+        //place items
+        layout(layoutWidth, layoutHeight) {
             placeables.forEachIndexed { index, placeable ->
                 val contentMetaInfo = scopeContent.data[index]
                 val cellPlaceInfo = cellPlaces[contentMetaInfo.row][contentMetaInfo.column]
