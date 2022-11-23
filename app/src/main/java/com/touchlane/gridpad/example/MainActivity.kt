@@ -4,10 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -57,22 +54,23 @@ class MainActivity : ComponentActivity() {
                                         Text(text = "1 one")
                                     }
                                 }
-                                item {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .background(Color.Blue)
-                                    ) {
-                                        Text(text = "2 two")
-                                    }
-                                }
-                                item {
+                                item(row = 0, column = 2) {
                                     Box(
                                         modifier = Modifier
                                             .fillMaxSize()
                                             .background(Color.Cyan)
                                     ) {
                                         Text(text = "3 three")
+                                    }
+                                }
+                                item(row = 0, column = 2) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxHeight()
+                                            .width(30.dp)
+                                            .background(Color.Blue)
+                                    ) {
+                                        Text(text = "2 two")
                                     }
                                 }
                                 item {
@@ -93,7 +91,7 @@ class MainActivity : ComponentActivity() {
                                         Text(text = "5 five")
                                     }
                                 }
-                                item {
+                                item(rowSpan = 3, columnSpan = 3) {
                                     Box(
                                         modifier = Modifier
                                             .fillMaxSize()
@@ -102,7 +100,7 @@ class MainActivity : ComponentActivity() {
                                         Text(text = "6 six")
                                     }
                                 }
-                                item {
+                                item(row = 2, column = 0) {
                                     Box(
                                         modifier = Modifier
                                             .fillMaxSize()

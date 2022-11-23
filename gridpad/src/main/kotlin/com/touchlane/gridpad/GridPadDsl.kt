@@ -14,6 +14,8 @@ import kotlin.math.roundToInt
  * - span size (rowSpan and columnSpan)
  * Each row and column can have specific (fixed) or relative (weight) size.
  *
+ * Layout have to be limited on both sides (width and height) otherwise an exception will be thrown.
+ *
  * @param cells grid specification
  * @param modifier container modifier
  * @param content content
@@ -39,15 +41,17 @@ fun GridPad(
         // Don't constrain child views further, measure them with given constraints
         // List of measured children
         val placeables = measurables.mapIndexed { index, measurable ->
-            val row = index / cells.columns
-            val col = index % cells.columns
-            val cellPlaceInfo = cellPlaces[row][col]
+            val contentMetaInfo = scopeContent.data[index]
+            val maxWidth = (0 until contentMetaInfo.columnSpan).sumOf {
+                cellPlaces[contentMetaInfo.row][contentMetaInfo.column + it].width
+            }
+            val maxHeight = (0 until contentMetaInfo.rowSpan).sumOf {
+                cellPlaces[contentMetaInfo.row + it][contentMetaInfo.column].height
+            }
 
             // Measure each children
             measurable.measure(
-                constraints.copy(
-                    maxWidth = cellPlaceInfo.width, maxHeight = cellPlaceInfo.height
-                )
+                constraints.copy(maxWidth = maxWidth, maxHeight = maxHeight)
             )
         }
 
@@ -55,9 +59,8 @@ fun GridPad(
         //TODO change to actual size in cases when all columns and rows are fixed
         layout(constraints.maxWidth, constraints.maxHeight) {
             placeables.forEachIndexed { index, placeable ->
-                val row = index / cells.columns
-                val col = index % cells.columns
-                val cellPlaceInfo = cellPlaces[row][col]
+                val contentMetaInfo = scopeContent.data[index]
+                val cellPlaceInfo = cellPlaces[contentMetaInfo.row][contentMetaInfo.column]
                 placeable.placeRelative(x = cellPlaceInfo.x, y = cellPlaceInfo.y)
             }
         }
@@ -78,7 +81,7 @@ private fun MeasureScope.calculateCellPlaces(
         }
     }
 
-    //Calculate real cell height
+    //Calculate real cell heights
     val columnHeights = cells.rowSizes.map { rowSize ->
         when (rowSize) {
             is GridPadCellSize.Fixed -> rowSize.size.roundToPx()
@@ -117,6 +120,9 @@ sealed interface GridPadScope {
     /**
      * Adds a single item to the scope.
      * It's possible to overlap items if they will have intersected spans or same location.
+     * If [row] is null then content will be placed in a next after last placed item's column,
+     * the same logic will work for cases when [column] is null - content will be placed in a next
+     * after last placed item's column. When column reach last one - row value will be increased.
      *
      * @param row row index, must be in [0..[GridPadCells.rows]] range
      * @param column column index, must be in [0..[GridPadCells.columns]] range
