@@ -3,8 +3,10 @@ package com.touchlane.gridpad.example
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -12,13 +14,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.touchlane.gridpad.GridPad
-import com.touchlane.gridpad.GridPadCellSize
-import com.touchlane.gridpad.GridPadCells
+import com.touchlane.gridpad.example.ui.component.PinPad
+import com.touchlane.gridpad.example.ui.component.SimpleCalculatorPad
 import com.touchlane.gridpad.example.ui.theme.GridPadExampleTheme
 
 class MainActivity : ComponentActivity() {
@@ -33,90 +32,24 @@ class MainActivity : ComponentActivity() {
                 ) {
                     LazyColumn {
                         item {
-                            Greeting("Android")
-                        }
-                    }
-                    Column() {
-                        Card(Modifier.size(width = 200.dp, height = 200.dp)) {
-                            GridPad(
-                                cells = GridPadCells.Builder(rowCount = 3, columnCount = 3)
-                                    .columnSize(0, GridPadCellSize.Fixed(22.dp))
-                                    .columnSize(1, GridPadCellSize.Weight(2f))
-                                    .columnSize(2, GridPadCellSize.Weight(3f))
-                                    .rowSize(0, GridPadCellSize.Fixed(40.dp)).build()
+                            Card(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(1.2f)
+                                    .padding(16.dp)
                             ) {
-                                item {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .background(Color.Yellow)
-                                    ) {
-                                        Text(text = "1 one")
-                                    }
-                                }
-                                item(row = 0, column = 2) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .background(Color.Cyan)
-                                    ) {
-                                        Text(text = "3 three")
-                                    }
-                                }
-                                item(row = 0, column = 2) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxHeight()
-                                            .width(30.dp)
-                                            .background(Color.Blue)
-                                    ) {
-                                        Text(text = "2 two")
-                                    }
-                                }
-                                item {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .background(Color.Red)
-                                    ) {
-                                        Text(text = "4 four")
-                                    }
-                                }
-                                item {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .background(Color.Green)
-                                    ) {
-                                        Text(text = "5 five")
-                                    }
-                                }
-                                item(rowSpan = 3, columnSpan = 3) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .background(Color.DarkGray)
-                                    ) {
-                                        Text(text = "6 six")
-                                    }
-                                }
-                                item(row = 2, column = 0) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .background(Color.LightGray)
-                                    ) {
-                                        Text(text = "7 seven")
-                                    }
-                                }
+                                PinPad(modifier = Modifier.padding(8.dp))
                             }
                         }
-                        Card(Modifier.size(width = 200.dp, height = 200.dp)) {
-                            Text(
-                                text = "Hello world!",
-                                modifier = Modifier.fillMaxSize(),
-                                style = TextStyle(background = Color.Blue)
-                            )
+                        item {
+                            Card(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(0.9f)
+                                    .padding(16.dp)
+                            ) {
+                                SimpleCalculatorPad(modifier = Modifier.padding(8.dp))
+                            }
                         }
                     }
                 }

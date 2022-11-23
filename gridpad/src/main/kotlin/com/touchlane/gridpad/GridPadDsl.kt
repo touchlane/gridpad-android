@@ -52,7 +52,12 @@ fun GridPad(
 
             // Measure each children
             measurable.measure(
-                constraints.copy(maxWidth = maxWidth, maxHeight = maxHeight)
+                constraints.copy(
+                    minWidth = min(constraints.minWidth, maxWidth),
+                    maxWidth = maxWidth,
+                    minHeight = min(constraints.minHeight, maxHeight),
+                    maxHeight = maxHeight
+                )
             )
         }
 
