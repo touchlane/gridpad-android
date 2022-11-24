@@ -15,7 +15,8 @@ import kotlin.math.roundToInt
  * - span size (rowSpan and columnSpan)
  * Each row and column can have specific (fixed) or relative (weight) size.
  *
- * Layout have to be limited on both sides (width and height) otherwise an exception will be thrown.
+ * **Layout have to be limited on both sides (width and height) otherwise an
+ * exception will be thrown.**
  *
  * @param cells grid specification
  * @param modifier container modifier
@@ -143,12 +144,12 @@ sealed interface GridPadScope {
      * the same logic will work for cases when [column] is null - content will be placed in a next
      * after last placed item's column. When column reach last one - row value will be increased.
      *
-     * @param row row index, must be in [0..[GridPadCells.rows]] range
-     * @param column column index, must be in [0..[GridPadCells.columns]] range
-     * @param rowSpan row span size, default value is 1. In cases, when item potentially
-     * goes out of the grid, value will be trimmed to fit grid
-     * @param columnSpan column span size, default value is 1. In cases, when item potentially
-     * goes out of the grid, value will be trimmed to fit grid
+     * **Be careful: item that is completely or partially out of grid bounds wouldn't be displayed.**
+     *
+     * @param row row index
+     * @param column column index
+     * @param rowSpan row span size
+     * @param columnSpan column span size
      * @param itemContent the content of the item
      */
     fun item(

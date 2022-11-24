@@ -3,10 +3,7 @@ package com.touchlane.gridpad.example.ui.component
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Backspace
@@ -28,6 +25,13 @@ import com.touchlane.gridpad.example.ui.theme.GridPadExampleTheme
 fun TextPadButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     PadButton(onClick = onClick, modifier = modifier) {
         Text(text = text, style = MaterialTheme.typography.displaySmall)
+    }
+}
+
+@Composable
+fun SmallTextPadButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    PadButton(onClick = onClick, modifier = modifier) {
+        Text(text = text, style = MaterialTheme.typography.titleLarge)
     }
 }
 
@@ -57,6 +61,7 @@ fun PadButton(
             .fillMaxSize()
             .padding(4.dp),
         shape = RoundedCornerShape(corner),
+        contentPadding = PaddingValues(0.dp),
         interactionSource = interactionSource
     ) {
         content()
@@ -68,6 +73,14 @@ fun PadButton(
 fun TextPadButtonPreview() {
     GridPadExampleTheme {
         TextPadButton("1", {})
+    }
+}
+
+@ButtonPreviews
+@Composable
+fun SmallPadButtonPreview() {
+    GridPadExampleTheme {
+        SmallTextPadButton("2", {})
     }
 }
 

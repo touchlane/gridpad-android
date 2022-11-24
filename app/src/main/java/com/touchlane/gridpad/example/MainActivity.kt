@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.touchlane.gridpad.example.ui.component.PinPad
 import com.touchlane.gridpad.example.ui.component.SimpleCalculatorPad
+import com.touchlane.gridpad.example.ui.component.SimplePriorityCalculatorPad
 import com.touchlane.gridpad.example.ui.theme.GridPadExampleTheme
 
 class MainActivity : ComponentActivity() {
@@ -49,6 +50,16 @@ class MainActivity : ComponentActivity() {
                                     .padding(16.dp)
                             ) {
                                 SimpleCalculatorPad(modifier = Modifier.padding(8.dp))
+                            }
+                        }
+                        item {
+                            Card(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(1f)
+                                    .padding(16.dp)
+                            ) {
+                                SimplePriorityCalculatorPad(modifier = Modifier.padding(8.dp))
                             }
                         }
                     }
