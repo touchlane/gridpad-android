@@ -3,66 +3,28 @@ package com.touchlane.gridpad.example
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.touchlane.gridpad.example.ui.component.PinPad
-import com.touchlane.gridpad.example.ui.component.SimpleCalculatorPad
-import com.touchlane.gridpad.example.ui.component.SimplePriorityCalculatorPad
-import com.touchlane.gridpad.example.ui.theme.GridPadExampleTheme
+import com.touchlane.gridpad.example.ui.component.*
+import com.touchlane.gridpad.example.ui.theme.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             GridPadExampleTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LazyColumn {
-                        item {
-                            Card(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .aspectRatio(1.2f)
-                                    .padding(16.dp)
-                            ) {
-                                PinPad(modifier = Modifier.padding(8.dp))
-                            }
-                        }
-                        item {
-                            Card(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .aspectRatio(0.9f)
-                                    .padding(16.dp)
-                            ) {
-                                SimpleCalculatorPad(modifier = Modifier.padding(8.dp))
-                            }
-                        }
-                        item {
-                            Card(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .aspectRatio(1f)
-                                    .padding(16.dp)
-                            ) {
-                                SimplePriorityCalculatorPad(modifier = Modifier.padding(8.dp))
-                            }
-                        }
-                    }
+                    ListOfPads()
                 }
             }
         }
@@ -70,14 +32,106 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(modifier = modifier, text = "Hello $name!")
+fun PadCard(ratio: Float = 1f, content: @Composable () -> Unit) {
+    Card(
+        Modifier
+            .fillMaxWidth()
+            .aspectRatio(ratio)
+            .padding(16.dp)
+    ) {
+        Box(modifier = Modifier.padding(8.dp)) {
+            content()
+        }
+    }
+}
+
+@Composable
+fun PinPadCard() {
+    PadCard(ratio = 1.2f) {
+        PinPadTheme(
+            colors = PinPadColors(
+                content = White,
+                removeContent = HeatWave,
+                background = AswadBlack
+            )
+        ) {
+            PinPad()
+        }
+    }
+}
+
+@Composable
+fun SimpleCalculatorPadCard() {
+    PadCard(ratio = 0.9f) {
+        SimpleCalculatorPadTheme(
+            colors = SimpleCalculatorPadColors(
+                content = AswadBlack,
+                removeContent = HeatWave,
+                actionsContent = AndreaBlue,
+                background = White
+            )
+        ) {
+            SimpleCalculatorPad()
+        }
+    }
+}
+
+@Composable
+fun SimplePriorityCalculatorPadCard() {
+    PadCard {
+        SimplePriorityCalculatorPadTheme(
+            colors = SimplePriorityCalculatorPadColors(
+                content = White,
+                background = AswadBlack,
+                removeBackground = HeatWave,
+                actionsBackground = AndreaBlue
+            )
+        ) {
+            SimplePriorityCalculatorPad()
+        }
+    }
+}
+
+@Composable
+fun EngineeringCalculatorPadCard() {
+    PadCard(ratio = 1.1f) {
+        EngineeringCalculatorPadTheme(
+            colors = EngineeringCalculatorPadColors(
+                content = AswadBlack,
+                removeContent = HeatWave,
+                actionsContent = AndreaBlue,
+                functionsContent = BarneyPurple,
+                background = White,
+                numBackground = White.copy(alpha = 0.1f)
+            )
+        ) {
+            EngineeringCalculatorPad()
+        }
+    }
+}
+
+@Composable
+fun ListOfPads(modifier: Modifier = Modifier) {
+    LazyColumn(modifier = modifier) {
+        item {
+            PinPadCard()
+        }
+        item {
+            SimpleCalculatorPadCard()
+        }
+        item {
+            SimplePriorityCalculatorPadCard()
+        }
+        item {
+            EngineeringCalculatorPadCard()
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     GridPadExampleTheme {
-        Greeting("Android")
+        ListOfPads()
     }
 }

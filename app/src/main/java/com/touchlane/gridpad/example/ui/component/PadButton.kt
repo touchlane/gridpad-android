@@ -1,47 +1,79 @@
 package com.touchlane.gridpad.example.ui.component
 
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Backspace
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.touchlane.gridpad.example.ui.theme.GridPadExampleTheme
 
 @Composable
-fun TextPadButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    PadButton(onClick = onClick, modifier = modifier) {
-        Text(text = text, style = MaterialTheme.typography.displaySmall)
-    }
+fun LargeTextPadButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    TextPadButton(
+        text = text,
+        onClick = onClick,
+        style = MaterialTheme.typography.displaySmall,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun MediumTextPadButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    TextPadButton(
+        text = text,
+        onClick = onClick,
+        style = MaterialTheme.typography.headlineMedium,
+        modifier = modifier
+    )
 }
 
 @Composable
 fun SmallTextPadButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    TextPadButton(
+        text = text,
+        onClick = onClick,
+        style = MaterialTheme.typography.titleMedium,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun TextPadButton(
+    text: String,
+    style: TextStyle,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     PadButton(onClick = onClick, modifier = modifier) {
-        Text(text = text, style = MaterialTheme.typography.titleLarge)
+        Text(text = text, style = style, color = PadButtonTheme.colors.content)
     }
 }
 
 @Composable
 fun IconPadButton(icon: ImageVector, onClick: () -> Unit, modifier: Modifier = Modifier) {
     PadButton(onClick = onClick, modifier = modifier) {
+        val tint = PadButtonTheme.colors.content.takeOrElse {
+            LocalContentColor.current
+        }
         Icon(
             icon,
             contentDescription = null,
-            modifier = Modifier.size(32.dp)
+            modifier = Modifier.size(32.dp),
+            tint = tint
         )
     }
 }
@@ -54,13 +86,35 @@ fun PadButton(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-    val corner: Dp by animateDpAsState(if (isPressed) 20.dp else 50.dp)
+    val corner: Dp by animateDpAsState(
+        if (isPressed) 20.dp else 50.dp,
+        tween(150, easing = LinearOutSlowInEasing)
+    )
+    val containerColor = PadButtonTheme.colors.background.takeOrElse {
+        MaterialTheme.colorScheme.primary
+    }
+    val contentColor = PadButtonTheme.colors.content.takeOrElse {
+        MaterialTheme.colorScheme.onPrimary
+    }
+    val disabledContainerColor = containerColor.takeOrElse {
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+    }
+    val disabledContentColor = contentColor.takeOrElse {
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+    }
+    val colors = ButtonDefaults.buttonColors(
+        containerColor = containerColor,
+        contentColor = contentColor,
+        disabledContainerColor = disabledContainerColor,
+        disabledContentColor = disabledContentColor
+    )
     Button(
         onClick = onClick,
         modifier = modifier
             .fillMaxSize()
             .padding(4.dp),
         shape = RoundedCornerShape(corner),
+        colors = colors,
         contentPadding = PaddingValues(0.dp),
         interactionSource = interactionSource
     ) {
@@ -68,11 +122,53 @@ fun PadButton(
     }
 }
 
+@Immutable
+data class PadButtonColors(
+    val content: Color,
+    val background: Color
+) {
+    companion object {
+        val Default = PadButtonColors(
+            content = Color.Unspecified,
+            background = Color.Unspecified
+        )
+    }
+}
+
+val LocalPadButtonColors = staticCompositionLocalOf {
+    PadButtonColors.Default
+}
+
+@Composable
+fun PadButtonTheme(
+    padButtonColors: PadButtonColors = PadButtonColors.Default,
+    content: @Composable () -> Unit
+) {
+    CompositionLocalProvider(
+        LocalPadButtonColors provides padButtonColors,
+        content = content
+    )
+}
+
+object PadButtonTheme {
+    val colors: PadButtonColors
+        @Composable
+        get() = LocalPadButtonColors.current
+}
+
 @ButtonPreviews
 @Composable
-fun TextPadButtonPreview() {
+fun LargeTextPadButtonPreview() {
     GridPadExampleTheme {
-        TextPadButton("1", {})
+        LargeTextPadButton("1", {})
+    }
+}
+
+@ButtonPreviews
+@Composable
+fun MediumPadButtonPreview() {
+    GridPadExampleTheme {
+        MediumTextPadButton("2", {})
     }
 }
 
@@ -80,7 +176,7 @@ fun TextPadButtonPreview() {
 @Composable
 fun SmallPadButtonPreview() {
     GridPadExampleTheme {
-        SmallTextPadButton("2", {})
+        SmallTextPadButton("3", {})
     }
 }
 
