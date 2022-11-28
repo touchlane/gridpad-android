@@ -61,14 +61,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun PadCard(ratio: Float = 1f, content: @Composable () -> Unit) {
-    GridPad(
-        cells = GridPadCells.Builder(rowCount = 3, columnCount = 4)
-            .rowSize(index = 0, size = GridPadCellSize.Weight(2f))
-            .columnSize(index = 3, size = GridPadCellSize.Fixed(32.dp))
-            .build()
-    ) {
-
-    }
     Card(
         Modifier
             .fillMaxWidth()

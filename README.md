@@ -10,12 +10,12 @@ differences and additional functionality to control content on the layout.
 
 Key features and limitations:
 
-* Follows [slot API](https://developer.android.com/jetpack/compose/layouts/basics#slot-based-layouts) concept.
+* Follows [slot API](https://developer.android.com/jetpack/compose/layouts/basics#slot-based-layouts)
+concept.
 * Not lazy. All content will be measured and placed instantly.
 * GridPad must have limited bounds.
 * It's possible to specify the exact place on the grid for each element.
-* One cell can be placed in more than one element. The draw order will be the same as the place
-  order.
+* A cell can contain more than one item. The draw order will be the same as the place order.
 * Each item in a cell can have different spans.
 * Each item can have horizontal and vertical spans simultaneously.
 * Each row and column can have a specific size: fixed or weight-based.
@@ -58,6 +58,86 @@ The algorithm for allocating available space between cells:
 2. The remaining space is allocated between the remaining cells according to their weight value.
 
 ## Place the items
+
+A cell content should be wrapped in a `item` element:
+
+```kotlin
+GridPad(
+    cells = GridPadCells(rowCount = 3, columnCount = 4)
+) {
+    item {
+        // cell content
+    }
+}
+```
+
+Items in a GridPad can be placed explicitly and implicitly. In example above item placed implicitly.
+Implicit placing placed the item **next after the last placed item** (including span size) in the
+same row. First placing will be at position \[0;0].
+
+```kotlin
+GridPad(
+    cells = GridPadCells(rowCount = 3, columnCount = 4)
+) {
+    item {
+        // row = 0, column = 0
+    }
+    item {
+        // row = 0, column = 1
+    }
+}
+```
+
+When an item is placed at the last column in a row then the next items start placed at the next line
+from the first column.
+
+```kotlin
+GridPad(
+    cells = GridPadCells(rowCount = 3, columnCount = 4)
+) {
+    // 2 items
+    item {
+        // row = 0, column = 2
+    }
+    item {
+        // row = 1, column = 0
+    }
+}
+```
+
+> When the placement reaches the last row and column, the following items will be ignored. Placing
+> items outside the grid is not allowed.
+
+To place an item explicitly needs to specify one or both properties `row` and `column` in the item.
+When defines `row` and `column` property it's also possible to place all items in a different order
+without regard to the actual location.
+
+```kotlin
+GridPad(
+    cells = GridPadCells(rowCount = 3, columnCount = 4)
+) {
+    item(row = 1, column = 2) {
+        // cell content
+    }
+    item(row = 0, column = 1) {
+        // cell content
+    }
+}
+```
+
+When specified only one of `row` and `column` properties the logic will be following:
+
+* If the `row` property is skipped, the row will be equal to the last placed item's row.
+* If the `column` property is skipped, the row will be next after the last placed item (including
+  span size). When the last item is placed at the last column in a row then the next items start
+  placed at the next line from the first column.
+
+## Spans
+
+
+
+> When you have a complex structure it's highly recommended to use an **explicit** method of placing
+> all items to avoid unpredictable behavior and mistakes during the grid items.
 
 # License
 

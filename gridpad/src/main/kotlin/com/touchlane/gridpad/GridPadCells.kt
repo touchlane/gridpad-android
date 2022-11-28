@@ -52,9 +52,9 @@ data class GridPadCells(
      * Creating a grid with [GridPadCellSize.Weight] sizes
      * where [GridPadCellSize.Weight.size] equal 1.
      */
-    constructor(rows: Int, columns: Int) : this(
-        rowSizes = GridPadCellSize.weight(rows),
-        columnSizes = GridPadCellSize.weight(columns)
+    constructor(rowCount: Int, columnCount: Int) : this(
+        rowSizes = GridPadCellSize.weight(rowCount),
+        columnSizes = GridPadCellSize.weight(columnCount)
     )
 
     /**

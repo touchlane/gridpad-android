@@ -47,7 +47,7 @@ class GridPadCellsUnitTest {
     @Test
     fun `Check constructors of GridPadCells`() {
         val left = GridPadCells.Builder(2, 2).build()
-        assertEquals(left, GridPadCells(rows = 2, columns = 2))
+        assertEquals(left, GridPadCells(rowCount = 2, columnCount = 2))
         assertEquals(
             left, GridPadCells(
                 rowSizes = GridPadCellSize.weight(2),
