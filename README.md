@@ -10,11 +10,7 @@ differences and additional functionality to control content on the layout.
 
 Key features and limitations:
 
-*
-
-Follows [slot API](https://developer.android.com/jetpack/compose/layouts/basics#slot-based-layouts)
-concept.
-
+* Follows [slot API](https://developer.android.com/jetpack/compose/layouts/basics#slot-based-layouts) concept.
 * Not lazy. All content will be measured and placed instantly.
 * GridPad must have limited bounds.
 * It's possible to specify the exact place on the grid for each element.
