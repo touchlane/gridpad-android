@@ -12,9 +12,9 @@ import androidx.core.view.ViewCompat
 private val DarkColorScheme = darkColorScheme(
     background = AswadBlack,
     surface = AswadBlack,
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = BabyBlueEyes,
+    secondary = LightSteelBlue,
+    tertiary = Melon
 )
 
 @Composable

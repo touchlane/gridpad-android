@@ -9,6 +9,6 @@ val AndreaBlue = Color(0xFF4175e2)
 
 val White = Color(0xFFFFFFFF)
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val BabyBlueEyes = Color(0XFF9CCAFF)
+val LightSteelBlue = Color(0XFFBAC8DB)
+val Melon = Color(0XFFFFB4A5)
