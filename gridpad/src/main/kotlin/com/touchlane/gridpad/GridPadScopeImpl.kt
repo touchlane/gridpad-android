@@ -76,10 +76,10 @@ internal class GridPadScopeImpl(private val cells: GridPadCells) : GridPadScope 
         callback: (row: Int, column: Int) -> Unit
     ): Boolean {
         //Skipping displaying items that out of grid
-        if (row != null && (0 until cells.rows).isOutOf(row)) {
+        if (row != null && (0 until cells.rowCount).isOutOf(row)) {
             return false
         }
-        if (column != null && (0 until cells.columns).isOutOf(column)) {
+        if (column != null && (0 until cells.columnCount).isOutOf(column)) {
             return false
         }
 
@@ -96,14 +96,14 @@ internal class GridPadScopeImpl(private val cells: GridPadCells) : GridPadScope 
             val lastRow = lastItem?.row ?: 0
             lastRow
         }
-        if (cellColumn >= cells.columns) {
+        if (cellColumn >= cells.columnCount) {
             cellColumn = 0
             cellRow += lastRowSpan
         }
-        val rowPlacedOutside = (0 until cells.rows).isOutOf(cellRow)
-        val columnPlacedOutside = (0 until cells.columns).isOutOf(cellColumn)
-        val rowSpanOutside = cells.rows - cellRow < rowSpan
-        val columnSpanOutside = cells.columns - cellColumn < columnSpan
+        val rowPlacedOutside = (0 until cells.rowCount).isOutOf(cellRow)
+        val columnPlacedOutside = (0 until cells.columnCount).isOutOf(cellColumn)
+        val rowSpanOutside = cells.rowCount - cellRow < rowSpan
+        val columnSpanOutside = cells.columnCount - cellColumn < columnSpan
         //Skipping displaying items that out of grid
         return if (rowPlacedOutside || columnPlacedOutside || rowSpanOutside || columnSpanOutside) {
             false

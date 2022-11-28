@@ -29,6 +29,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -36,6 +37,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.touchlane.gridpad.GridPad
+import com.touchlane.gridpad.GridPadCellSize
+import com.touchlane.gridpad.GridPadCells
 import com.touchlane.gridpad.example.ui.component.*
 import com.touchlane.gridpad.example.ui.theme.*
 
@@ -57,6 +61,14 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun PadCard(ratio: Float = 1f, content: @Composable () -> Unit) {
+    GridPad(
+        cells = GridPadCells.Builder(rowCount = 3, columnCount = 4)
+            .rowSize(index = 0, size = GridPadCellSize.Weight(2f))
+            .columnSize(index = 3, size = GridPadCellSize.Fixed(32.dp))
+            .build()
+    ) {
+
+    }
     Card(
         Modifier
             .fillMaxWidth()

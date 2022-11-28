@@ -58,14 +58,14 @@ data class GridPadCells(
     )
 
     /**
-     * Rows count. It's guaranteed that [rows] will be equal `rowSizes.size`
+     * Rows count. It's guaranteed that [rowCount] will be equal `rowSizes.size`
      */
-    val rows: Int = rowSizes.size
+    val rowCount: Int = rowSizes.size
 
     /**
-     * Columns count. It's guaranteed that [columns] will be equal `columnSizes.size`
+     * Columns count. It's guaranteed that [columnCount] will be equal `columnSizes.size`
      */
-    val columns: Int = columnSizes.size
+    val columnCount: Int = columnSizes.size
 
     /**
      * Calculated total size of all rows.
