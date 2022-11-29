@@ -161,11 +161,29 @@ fun EngineeringCalculatorPadCard() {
 @Composable
 fun SimpleBlueprintCard() {
     BlueprintCard(ratio = 1.5f) {
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
+        GridPad(
+            modifier = Modifier.width(200.dp),
+            cells = GridPadCells(rowCount = 3, columnCount = 4)
+        ) {
             repeat(12) { item { BlueprintBox() } }
         }
     }
 }
+
+@Composable
+fun CustomSizeBlueprintCard() {
+    BlueprintCard(ratio = 1.5f) {
+        GridPad(
+            cells = GridPadCells.Builder(rowCount = 3, columnCount = 4)
+                .rowSize(index = 0, size = GridPadCellSize.Weight(2f))
+                .columnSize(index = 3, size = GridPadCellSize.Fixed(90.dp))
+                .build()
+        ) {
+            repeat(12) { item { BlueprintBox() } }
+        }
+    }
+}
+
 
 @Composable
 fun SimpleBlueprintCardWithContent() {
@@ -205,8 +223,8 @@ fun SimpleBlueprintCardWithSpans() {
             item(rowSpan = 3, columnSpan = 2) {
                 ContentBlueprintBox("[0;0]\nSpan: 3x2")
             }
-            item(rowSpan = 2) {
-                ContentBlueprintBox("[0;2]\nSpan: 2x1")
+            item(rowSpan = 2, columnSpan = 2) {
+                ContentBlueprintBox("[0;2]\nSpan: 2x2")
             }
         }
     }
@@ -227,20 +245,6 @@ fun SimpleBlueprintCardWithSpansOverlapped() {
             item(row = 2, column = 1, columnSpan = 3) {
                 ContentBlueprintBox("[2;1]\nSpan: 1x3, overlapped")
             }
-        }
-    }
-}
-
-@Composable
-fun CustomSizeBlueprintCard() {
-    BlueprintCard(ratio = 1.5f) {
-        GridPad(
-            cells = GridPadCells.Builder(rowCount = 3, columnCount = 4)
-                .rowSize(index = 0, size = GridPadCellSize.Weight(2f))
-                .columnSize(index = 3, size = GridPadCellSize.Fixed(32.dp))
-                .build()
-        ) {
-            repeat(12) { item { BlueprintBox() } }
         }
     }
 }

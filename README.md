@@ -48,7 +48,7 @@ To define specific for row or column you need to use `GridPadCells.Builder` API:
 GridPad(
     cells = GridPadCells.Builder(rowCount = 3, columnCount = 4)
         .rowSize(index = 0, size = GridPadCellSize.Weight(2f))
-        .columnSize(index = 3, size = GridPadCellSize.Fixed(32.dp))
+        .columnSize(index = 3, size = GridPadCellSize.Fixed(90.dp))
         .build()
 ) {
     // content
@@ -151,7 +151,7 @@ GridPad(
     item(rowSpan = 3, columnSpan = 2) {
         // row = 0, column = 0, rowSpan = 3, columnSpan = 2
     }
-    item(rowSpan = 2) {
+    item(rowSpan = 2, columnSpan = 2) {
         // row = 0, column = 2, rowSpan = 2, columnSpan = 1
     }
 }
