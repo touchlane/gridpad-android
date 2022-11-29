@@ -3,6 +3,9 @@
 :date: GridPad is a Jetpack Compose library that allows you to place UI elements in a predefined
 grid, manage spans in two dimensions, have flexible controls to manage row and column sizes.
 
+:construction: The library is still under construction and the API may change a bit, stay tuned and
+suggest ideas. :construction:
+
 # Usage
 
 GridPad combines LazyRow/LazyColumn and LazyVerticalGrid/LazyHorizontalGrid APIs but has some
@@ -105,8 +108,8 @@ GridPad(
 }
 ```
 
-> When the placement reaches the last row and column, the following items will be ignored. Placing
-> items outside the grid is not allowed.
+> :warning: When the placement reaches the last row and column, the following items will be ignored.
+> Placing items outside the grid is not allowed.
 
 To place an item explicitly needs to specify one or both properties `row` and `column` in the item.
 When defines `row` and `column` property it's also possible to place all items in a different order
@@ -132,12 +135,43 @@ When specified only one of `row` and `column` properties the logic will be follo
   span size). When the last item is placed at the last column in a row then the next items start
   placed at the next line from the first column.
 
+> :warning: A cell can contain more than one item. The draw order will be the same as the place
+> order. GridPad does not limit the item's size when the child has an explicit size. That means that
+> the item can go outside the cell bounds.
+
 ## Spans
 
+By default each item has a span of 1x1. To change it, specify one or both of the `rowSpan`
+and `columnSpan` properties of the item.
 
+```kotlin
+GridPad(
+    cells = GridPadCells(rowCount = 3, columnCount = 4)
+) {
+    item(rowSpan = 3, columnSpan = 2) {
+        // row = 0, column = 0, rowSpan = 3, columnSpan = 2
+    }
+    item(rowSpan = 2) {
+        // row = 0, column = 2, rowSpan = 2, columnSpan = 1
+    }
+}
+```
 
-> When you have a complex structure it's highly recommended to use an **explicit** method of placing
-> all items to avoid unpredictable behavior and mistakes during the grid items.
+When an item has a span that goes outside the grid, the item is skipped and doesn't draw at all.
+
+```kotlin
+GridPad(
+    cells = GridPadCells(rowCount = 3, columnCount = 4)
+) {
+    item(row = 1, column = 3, rowSpan = 1, columnSpan = 3) {
+        // will be skipped in a drawing process because the item is placed in the column range [3;5] 
+        // but the maximum allowable 3
+    }
+}
+```
+
+> :warning: When you have a complex structure it's highly recommended to use an **explicit** method
+> of placing all items to avoid unpredictable behavior and mistakes during the grid items.
 
 # License
 
