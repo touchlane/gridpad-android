@@ -34,6 +34,8 @@ GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
 }
 ```
 
+![simgle_define_grid_shadow](https://user-images.githubusercontent.com/2251498/204653998-529bcd93-87d8-4881-ad1b-75cbfa9c3c5f.png)
+
 By default rows and columns have **weight** size equal to 1, but it's possible specify different
 size to specific row or column.
 The library support 2 types of sizes:
@@ -54,6 +56,8 @@ GridPad(
     // content
 }
 ```
+
+![custom_define_grid_shadow](https://user-images.githubusercontent.com/2251498/204654036-02f491bd-3e01-4974-aa3a-048a0ddd22ed.png)
 
 The algorithm for allocating available space between cells:
 
@@ -108,6 +112,8 @@ GridPad(
 }
 ```
 
+![place_items_shadow](https://user-images.githubusercontent.com/2251498/204654266-a85473ab-231e-44c9-a9c8-71e44dad2077.png)
+
 > :warning: When the placement reaches the last row and column, the following items will be ignored.
 > Placing items outside the grid is not allowed.
 
@@ -127,6 +133,8 @@ GridPad(
     }
 }
 ```
+
+![place_items_specific_shadow](https://user-images.githubusercontent.com/2251498/204654233-5b8ae758-b269-4f15-a0d2-66fbc7738afd.png)
 
 When specified only one of `row` and `column` properties the logic will be following:
 
@@ -156,6 +164,8 @@ GridPad(
     }
 }
 ```
+
+![spanned_shadow](https://user-images.githubusercontent.com/2251498/204654394-7903477c-a6b2-4ff7-a9f1-dd6068c82ffb.png)
 
 When an item has a span that goes outside the grid, the item is skipped and doesn't draw at all.
 
