@@ -27,10 +27,11 @@ package com.touchlane.gridpad.example
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -68,6 +69,25 @@ fun PadCard(ratio: Float = 1f, content: @Composable () -> Unit) {
             .padding(16.dp)
     ) {
         Box(modifier = Modifier.padding(8.dp)) {
+            content()
+        }
+    }
+}
+
+@Composable
+fun BlueprintCard(ratio: Float = 1f, content: @Composable () -> Unit) {
+    Card(
+        Modifier
+            .fillMaxWidth()
+            .aspectRatio(ratio)
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(AndreaBlue)
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(32.dp)
+                .background(AndreaBlue)
+        ) {
             content()
         }
     }
@@ -139,8 +159,113 @@ fun EngineeringCalculatorPadCard() {
 }
 
 @Composable
+fun SimpleBlueprintCard() {
+    BlueprintCard(ratio = 1.5f) {
+        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
+            repeat(12) { item { BlueprintBox() } }
+        }
+    }
+}
+
+@Composable
+fun SimpleBlueprintCardWithContent() {
+    BlueprintCard(ratio = 1.5f) {
+        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
+            repeat(12) { item { BlueprintBox() } }
+        }
+        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
+            item { ContentBlueprintBox("[0;0]") }
+            item { ContentBlueprintBox("[0;1]") }
+        }
+    }
+}
+
+@Composable
+fun SimpleBlueprintCardWithContentMixOrdering() {
+    BlueprintCard(ratio = 1.5f) {
+        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
+            repeat(12) { item { BlueprintBox() } }
+        }
+        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
+            item(row = 1, column = 2) { ContentBlueprintBox("[1;2]\nOrder: 1") }
+            item(row = 0, column = 1) { ContentBlueprintBox("[0;1]\nOrder: 2") }
+        }
+    }
+}
+
+@Composable
+fun SimpleBlueprintCardWithSpans() {
+    BlueprintCard(ratio = 1.5f) {
+        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
+            repeat(12) { item { BlueprintBox() } }
+        }
+        GridPad(
+            cells = GridPadCells(rowCount = 3, columnCount = 4)
+        ) {
+            item(rowSpan = 3, columnSpan = 2) {
+                ContentBlueprintBox("[0;0]\nSpan: 3x2")
+            }
+            item(rowSpan = 2) {
+                ContentBlueprintBox("[0;2]\nSpan: 2x1")
+            }
+        }
+    }
+}
+
+@Composable
+fun SimpleBlueprintCardWithSpansOverlapped() {
+    BlueprintCard(ratio = 1.5f) {
+        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
+            repeat(12) { item { BlueprintBox() } }
+        }
+        GridPad(
+            cells = GridPadCells(rowCount = 3, columnCount = 4)
+        ) {
+            item(rowSpan = 3, columnSpan = 2) {
+                ContentBlueprintBox("[0;0]\nSpan: 3x2")
+            }
+            item(row = 2, column = 1, columnSpan = 3) {
+                ContentBlueprintBox("[2;1]\nSpan: 1x3, overlapped")
+            }
+        }
+    }
+}
+
+@Composable
+fun CustomSizeBlueprintCard() {
+    BlueprintCard(ratio = 1.5f) {
+        GridPad(
+            cells = GridPadCells.Builder(rowCount = 3, columnCount = 4)
+                .rowSize(index = 0, size = GridPadCellSize.Weight(2f))
+                .columnSize(index = 3, size = GridPadCellSize.Fixed(32.dp))
+                .build()
+        ) {
+            repeat(12) { item { BlueprintBox() } }
+        }
+    }
+}
+
+@Composable
 fun ListOfPads(modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
+        item {
+            SimpleBlueprintCard()
+        }
+        item {
+            CustomSizeBlueprintCard()
+        }
+        item {
+            SimpleBlueprintCardWithContent()
+        }
+        item {
+            SimpleBlueprintCardWithContentMixOrdering()
+        }
+        item {
+            SimpleBlueprintCardWithSpans()
+        }
+        item {
+            SimpleBlueprintCardWithSpansOverlapped()
+        }
         item {
             PinPadCard()
         }

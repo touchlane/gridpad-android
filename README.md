@@ -98,12 +98,12 @@ from the first column.
 GridPad(
     cells = GridPadCells(rowCount = 3, columnCount = 4)
 ) {
-    // 2 items
+    // 2 items 
     item {
-        // row = 0, column = 2
+        // 3-rd item, row = 0, column = 2
     }
     item {
-        // row = 1, column = 0
+        // 4-th item, row = 1, column = 0
     }
 }
 ```
@@ -171,7 +171,8 @@ GridPad(
 ```
 
 > :warning: When you have a complex structure it's highly recommended to use an **explicit** method
-> of placing all items to avoid unpredictable behavior and mistakes during the grid items.
+> of placing all items to avoid unpredictable behavior and mistakes during the placement of the
+> items.
 
 # License
 
