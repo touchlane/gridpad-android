@@ -1,7 +1,6 @@
 <h1 align="center">GridPad Jetpack Compose layout</h1>
 
-:date: GridPad is a Jetpack Compose library that allows you to place UI elements in a predefined
-grid, manage spans in two dimensions, have flexible controls to manage row and column sizes.
+![grid_pad_logo](https://user-images.githubusercontent.com/2251498/204759114-b900efa7-8cf8-40bd-b221-5e4b6fb55013.png)
 
 :construction: The library is still under construction and the API may change a bit, stay tuned and
 suggest ideas. :construction:
@@ -34,7 +33,7 @@ GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
 }
 ```
 
-![simgle_define_grid_shadow](https://user-images.githubusercontent.com/2251498/204653998-529bcd93-87d8-4881-ad1b-75cbfa9c3c5f.png)
+![simgle_define_grid_dark](https://user-images.githubusercontent.com/2251498/204765082-51283636-c85e-46a0-beb1-1b966193a215.png)
 
 By default rows and columns have **weight** size equal to 1, but it's possible specify different
 size to specific row or column.
@@ -57,7 +56,7 @@ GridPad(
 }
 ```
 
-![custom_define_grid_shadow](https://user-images.githubusercontent.com/2251498/204654036-02f491bd-3e01-4974-aa3a-048a0ddd22ed.png)
+![custom_define_grid_dark](https://user-images.githubusercontent.com/2251498/204765232-8f0a7f53-536c-4f39-82f9-5b867d352ec0.png)
 
 The algorithm for allocating available space between cells:
 
@@ -112,7 +111,7 @@ GridPad(
 }
 ```
 
-![place_items_shadow](https://user-images.githubusercontent.com/2251498/204654266-a85473ab-231e-44c9-a9c8-71e44dad2077.png)
+![place_items_dark](https://user-images.githubusercontent.com/2251498/204765288-5c55bc60-4053-4556-b68a-d257944435c6.png)
 
 > :warning: When the placement reaches the last row and column, the following items will be ignored.
 > Placing items outside the grid is not allowed.
@@ -134,7 +133,7 @@ GridPad(
 }
 ```
 
-![place_items_specific_shadow](https://user-images.githubusercontent.com/2251498/204654233-5b8ae758-b269-4f15-a0d2-66fbc7738afd.png)
+![place_items_specific_dark](https://user-images.githubusercontent.com/2251498/204765324-211e2044-593b-41aa-893e-ad62565c9ded.png)
 
 When specified only one of `row` and `column` properties the logic will be following:
 
@@ -165,7 +164,7 @@ GridPad(
 }
 ```
 
-![spanned_shadow](https://user-images.githubusercontent.com/2251498/204654394-7903477c-a6b2-4ff7-a9f1-dd6068c82ffb.png)
+![spanned_dark](https://user-images.githubusercontent.com/2251498/204765367-86177508-5551-4076-b6a1-b48b8f183f9d.png)
 
 When an item has a span that goes outside the grid, the item is skipped and doesn't draw at all.
 
