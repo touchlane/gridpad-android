@@ -23,10 +23,12 @@
  */
 
 @file:Suppress("UnstableApiUsage")
+
 @Suppress("DSL_SCOPE_VIOLATION") // Remove when fixed https://youtrack.jetbrains.com/issue/KTIJ-19369
 plugins {
     id("gridpad.android.library")
     id("gridpad.jetbrains.kotlin.android")
+    id("gridpad.jetbrains.kotlin.android.explicit")
     id("gridpad.android.compose")
 }
 

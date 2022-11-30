@@ -1,3 +1,7 @@
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 /*
  * MIT License
  *
@@ -22,10 +26,19 @@
  * SOFTWARE.
  */
 
-package com.touchlane.gridpad
+private const val EXPLICIT_API = "-Xexplicit-api=strict"
 
-/**
- * DSL marker.
- */
-@DslMarker
-public annotation class GridPadScopeMarker
+class AndroidKotlinExplicitApiConventionPlugin : Plugin<Project> {
+    override fun apply(target: Project) {
+        target.tasks
+            .matching { it is KotlinCompile && !it.name.contains("test", ignoreCase = true) }
+            .configureEach {
+                if (!project.hasProperty("kotlin.optOutExplicitApi")) {
+                    val kotlinCompile = this as KotlinCompile
+                    if (EXPLICIT_API !in kotlinCompile.kotlinOptions.freeCompilerArgs) {
+                        kotlinCompile.kotlinOptions.freeCompilerArgs += EXPLICIT_API
+                    }
+                }
+            }
+    }
+}

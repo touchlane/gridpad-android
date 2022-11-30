@@ -48,6 +48,10 @@ gradlePlugin {
             id = "gridpad.jetbrains.kotlin.android"
             implementationClass = "AndroidKotlinConventionPlugin"
         }
+        register("androidKotlinExplicitApi") {
+            id = "gridpad.jetbrains.kotlin.android.explicit"
+            implementationClass = "AndroidKotlinExplicitApiConventionPlugin"
+        }
         register("androidLibrary") {
             id = "gridpad.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"

@@ -47,7 +47,7 @@ import kotlin.math.roundToInt
  * @param content content
  */
 @Composable
-fun GridPad(
+public fun GridPad(
     cells: GridPadCells, modifier: Modifier = Modifier, content: GridPadScope.() -> Unit
 ) {
     val scopeContent: GridPadScopeImpl = GridPadScopeImpl(cells).apply(content)
@@ -159,7 +159,7 @@ private data class CellPlaceInfo(val x: Int, val y: Int, val width: Int, val hei
  * Receiver scope which is used by [GridPad].
  */
 @GridPadScopeMarker
-sealed interface GridPadScope {
+public sealed interface GridPadScope {
 
     /**
      * Adds a single item to the scope.
@@ -176,7 +176,7 @@ sealed interface GridPadScope {
      * @param columnSpan column span size
      * @param itemContent the content of the item
      */
-    fun item(
+    public fun item(
         row: Int? = null,
         column: Int? = null,
         rowSpan: Int = 1,
