@@ -13,6 +13,7 @@ androidxTestRules = "1.4.0"
 androidxTestRunner = "1.4.0"
 junit4 = "4.13.2"
 kotlin = "1.7.20"
+kotlinCompatibilityValidator = "0.12.1"
 kotlinxCollectionsImmutable = "0.3.5"
 robolectric = "4.9"
 versionsChecker = "0.44.0"
@@ -48,5 +49,6 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinCompatibilityValidator" }
 versions-checker = { id = "com.github.ben-manes.versions", version.ref = "versionsChecker" }
 versions-updater = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionsUpdater" }
