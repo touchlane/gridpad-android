@@ -1,4 +1,5 @@
 [versions]
+# Keep lines sorted (Edit -> Sort Lines)
 androidDesugarJdkLibs = "1.1.5"
 androidGradlePlugin = "7.3.1"
 androidxActivity = "1.6.1"
@@ -12,13 +13,19 @@ androidxTestRules = "1.4.0"
 androidxTestRunner = "1.4.0"
 junit4 = "4.13.2"
 kotlin = "1.7.20"
+kotlinCompatibilityValidator = "0.12.1"
+kotlinxCollectionsImmutable = "0.3.5"
+robolectric = "4.9"
 versionsChecker = "0.44.0"
 versionsUpdater = "0.7.0"
 
 [libraries]
+# Keep lines sorted (Edit -> Sort Lines)
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
+androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
@@ -29,15 +36,19 @@ androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecyc
 androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
 androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExt" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
+kotlin-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
+# Keep lines sorted (Edit -> Sort Lines)
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinCompatibilityValidator" }
 versions-checker = { id = "com.github.ben-manes.versions", version.ref = "versionsChecker" }
 versions-updater = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionsUpdater" }
