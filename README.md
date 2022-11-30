@@ -22,6 +22,8 @@ concept.
 * Each item can have horizontal and vertical spans simultaneously.
 * Each row and column can have a specific size: fixed or weight-based.
 
+![grid_examples](https://user-images.githubusercontent.com/2251498/204779586-c1ed214a-e30c-42a9-915e-37dda13d15ec.png)
+
 ## Define the grid
 
 Specifying exact grid size is required but specifying each row and column size is optional.
