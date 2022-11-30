@@ -162,7 +162,6 @@ fun EngineeringCalculatorPadCard() {
 fun SimpleBlueprintCard() {
     BlueprintCard(ratio = 1.5f) {
         GridPad(
-            modifier = Modifier.width(200.dp),
             cells = GridPadCells(rowCount = 3, columnCount = 4)
         ) {
             repeat(12) { item { BlueprintBox() } }
