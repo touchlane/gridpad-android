@@ -38,11 +38,9 @@ class PublishNexusModuleConventionPlugin : Plugin<Project> {
                 apply("maven-publish")
                 apply("signing")
             }
-            val sources = sources()
-            val javadoc = javadoc()
             afterEvaluate {
                 extensions.configure<PublishingExtension> {
-                    configurePublishing(this, sources = sources.get(), javadoc = javadoc.get())
+                    configurePublishing(this)
                 }
             }
         }

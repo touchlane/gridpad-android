@@ -28,14 +28,17 @@ import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
 import org.gradle.plugins.signing.SigningExtension
 
 internal fun Project.configurePublishing(
-    extension: PublishingExtension, sources: Jar?, javadoc: Jar?
+    extension: PublishingExtension
 ) {
+    val sources = sources()
+    val javadoc = javadoc()
     extension.apply {
         publications {
             val properties = PublishingProperties.load(this@configurePublishing)
@@ -46,8 +49,8 @@ internal fun Project.configurePublishing(
                 artifactId = properties.artifactId
                 version = properties.version
 
-                artifact(sources)
-                artifact(javadoc)
+                artifact(sources.get())
+                artifact(javadoc.get())
 
                 pom {
                     name.set("Touchlane ${project.name}")
@@ -117,9 +120,18 @@ internal fun Project.sources(): TaskProvider<Jar> {
     val sourcesJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
         archiveClassifier.set("sources")
 
-        val libExt = checkNotNull(extensions.findByType(LibraryExtension::class.java))
-        val libMainSourceSet = libExt.sourceSets.getByName("main")
-        from(libMainSourceSet.java.srcDirs)
+        if (project.plugins.hasPlugin("com.android.library")) {
+            val libExt = checkNotNull(project.extensions.findByType(LibraryExtension::class.java))
+            val libMainSourceSet = libExt.sourceSets.getByName("main")
+
+            from(libMainSourceSet.java.srcDirs)
+        } else {
+            val sourceSetExt =
+                checkNotNull(project.extensions.findByType(SourceSetContainer::class.java))
+            val mainSourceSet = sourceSetExt.getByName("main")
+
+            from(mainSourceSet.java.srcDirs)
+        }
     }
     return sourcesJar
 }
