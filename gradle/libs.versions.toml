@@ -11,10 +11,12 @@ androidxLifecycleRuntime = "2.5.1"
 androidxTestExt = "1.1.4"
 androidxTestRules = "1.4.0"
 androidxTestRunner = "1.4.0"
+dokka = "1.7.20"
 junit4 = "4.13.2"
 kotlin = "1.7.20"
 kotlinCompatibilityValidator = "0.12.1"
 kotlinxCollectionsImmutable = "0.3.5"
+nexusPublish = "1.1.0"
 robolectric = "4.9"
 versionsChecker = "0.44.0"
 versionsUpdater = "0.7.0"
@@ -43,12 +45,15 @@ robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+nexus-publish-gradlePlugin = { group = "io.github.gradle-nexus", name = "publish-plugin", version.ref = "nexusPublish" }
 
 [plugins]
 # Keep lines sorted (Edit -> Sort Lines)
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinCompatibilityValidator" }
+nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublish" }
 versions-checker = { id = "com.github.ben-manes.versions", version.ref = "versionsChecker" }
 versions-updater = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionsUpdater" }
