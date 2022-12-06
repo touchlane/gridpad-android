@@ -1,0 +1,83 @@
+public abstract class com/touchlane/gridpad/GridPadCellSize {
+	public static final field Companion Lcom/touchlane/gridpad/GridPadCellSize$Companion;
+}
+
+public final class com/touchlane/gridpad/GridPadCellSize$Companion {
+}
+
+public final class com/touchlane/gridpad/GridPadCellSize$Fixed : com/touchlane/gridpad/GridPadCellSize {
+	public static final field $stable I
+	public synthetic fun <init> (FLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun copy-0680j_4 (F)Lcom/touchlane/gridpad/GridPadCellSize$Fixed;
+	public static synthetic fun copy-0680j_4$default (Lcom/touchlane/gridpad/GridPadCellSize$Fixed;FILjava/lang/Object;)Lcom/touchlane/gridpad/GridPadCellSize$Fixed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSize-D9Ej5fM ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/touchlane/gridpad/GridPadCellSize$Weight : com/touchlane/gridpad/GridPadCellSize {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (F)V
+	public synthetic fun <init> (FILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()F
+	public final fun copy (F)Lcom/touchlane/gridpad/GridPadCellSize$Weight;
+	public static synthetic fun copy$default (Lcom/touchlane/gridpad/GridPadCellSize$Weight;FILjava/lang/Object;)Lcom/touchlane/gridpad/GridPadCellSize$Weight;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSize ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/touchlane/gridpad/GridPadCells {
+	public fun <init> (II)V
+	public fun <init> (Ljava/lang/Iterable;Ljava/lang/Iterable;)V
+	public fun <init> (Lkotlinx/collections/immutable/ImmutableCollection;Lkotlinx/collections/immutable/ImmutableCollection;)V
+	public final fun component1 ()Lkotlinx/collections/immutable/ImmutableCollection;
+	public final fun component2 ()Lkotlinx/collections/immutable/ImmutableCollection;
+	public final fun copy (Lkotlinx/collections/immutable/ImmutableCollection;Lkotlinx/collections/immutable/ImmutableCollection;)Lcom/touchlane/gridpad/GridPadCells;
+	public static synthetic fun copy$default (Lcom/touchlane/gridpad/GridPadCells;Lkotlinx/collections/immutable/ImmutableCollection;Lkotlinx/collections/immutable/ImmutableCollection;ILjava/lang/Object;)Lcom/touchlane/gridpad/GridPadCells;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColumnCount ()I
+	public final fun getColumnSizes ()Lkotlinx/collections/immutable/ImmutableCollection;
+	public final fun getRowCount ()I
+	public final fun getRowSizes ()Lkotlinx/collections/immutable/ImmutableCollection;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/touchlane/gridpad/GridPadCells$Builder {
+	public static final field $stable I
+	public fun <init> (II)V
+	public final fun build ()Lcom/touchlane/gridpad/GridPadCells;
+	public final fun columnSize (ILcom/touchlane/gridpad/GridPadCellSize;)Lcom/touchlane/gridpad/GridPadCells$Builder;
+	public final fun columnsSize (Lcom/touchlane/gridpad/GridPadCellSize;)Lcom/touchlane/gridpad/GridPadCells$Builder;
+	public final fun rowSize (ILcom/touchlane/gridpad/GridPadCellSize;)Lcom/touchlane/gridpad/GridPadCells$Builder;
+	public final fun rowsSize (Lcom/touchlane/gridpad/GridPadCellSize;)Lcom/touchlane/gridpad/GridPadCells$Builder;
+}
+
+public final class com/touchlane/gridpad/GridPadCellsKt {
+	public static final fun fixed (Lcom/touchlane/gridpad/GridPadCellSize$Companion;[Landroidx/compose/ui/unit/Dp;)Ljava/util/List;
+	public static final fun fixed-wH6b6FI (Lcom/touchlane/gridpad/GridPadCellSize$Companion;IF)Ljava/util/List;
+	public static final fun weight (Lcom/touchlane/gridpad/GridPadCellSize$Companion;IF)Ljava/util/List;
+	public static final fun weight (Lcom/touchlane/gridpad/GridPadCellSize$Companion;[F)Ljava/util/List;
+	public static synthetic fun weight$default (Lcom/touchlane/gridpad/GridPadCellSize$Companion;IFILjava/lang/Object;)Ljava/util/List;
+}
+
+public final class com/touchlane/gridpad/GridPadDslKt {
+	public static final fun GridPad (Lcom/touchlane/gridpad/GridPadCells;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
+public abstract interface class com/touchlane/gridpad/GridPadScope {
+	public abstract fun item (Ljava/lang/Integer;Ljava/lang/Integer;IILkotlin/jvm/functions/Function2;)V
+}
+
+public final class com/touchlane/gridpad/GridPadScope$DefaultImpls {
+	public static synthetic fun item$default (Lcom/touchlane/gridpad/GridPadScope;Ljava/lang/Integer;Ljava/lang/Integer;IILkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
+}
+
+public abstract interface annotation class com/touchlane/gridpad/GridPadScopeMarker : java/lang/annotation/Annotation {
+}
+
