@@ -1,3 +1,12 @@
+import com.android.build.api.dsl.LibraryExtension
+import com.touchlane.gridpad.configureAndroidLibraryPublishing
+import com.touchlane.gridpad.configurePublishing
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.api.publish.PublishingExtension
+import org.gradle.kotlin.dsl.configure
+
+
 /*
  * MIT License
  *
@@ -22,28 +31,21 @@
  * SOFTWARE.
  */
 
-@file:Suppress("DSL_SCOPE_VIOLATION")
-plugins {
-    alias(libs.plugins.android.application) apply false
-    alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.dokka) apply false
-    alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.compatibilityValidator) apply false
-    alias(libs.plugins.nexus.publish)
-    alias(libs.plugins.versions.checker)
-    alias(libs.plugins.versions.updater)
-    id("gridpad.github.gradle-nexus.publish-plugin-project")
-}
-
-tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
-    rejectVersionIf {
-        isNonStable(candidate.version) && !isNonStable(currentVersion)
+class PublishNexusModuleConventionPlugin : Plugin<Project> {
+    override fun apply(target: Project) {
+        with(target) {
+            with(pluginManager) {
+                apply("maven-publish")
+                apply("signing")
+            }
+            extensions.configure<LibraryExtension> {
+                configureAndroidLibraryPublishing(this)
+            }
+            afterEvaluate {
+                extensions.configure<PublishingExtension> {
+                    configurePublishing(this)
+                }
+            }
+        }
     }
-}
-
-fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
-    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-    val isStable = stableKeyword || regex.matches(version)
-    return isStable.not()
 }

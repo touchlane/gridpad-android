@@ -36,6 +36,7 @@ java {
 dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.nexus.publish.gradlePlugin)
 }
 
 gradlePlugin {
@@ -59,6 +60,14 @@ gradlePlugin {
         register("androidCompose") {
             id = "gridpad.android.compose"
             implementationClass = "AndroidComposeConventionPlugin"
+        }
+        register("publishNexusProject") {
+            id = "gridpad.github.gradle-nexus.publish-plugin-project"
+            implementationClass = "PublishNexusProjectConventionPlugin"
+        }
+        register("publishNexusModule") {
+            id = "gridpad.github.gradle-nexus.publish-plugin-module"
+            implementationClass = "PublishNexusModuleConventionPlugin"
         }
     }
 }
