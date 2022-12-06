@@ -1,12 +1,3 @@
-import com.android.build.api.dsl.LibraryExtension
-import com.touchlane.gridpad.configureAndroidLibraryPublishing
-import com.touchlane.gridpad.configurePublishing
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.api.publish.PublishingExtension
-import org.gradle.kotlin.dsl.configure
-
-
 /*
  * MIT License
  *
@@ -31,20 +22,21 @@ import org.gradle.kotlin.dsl.configure
  * SOFTWARE.
  */
 
-class PublishNexusModuleConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) {
-        with(target) {
-            with(pluginManager) {
-                apply("maven-publish")
-                apply("signing")
-            }
-            extensions.configure<LibraryExtension> {
-                configureAndroidLibraryPublishing(this)
-            }
-            afterEvaluate {
-                extensions.configure<PublishingExtension> {
-                    configurePublishing(this)
-                }
+package com.touchlane.gridpad
+
+import com.android.build.api.dsl.LibraryExtension
+import org.gradle.api.Project
+
+@Suppress("UnstableApiUsage")
+internal fun Project.configureAndroidLibraryPublishing(
+    extension: LibraryExtension,
+) {
+    extension.apply {
+        publishing {
+            multipleVariants {
+                withSourcesJar()
+                withJavadocJar()
+                allVariants()
             }
         }
     }
