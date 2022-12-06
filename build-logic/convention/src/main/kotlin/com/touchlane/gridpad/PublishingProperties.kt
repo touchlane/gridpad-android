@@ -32,7 +32,12 @@ data class PublishingProperties(
     val groupId: String,
     val artifactId: String,
     val version: String,
-    val publicationName: String
+    val publicationName: String,
+    val pomDescription: String,
+    val pomUrl: String,
+    val scmConnection: String,
+    val scmDeveloperConnection: String,
+    val scmUrl: String,
 ) {
     companion object {
         fun load(target: Project): PublishingProperties {
@@ -51,7 +56,12 @@ data class PublishingProperties(
                 groupId = properties.stringOrEmpty("groupId"),
                 artifactId = properties.stringOrEmpty("artifactId"),
                 version = properties.stringOrEmpty("version"),
-                publicationName = properties.stringOrEmpty("publicationName")
+                publicationName = properties.stringOrEmpty("publicationName"),
+                pomDescription = properties.stringOrEmpty("pomDescription"),
+                pomUrl = properties.stringOrEmpty("pomUrl"),
+                scmConnection = properties.stringOrEmpty("scmConnection"),
+                scmDeveloperConnection = properties.stringOrEmpty("scmDeveloperConnection"),
+                scmUrl = properties.stringOrEmpty("scmUrl")
             )
         }
     }

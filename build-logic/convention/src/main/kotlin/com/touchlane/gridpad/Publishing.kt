@@ -40,10 +40,10 @@ internal fun Project.configurePublishing(
     val sources = sources()
     val javadoc = javadoc()
     extension.apply {
-        publications {
-            val properties = PublishingProperties.load(this@configurePublishing)
+        val properties = PublishingProperties.load(this@configurePublishing)
 
-            create<MavenPublication>("release") {
+        publications {
+            create<MavenPublication>(properties.publicationName) {
                 from(components["release"])
                 groupId = properties.groupId
                 artifactId = properties.artifactId
@@ -54,8 +54,8 @@ internal fun Project.configurePublishing(
 
                 pom {
                     name.set("Touchlane ${project.name}")
-                    description.set("Jetpack Compose layout")
-                    url.set("https://github.com/touchlane/gridpad-android")
+                    description.set(properties.pomDescription)
+                    url.set(properties.pomUrl)
                     licenses {
                         license {
                             name.set("MIT")
@@ -70,46 +70,31 @@ internal fun Project.configurePublishing(
                         }
                     }
                     scm {
-                        connection.set("scm:git:https://github.com/touchlane/gridpad-android.git")
-                        developerConnection.set("scm:git:ssh://git@github.com:touchlane/gridpad-android.git")
-                        url.set("https://github.com/touchlane/gridpad-android")
+                        connection.set(properties.scmConnection)
+                        developerConnection.set(properties.scmDeveloperConnection)
+                        url.set(properties.scmUrl)
                     }
                 }
             }
         }
 
-        repositories {
-            maven {
-                name = "Build"
-                url = uri(layout.buildDirectory.dir("repo"))
-            }
-
-            val mavenUser: String? by project
-            val mavenPassword: String? by project
-            if (mavenUser != null && mavenPassword != null) {
-                maven {
-                    name = "MavenCentral"
-                    url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-                    credentials {
-                        username = mavenUser
-                        password = mavenPassword
-                    }
-                }
-            }
-        }
+        val signingProperties = SigningPropertiesDelegate(rootProject.extra)
 
         configure<SigningExtension> {
-            val signingKeyId: String? by project
-            val signingKey: String? by project
-            val signingPassword: String? by project
-
-            if (signingKey != null) {
-                if (signingKeyId != null) {
-                    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+            if (signingProperties.isExists) {
+                if (signingProperties.signingKeyId.isNotBlank()) {
+                    useInMemoryPgpKeys(
+                        signingProperties.signingKeyId,
+                        signingProperties.signingKey,
+                        signingProperties.signingPassword
+                    )
                 } else {
-                    useInMemoryPgpKeys(signingKey, signingPassword)
+                    useInMemoryPgpKeys(
+                        signingProperties.signingKey,
+                        signingProperties.signingPassword
+                    )
                 }
-                sign(extension.publications["release"])
+                sign(extension.publications[properties.publicationName])
                 sign(configurations["archives"])
             }
         }
