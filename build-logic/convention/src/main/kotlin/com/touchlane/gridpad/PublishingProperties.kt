@@ -28,7 +28,12 @@ import org.gradle.api.Project
 import java.io.FileInputStream
 import java.util.*
 
-data class PublishingProperties(val groupId: String, val artifactId: String, val version: String) {
+data class PublishingProperties(
+    val groupId: String,
+    val artifactId: String,
+    val version: String,
+    val publicationName: String
+) {
     companion object {
         fun load(target: Project): PublishingProperties {
             val secretPropsFile = target.file("artifact.properties")
@@ -45,7 +50,8 @@ data class PublishingProperties(val groupId: String, val artifactId: String, val
             return PublishingProperties(
                 groupId = properties.stringOrEmpty("groupId"),
                 artifactId = properties.stringOrEmpty("artifactId"),
-                version = properties.stringOrEmpty("version")
+                version = properties.stringOrEmpty("version"),
+                publicationName = properties.stringOrEmpty("publicationName")
             )
         }
     }

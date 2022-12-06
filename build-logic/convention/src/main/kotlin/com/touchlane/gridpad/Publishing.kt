@@ -109,8 +109,8 @@ internal fun Project.configurePublishing(
                 } else {
                     useInMemoryPgpKeys(signingKey, signingPassword)
                 }
-                //sign(extension.publications["release"])
-                //sign(configurations["archives"])
+                sign(extension.publications["release"])
+                sign(configurations["archives"])
             }
         }
     }
