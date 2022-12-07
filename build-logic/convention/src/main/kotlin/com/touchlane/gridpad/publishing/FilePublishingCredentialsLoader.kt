@@ -1,9 +1,3 @@
-import com.touchlane.gridpad.configurePublishingRepository
-import io.github.gradlenexus.publishplugin.NexusPublishExtension
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-
 /*
  * MIT License
  *
@@ -28,11 +22,28 @@ import org.gradle.kotlin.dsl.configure
  * SOFTWARE.
  */
 
-class PublishNexusProjectConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) {
-        with(target) {
-            extensions.configure<NexusPublishExtension> {
-                configurePublishingRepository(this)
+package com.touchlane.gridpad.publishing
+
+import com.touchlane.gridpad.publishing.PublishingCredentialsDelegate
+import java.io.File
+import java.io.FileInputStream
+import java.util.*
+
+internal class FilePublishingCredentialsLoader(private val file: File) :
+    PublishingCredentialsLoader {
+
+    override val name: String = "File Loader"
+
+    override fun canLoad(): Boolean {
+        return file.exists()
+    }
+
+    override fun loadTo(target: PublishingCredentialsDelegate) {
+        val fileProperties = Properties()
+        FileInputStream(file).use { stream -> fileProperties.load(stream) }
+        fileProperties.forEach { key, value ->
+            if (key is String && value is String) {
+                target[key] = value
             }
         }
     }

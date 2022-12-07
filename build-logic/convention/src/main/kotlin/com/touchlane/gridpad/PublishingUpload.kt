@@ -25,6 +25,8 @@
 package com.touchlane.gridpad
 
 import com.android.build.gradle.LibraryExtension
+import com.touchlane.gridpad.publishing.PublishingCredentialsDelegate
+import com.touchlane.gridpad.publishing.PublishingProperties
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
@@ -34,13 +36,13 @@ import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
 import org.gradle.plugins.signing.SigningExtension
 
-internal fun Project.configurePublishing(
+internal fun Project.configurePublishingUpload(
     extension: PublishingExtension
 ) {
     val sources = sources()
     val javadoc = javadoc()
     extension.apply {
-        val properties = PublishingProperties.load(this@configurePublishing)
+        val properties = PublishingProperties.load(this@configurePublishingUpload)
 
         publications {
             create<MavenPublication>(properties.publicationName) {
@@ -78,24 +80,26 @@ internal fun Project.configurePublishing(
             }
         }
 
-        val signingProperties = SigningPropertiesDelegate(rootProject.extra)
+        val credentials = PublishingCredentialsDelegate.from(rootProject)
 
         configure<SigningExtension> {
-            if (signingProperties.isExists) {
-                if (signingProperties.signingKeyId.isNotBlank()) {
+            if (credentials.isExists) {
+                if (credentials.signingKeyId.isNotBlank()) {
                     useInMemoryPgpKeys(
-                        signingProperties.signingKeyId,
-                        signingProperties.signingKey,
-                        signingProperties.signingPassword
+                        credentials.signingKeyId,
+                        credentials.signingKey,
+                        credentials.signingPassword
                     )
                 } else {
                     useInMemoryPgpKeys(
-                        signingProperties.signingKey,
-                        signingProperties.signingPassword
+                        credentials.signingKey,
+                        credentials.signingPassword
                     )
                 }
                 sign(extension.publications[properties.publicationName])
                 sign(configurations["archives"])
+            } else {
+                println("Signing skipped: not found credentials")
             }
         }
     }

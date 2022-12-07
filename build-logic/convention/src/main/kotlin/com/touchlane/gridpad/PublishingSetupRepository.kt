@@ -1,9 +1,3 @@
-import com.touchlane.gridpad.configurePublishingRepository
-import io.github.gradlenexus.publishplugin.NexusPublishExtension
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-
 /*
  * MIT License
  *
@@ -28,12 +22,23 @@ import org.gradle.kotlin.dsl.configure
  * SOFTWARE.
  */
 
-class PublishNexusProjectConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) {
-        with(target) {
-            extensions.configure<NexusPublishExtension> {
-                configurePublishingRepository(this)
-            }
+package com.touchlane.gridpad
+
+import com.touchlane.gridpad.publishing.PublishingCredentialsDelegate
+import io.github.gradlenexus.publishplugin.NexusPublishExtension
+import org.gradle.api.Project
+
+internal fun Project.configurePublishingRepository(
+    extension: NexusPublishExtension
+) {
+    val credentials = PublishingCredentialsDelegate.from(this)
+    extension.apply {
+        with(repositories.sonatype()) {
+            stagingProfileId.set(credentials.sonatypeStagingProfileId)
+            username.set(credentials.ossrhUsername)
+            password.set(credentials.ossrhPassword)
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
         }
     }
 }

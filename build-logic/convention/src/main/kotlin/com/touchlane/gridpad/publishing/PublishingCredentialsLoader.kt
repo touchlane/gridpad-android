@@ -1,9 +1,3 @@
-import com.touchlane.gridpad.configurePublishingRepository
-import io.github.gradlenexus.publishplugin.NexusPublishExtension
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-
 /*
  * MIT License
  *
@@ -28,12 +22,15 @@ import org.gradle.kotlin.dsl.configure
  * SOFTWARE.
  */
 
-class PublishNexusProjectConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) {
-        with(target) {
-            extensions.configure<NexusPublishExtension> {
-                configurePublishingRepository(this)
-            }
-        }
-    }
+package com.touchlane.gridpad.publishing
+
+import com.touchlane.gridpad.publishing.PublishingCredentialsDelegate
+
+internal interface PublishingCredentialsLoader {
+
+    val name: String
+
+    fun canLoad(): Boolean
+
+    fun loadTo(target: PublishingCredentialsDelegate)
 }

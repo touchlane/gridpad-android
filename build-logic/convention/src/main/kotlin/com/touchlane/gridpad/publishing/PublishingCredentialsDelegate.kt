@@ -22,11 +22,13 @@
  * SOFTWARE.
  */
 
-package com.touchlane.gridpad
+package com.touchlane.gridpad.publishing
 
+import org.gradle.api.Project
 import org.gradle.api.plugins.ExtraPropertiesExtension
+import org.gradle.kotlin.dsl.extra
 
-internal class SigningPropertiesDelegate(private val properties: ExtraPropertiesExtension) {
+internal class PublishingCredentialsDelegate private constructor(private val properties: ExtraPropertiesExtension) {
 
     val isExists: Boolean
         get() = signingKey.isNotBlank()
@@ -79,11 +81,11 @@ internal class SigningPropertiesDelegate(private val properties: ExtraProperties
             this[KEY_SIGNING_KEY] = value
         }
 
-    private operator fun set(key: String, value: String) {
+    operator fun set(key: String, value: String) {
         properties[key] = value
     }
 
-    private operator fun get(key: String): String {
+    operator fun get(key: String): String {
         if (!properties.has(key)) {
             return ""
         }
@@ -95,12 +97,30 @@ internal class SigningPropertiesDelegate(private val properties: ExtraProperties
         }
     }
 
-    private companion object {
-        const val KEY_OSSRH_USERNAME = "ossrhUsername"
-        const val KEY_OSSRH_PASSWORD = "ossrhPassword"
-        const val KEY_SONATYPE_STAGING_PROFILE_ID = "sonatypeStagingProfileId"
-        const val KEY_SIGNING_KEY_ID = "signing.keyId"
-        const val KEY_SIGNING_PASSWORD = "signing.password"
-        const val KEY_SIGNING_KEY = "signing.key"
+    companion object {
+        private const val KEY_OSSRH_USERNAME = "ossrhUsername"
+        private const val KEY_OSSRH_PASSWORD = "ossrhPassword"
+        private const val KEY_SONATYPE_STAGING_PROFILE_ID = "sonatypeStagingProfileId"
+        private const val KEY_SIGNING_KEY_ID = "signing.keyId"
+        private const val KEY_SIGNING_PASSWORD = "signing.password"
+        private const val KEY_SIGNING_KEY = "signing.key"
+
+        fun from(target: Project): PublishingCredentialsDelegate {
+            val loaders = listOf(
+                FilePublishingCredentialsLoader(target.file("local.properties")),
+                EnvironmentPublishingCredentialsLoader()
+            )
+            val credentials = PublishingCredentialsDelegate(target.extra)
+            loaders.forEach {
+                if (it.canLoad()) {
+                    it.loadTo(credentials)
+                    println("Load credentials from ${it.name} completed.")
+                    return@forEach
+                } else {
+                    println("Load credentials from ${it.name} skipped.")
+                }
+            }
+            return credentials
+        }
     }
 }

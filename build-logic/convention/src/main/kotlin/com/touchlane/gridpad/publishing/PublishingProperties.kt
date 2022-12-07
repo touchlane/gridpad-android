@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.touchlane.gridpad
+package com.touchlane.gridpad.publishing
 
 import org.gradle.api.Project
 import java.io.FileInputStream

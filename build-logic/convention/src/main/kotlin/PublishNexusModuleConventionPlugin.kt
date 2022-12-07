@@ -1,6 +1,6 @@
 import com.android.build.api.dsl.LibraryExtension
 import com.touchlane.gridpad.configureAndroidLibraryPublishing
-import com.touchlane.gridpad.configurePublishing
+import com.touchlane.gridpad.configurePublishingUpload
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
@@ -43,7 +43,7 @@ class PublishNexusModuleConventionPlugin : Plugin<Project> {
             }
             afterEvaluate {
                 extensions.configure<PublishingExtension> {
-                    configurePublishing(this)
+                    configurePublishingUpload(this)
                 }
             }
         }
