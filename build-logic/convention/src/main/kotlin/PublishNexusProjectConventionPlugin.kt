@@ -51,7 +51,6 @@ class PublishNexusProjectConventionPlugin : Plugin<Project> {
             properties.signingKeyId = System.getenv("SIGNING_KEY_ID")
             properties.signingPassword = System.getenv("SIGNING_PASSWORD")
             properties.signingKeyId = System.getenv("SIGNING_KEY")
-            properties.snapshot = System.getenv("SNAPSHOT")
         }
         with(target) {
             extensions.configure<NexusPublishExtension> {

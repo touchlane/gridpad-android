@@ -79,14 +79,6 @@ internal class SigningPropertiesDelegate(private val properties: ExtraProperties
             this[KEY_SIGNING_KEY] = value
         }
 
-    var snapshot: String
-        get() {
-            return this[KEY_SNAPSHOT]
-        }
-        set(value) {
-            this[KEY_SNAPSHOT] = value
-        }
-
     private operator fun set(key: String, value: String) {
         properties[key] = value
     }
@@ -110,6 +102,5 @@ internal class SigningPropertiesDelegate(private val properties: ExtraProperties
         const val KEY_SIGNING_KEY_ID = "signing.keyId"
         const val KEY_SIGNING_PASSWORD = "signing.password"
         const val KEY_SIGNING_KEY = "signing.key"
-        const val KEY_SNAPSHOT = "snapshot"
     }
 }
