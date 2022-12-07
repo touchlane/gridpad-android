@@ -59,6 +59,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.compose.ui)
     implementation(libs.kotlin.collections.immutable)
     testImplementation(libs.androidx.compose.ui.test)
     testImplementation(libs.androidx.test.ext)
