@@ -1,18 +1,17 @@
 [versions]
 # Keep lines sorted (Edit -> Sort Lines)
-androidDesugarJdkLibs = "1.1.5"
 androidGradlePlugin = "7.3.1"
 androidxActivity = "1.6.1"
 androidxComposeBom = "2022.11.00"
+# @keep for plugin
 androidxComposeCompiler = "1.3.2"
 androidxCore = "1.9.0"
 androidxEspresso = "3.5.0"
 androidxLifecycleRuntime = "2.5.1"
 androidxTestExt = "1.1.4"
-androidxTestRules = "1.4.0"
-androidxTestRunner = "1.4.0"
 dokka = "1.7.20"
 junit4 = "4.13.2"
+# @pin to use with compose
 kotlin = "1.7.20"
 kotlinCompatibilityValidator = "0.12.1"
 kotlinxCollectionsImmutable = "0.3.5"
@@ -22,30 +21,32 @@ versionsChecker = "0.44.0"
 versionsUpdater = "0.7.0"
 
 [libraries]
-# Keep lines sorted (Edit -> Sort Lines)
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
-androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
-androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycleRuntime" }
-androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
-androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExt" }
-junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
-kotlin-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
-robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
-
 # Dependencies of the included build-logic
-android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
-kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-nexus-publish-gradlePlugin = { group = "io.github.gradle-nexus", name = "publish-plugin", version.ref = "nexusPublish" }
+# @keep
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
+# Keep lines sorted (Edit -> Sort Lines)
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidxComposeBom" }
+androidx-compose-material-icons = { module = "androidx.compose.material:material-icons-extended" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidx-compose-runtime = { module = "androidx.compose.runtime:runtime" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui" }
+androidx-compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
+androidx-compose-ui-testManifest = { module = "androidx.compose.ui:ui-test-manifest" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycleRuntime" }
+androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxEspresso" }
+androidx-test-ext = { module = "androidx.test.ext:junit-ktx", version.ref = "androidxTestExt" }
+junit4 = { module = "junit:junit", version.ref = "junit4" }
+kotlin-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
+# @keep
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+# @keep
+nexus-publish-gradlePlugin = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexusPublish" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 
 [plugins]
 # Keep lines sorted (Edit -> Sort Lines)
