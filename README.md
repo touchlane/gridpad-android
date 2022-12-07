@@ -7,8 +7,8 @@ suggest ideas. :construction:
 
 # Usage
 
-GridPad combines LazyRow/LazyColumn and LazyVerticalGrid/LazyHorizontalGrid APIs but has some
-differences and additional functionality to control content on the layout.
+GridPad is inspired by LazyRow/LazyColumn and LazyVerticalGrid/LazyHorizontalGrid APIs, which makes
+its use intuitive.
 
 Key features and limitations:
 
@@ -23,6 +23,16 @@ concept.
 * Each row and column can have a specific size: fixed or weight-based.
 
 ![grid_examples](https://user-images.githubusercontent.com/2251498/204779586-c1ed214a-e30c-42a9-915e-37dda13d15ec.png)
+
+## Install
+
+Add the dependency below to your **module's** `build.gradle` file:
+
+```groovy
+dependencies {
+    implementation "com.touchlane:gridpad:0.0.1"
+}
+```
 
 ## Define the grid
 
