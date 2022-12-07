@@ -159,6 +159,27 @@ fun EngineeringCalculatorPadCard() {
 }
 
 @Composable
+fun InteractivePinPadCard() {
+    Card(
+        Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Box(modifier = Modifier.padding(8.dp)) {
+            PinPadTheme(
+                colors = PinPadColors(
+                    content = White,
+                    removeContent = HeatWave,
+                    background = AswadBlack
+                )
+            ) {
+                InteractivePinPad()
+            }
+        }
+    }
+}
+
+@Composable
 fun SimpleBlueprintCard() {
     BlueprintCard(ratio = 1.5f) {
         GridPad(
@@ -280,6 +301,9 @@ fun ListOfPads(modifier: Modifier = Modifier) {
         }
         item {
             EngineeringCalculatorPadCard()
+        }
+        item {
+            InteractivePinPadCard()
         }
     }
 }
