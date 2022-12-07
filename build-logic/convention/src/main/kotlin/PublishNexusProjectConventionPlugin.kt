@@ -2,7 +2,6 @@ import com.touchlane.gridpad.SigningPropertiesDelegate
 import io.github.gradlenexus.publishplugin.NexusPublishExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.extra
 import java.io.FileInputStream
@@ -45,12 +44,12 @@ class PublishNexusProjectConventionPlugin : Plugin<Project> {
                 }
             }
         } else {
-            properties.ossrhUsername = System.getenv("OSSRH_USERNAME")
-            properties.ossrhPassword = System.getenv("OSSRH_PASSWORD")
-            properties.sonatypeStagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID")
-            properties.signingKeyId = System.getenv("SIGNING_KEY_ID")
-            properties.signingPassword = System.getenv("SIGNING_PASSWORD")
-            properties.signingKeyId = System.getenv("SIGNING_KEY")
+            properties.ossrhUsername = System.getenv("OSSRH_USERNAME") ?: ""
+            properties.ossrhPassword = System.getenv("OSSRH_PASSWORD") ?: ""
+            properties.sonatypeStagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID") ?: ""
+            properties.signingKeyId = System.getenv("SIGNING_KEY_ID") ?: ""
+            properties.signingPassword = System.getenv("SIGNING_PASSWORD") ?: ""
+            properties.signingKeyId = System.getenv("SIGNING_KEY") ?: ""
         }
         with(target) {
             extensions.configure<NexusPublishExtension> {
