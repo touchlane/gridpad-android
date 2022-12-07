@@ -24,8 +24,6 @@
 
 package com.touchlane.gridpad.publishing
 
-import com.touchlane.gridpad.publishing.PublishingCredentialsDelegate
-
 internal class EnvironmentPublishingCredentialsLoader :
     PublishingCredentialsLoader {
 
@@ -41,7 +39,7 @@ internal class EnvironmentPublishingCredentialsLoader :
         target.sonatypeStagingProfileId = System.getenv(KEY_SONATYPE_STAGING_PROFILE_ID) ?: ""
         target.signingKeyId = System.getenv(KEY_SIGNING_KEY_ID) ?: ""
         target.signingPassword = System.getenv(KEY_SIGNING_PASSWORD) ?: ""
-        target.signingKeyId = System.getenv(KEY_SIGNING_KEY) ?: ""
+        target.signingKey = System.getenv(KEY_SIGNING_KEY) ?: ""
     }
 
     private companion object {
