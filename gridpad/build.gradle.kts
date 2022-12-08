@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.kotlin.collections.immutable)
     testImplementation(libs.androidx.compose.ui.test)
+    testImplementation(libs.androidx.compose.ui.testManifest)
     testImplementation(libs.androidx.test.ext)
     testImplementation(libs.junit4)
     testImplementation(libs.robolectric)
