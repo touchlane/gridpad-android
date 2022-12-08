@@ -25,6 +25,7 @@
 package com.touchlane.gridpad
 
 import com.android.build.gradle.LibraryExtension
+import com.android.builder.model.SourceProvider
 import com.touchlane.gridpad.publishing.PublishingCredentialsDelegate
 import com.touchlane.gridpad.publishing.PublishingProperties
 import org.gradle.api.Project
@@ -109,18 +110,16 @@ internal fun Project.sources(): TaskProvider<Jar> {
     val sourcesJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
         archiveClassifier.set("sources")
 
-        if (project.plugins.hasPlugin("com.android.library")) {
-            val libExt = checkNotNull(project.extensions.findByType(LibraryExtension::class.java))
-            val libMainSourceSet = libExt.sourceSets.getByName("main")
-
-            from(libMainSourceSet.java.srcDirs)
+        val sourceSet: SourceProvider = if (project.plugins.hasPlugin("com.android.library")) {
+            val ext = checkNotNull(project.extensions.findByType(LibraryExtension::class.java))
+            ext.sourceSets.getByName("main") as SourceProvider
         } else {
-            val sourceSetExt =
-                checkNotNull(project.extensions.findByType(SourceSetContainer::class.java))
-            val mainSourceSet = sourceSetExt.getByName("main")
-
-            from(mainSourceSet.java.srcDirs)
+            val ext = checkNotNull(project.extensions.findByType(SourceSetContainer::class.java))
+            ext.getByName("main") as SourceProvider
         }
+        from(sourceSet.kotlinDirectories)
+        from(sourceSet.javaDirectories)
+        println("Sources has been attached from directories:\n${sourceSet.kotlinDirectories}\n${sourceSet.javaDirectories}")
     }
     return sourcesJar
 }
