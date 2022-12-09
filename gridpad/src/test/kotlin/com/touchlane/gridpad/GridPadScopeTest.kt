@@ -26,8 +26,14 @@
 
 package com.touchlane.gridpad
 
+import androidx.compose.material3.Text
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -48,82 +54,76 @@ class GridPadScopeTest {
     }
 
     @Test
-    fun `Check sequential addition of elements`() {
-
-        /*composeTestRule.onNode(hasText("Small Button"))
-            .assertExists()
-            .assertHeightIsEqualTo(28.dp)*/
-
-        val cells = GridPadCells.Builder(rowCount = 3, columnCount = 3).build()
-        val scope = GridPadScopeImpl(cells)
-        composeTestRule.setContent {
-            GridPad(cells = cells) {
-                //warm up
-                item { }
+    fun `Check sequential addition of elements`() = with(composeTestRule) {
+        setContent {
+            GridPad(cells = GridPadCells.Builder(rowCount = 3, columnCount = 3).build()) {
+                //fill grid
+                (0..2).forEach { row ->
+                    (0..2).forEach { column ->
+                        item { Text(text = "$row:$column") }
+                    }
+                }
+                //extra row
+                item { Text(text = "3:0") }
             }
-            scope.item { }
-            scope.item { }
-            scope.item { }
-            //next row
-            scope.item { }
-            //line jumping checking
-            assertEquals(1, scope.data[3].row)
-            assertEquals(0, scope.data[3].column)
-            scope.item { }
-            scope.item { }
-            //next row
-            scope.item { }
-            //line jumping checking
-            assertEquals(2, scope.data[6].row)
-            assertEquals(0, scope.data[6].column)
-            scope.item { }
-            scope.item { }
-            //end of free cells
-            assertEquals(9, scope.data.size)
-            //next add should be skipped
-            scope.item { }
-            assertEquals(9, scope.data.size)
         }
+        (0..2).forEach { row ->
+            (0..2).forEach { column ->
+                onNode(hasText("$row:$column"))
+                    .assertExists()
+                    .assertIsDisplayed()
+            }
+        }
+        //check ignoring
+        onNode(hasText("3:0"))
+            .assertDoesNotExist()
+
+        //check positions
+        val bounds22 = boundsForNodeWithText("2:2")
+        val bounds00 = boundsForNodeWithText("0:0")
+        assertTrue(bounds00.right < bounds22.left)
+        assertTrue(bounds00.bottom < bounds22.top)
     }
 
     @Test
-    fun `Check revert addition of elements`() {
-        val cells = GridPadCells.Builder(rowCount = 3, columnCount = 3).build()
-        val scope = GridPadScopeImpl(cells)
-        composeTestRule.setContent {
-            GridPad(cells = cells) {
-                //warm up
-                item { }
+    fun `Check revert addition of elements`() = with(composeTestRule) {
+        setContent {
+            GridPad(cells = GridPadCells.Builder(rowCount = 3, columnCount = 3).build()) {
+                item(row = 1, column = 2) { Text(text = "1:2_1") }
+                item(row = 1, column = 1) { Text(text = "1:1") }
+                item { Text(text = "1:2_2") }
             }
-            scope.item(row = 1, column = 2) { }
-            scope.item(row = 1, column = 1) { }
-            scope.item { }
-            assertEquals(3, scope.data.size)
-            assertEquals(1, scope.data[2].row)
-            assertEquals(2, scope.data[2].column)
-            //last one should have same position as the first one
-            assertEquals(1, scope.data[0].row)
-            assertEquals(2, scope.data[0].column)
         }
+        //check positions
+        val bounds121 = boundsForNodeWithText("1:2_1")
+        val bounds11 = boundsForNodeWithText("1:1")
+        val bounds122 = boundsForNodeWithText("1:2_2")
+        assertTrue(bounds11.left < bounds121.left)
+        assertEquals(bounds11.bottom, bounds121.bottom)
+        assertEquals(bounds121, bounds122)
     }
 
     @Test
-    fun `Check skipping out of grid elements`() {
-        val cells = GridPadCells.Builder(rowCount = 3, columnCount = 3).build()
-        val scope = GridPadScopeImpl(cells)
-        composeTestRule.setContent {
-            GridPad(cells = cells) {
-                //warm up
-                item { }
+    fun `Check skipping out of grid elements`() = with(composeTestRule) {
+        setContent {
+            GridPad(cells = GridPadCells.Builder(rowCount = 3, columnCount = 3).build()) {
+                item(row = 0, column = 3) { Text(text = "0:3") }
+                item(row = 3, column = 0) { Text(text = "3:0") }
+                item(row = -1, column = 1) { Text(text = "-1:0") }
+                item(row = 0, column = 0, rowSpan = 4, columnSpan = 1) { Text(text = "0:0") }
             }
-            //invalid position
-            scope.item(row = 0, column = 3) { }
-            assertEquals(0, scope.data.size)
-            scope.item(row = -1, column = 1) { }
-            assertEquals(0, scope.data.size)
-            //span outside grid
-            scope.item(row = 0, column = 0, rowSpan = 4, columnSpan = 1) { }
-            assertEquals(0, scope.data.size)
         }
+        onNode(hasText("0:3"))
+            .assertDoesNotExist()
+        onNode(hasText("3:0"))
+            .assertDoesNotExist()
+        onNode(hasText("-1:0"))
+            .assertDoesNotExist()
+        onNode(hasText("0:0"))
+            .assertDoesNotExist()
     }
+}
+
+internal fun ComposeContentTestRule.boundsForNodeWithText(text: String): Rect {
+    return onNode(hasText(text)).fetchSemanticsNode("Node with '$text' not found").boundsInRoot
 }

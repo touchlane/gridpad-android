@@ -69,5 +69,9 @@ gradlePlugin {
             id = "gridpad.github.gradle-nexus.publish-plugin-module"
             implementationClass = "PublishNexusModuleConventionPlugin"
         }
+        register("androidJacoco") {
+            id = "gridpad.jacoco"
+            implementationClass = "AndroidJacocoConventionPlugin"
+        }
     }
 }

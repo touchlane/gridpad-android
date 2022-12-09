@@ -25,7 +25,9 @@
 package com.touchlane.gridpad
 
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.toImmutableList
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Test
 
 /**
@@ -45,6 +47,35 @@ class GridPadCellsUnitTest {
     }
 
     @Test
+    fun `Check internal fields`() {
+        val cells = GridPadCells.Builder(2, 4)
+            .columnSize(0, GridPadCellSize.Fixed(12.dp))
+            .columnSize(1, GridPadCellSize.Weight(2f))
+            .columnSize(2, GridPadCellSize.Fixed(10.dp))
+            .rowSize(0, GridPadCellSize.Weight(3f))
+            .rowSize(1, GridPadCellSize.Fixed(24.dp)).build()
+        assertEquals(2, cells.rowCount)
+        assertEquals(4, cells.columnCount)
+        assertEquals(24.dp, cells.rowsTotalSize.fixed)
+        assertEquals(3f, cells.rowsTotalSize.weight)
+        assertEquals(22.dp, cells.columnsTotalSize.fixed)
+        assertEquals(3f, cells.rowsTotalSize.weight)
+        assertEquals(
+            cells.rowSizes,
+            listOf(GridPadCellSize.Weight(3f), GridPadCellSize.Fixed(24.dp)).toImmutableList()
+        )
+        assertEquals(
+            cells.columnSizes,
+            listOf(
+                GridPadCellSize.Fixed(12.dp),
+                GridPadCellSize.Weight(2f),
+                GridPadCellSize.Fixed(10.dp),
+                GridPadCellSize.Weight(1f)
+            ).toImmutableList()
+        )
+    }
+
+    @Test
     fun `Check constructors of GridPadCells`() {
         val left = GridPadCells.Builder(2, 2).build()
         assertEquals(left, GridPadCells(rowCount = 2, columnCount = 2))
@@ -54,18 +85,6 @@ class GridPadCellsUnitTest {
                 columnSizes = GridPadCellSize.weight(2)
             )
         )
-    }
-
-    @Test
-    fun `Check fields initialization`() {
-        val cells = GridPadCells.Builder(2, 4)
-            .columnSize(0, GridPadCellSize.Weight(1.75f))
-            .columnSize(1, GridPadCellSize.Weight(1.5f))
-            .columnSize(3, GridPadCellSize.Fixed(24.dp))
-            .rowSize(0, GridPadCellSize.Fixed(14.dp))
-            .rowSize(1, GridPadCellSize.Fixed(16.dp)).build()
-        assertEquals(TotalSize(weight = 0f, fixed = 30.dp), cells.rowsTotalSize)
-        assertEquals(TotalSize(weight = 4.25f, fixed = 24.dp), cells.columnsTotalSize)
     }
 
     @Test
@@ -82,5 +101,48 @@ class GridPadCellsUnitTest {
                 .columnsSize(GridPadCellSize.Weight(2f))
                 .build()
         )
+    }
+
+    @Test
+    fun `Check extensions`() {
+        assertEquals(
+            listOf(GridPadCellSize.Fixed(1.dp), GridPadCellSize.Fixed(1.dp)),
+            GridPadCellSize.fixed(2, 1.dp)
+        )
+        assertEquals(
+            listOf(GridPadCellSize.Fixed(1.dp), GridPadCellSize.Fixed(2.dp)),
+            GridPadCellSize.fixed(arrayOf(1.dp, 2.dp))
+        )
+        assertEquals(
+            listOf(GridPadCellSize.Weight(0.5f), GridPadCellSize.Weight(0.5f)),
+            GridPadCellSize.weight(2, 0.5f)
+        )
+        assertEquals(
+            listOf(GridPadCellSize.Weight(0.5f), GridPadCellSize.Weight(1.5f)),
+            GridPadCellSize.weight(floatArrayOf(0.5f, 1.5f))
+        )
+    }
+
+    @Test
+    fun `Check total size calculation`() {
+        assertEquals(
+            TotalSize(weight = 3f, fixed = 22.dp),
+            listOf(
+                GridPadCellSize.Fixed(12.dp),
+                GridPadCellSize.Weight(2f),
+                GridPadCellSize.Fixed(10.dp),
+                GridPadCellSize.Weight(1f)
+            ).calculateTotalSize()
+        )
+    }
+
+    @Test
+    fun `Check errors`() {
+        assertThrows(IllegalStateException::class.java) {
+            GridPadCellSize.Fixed(-1.dp)
+        }
+        assertThrows(IllegalStateException::class.java) {
+            GridPadCellSize.Weight(0f)
+        }
     }
 }
