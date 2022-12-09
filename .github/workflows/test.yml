@@ -21,6 +21,4 @@ jobs:
           java-version: 11
       # Run unit testing
       - name: Run unit testing
-        run: |
-          cd gridpad/
-          ./gradlew test
+        run: ./gradlew :gridpad:test
