@@ -25,19 +25,16 @@
 package com.touchlane.gridpad
 
 import com.android.build.api.dsl.LibraryExtension
-import org.gradle.api.Project
 
 @Suppress("UnstableApiUsage")
-internal fun Project.configureAndroidLibraryPublishing(
+internal fun configureAndroidLibraryPublishing(
     extension: LibraryExtension,
-) {
-    extension.apply {
-        publishing {
-            multipleVariants {
-                withSourcesJar()
-                withJavadocJar()
-                allVariants()
-            }
+) = extension.apply {
+    publishing {
+        multipleVariants {
+            withSourcesJar()
+            withJavadocJar()
+            allVariants()
         }
     }
 }
