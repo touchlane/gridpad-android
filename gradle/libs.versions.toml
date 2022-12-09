@@ -21,10 +21,9 @@ versionsChecker = "0.44.0"
 versionsUpdater = "0.7.0"
 
 [libraries]
-# Dependencies of the included build-logic
-# @keep
-android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
 # Keep lines sorted (Edit -> Sort Lines)
+# @keep for the included build-logic
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-material-icons = { module = "androidx.compose.material:material-icons-extended" }
@@ -41,10 +40,10 @@ androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core",
 androidx-test-ext = { module = "androidx.test.ext:junit-ktx", version.ref = "androidxTestExt" }
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 kotlin-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
-# @keep
+# @keep for the included build-logic
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
-# @keep
+# @keep for the included build-logic
 nexus-publish-gradlePlugin = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexusPublish" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 

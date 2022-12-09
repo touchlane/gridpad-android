@@ -31,7 +31,16 @@ plugins {
     id("gridpad.jetbrains.kotlin.android")
     id("gridpad.jetbrains.kotlin.android.explicit")
     id("gridpad.github.gradle-nexus.publish-plugin-module")
+    id("gridpad.jacoco")
 }
+
+// see details in build-logic/convention/src/main/com/touchlane/gridpad/AndroidJacoco.kt
+// codecov temporary doesn't work with compose correctly
+// https://github.com/jacoco/jacoco/issues/1208
+val limits = extra["limits"] as MutableMap<Any, Any>
+limits["instruction"] = 80.0
+limits["branch"] = 80.0
+extra.set("limits", limits)
 
 android {
     namespace = "com.touchlane.gridpad"
@@ -50,24 +59,20 @@ android {
             )
         }
     }
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
 }
 
 dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.kotlin.collections.immutable)
+    testImplementation(libs.androidx.compose.material3)
     testImplementation(libs.androidx.compose.ui.test)
+    testImplementation(libs.androidx.compose.ui.testManifest)
     testImplementation(libs.androidx.test.ext)
     testImplementation(libs.junit4)
     testImplementation(libs.robolectric)
-    androidTestImplementation(libs.androidx.test.ext)
-    androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.compose.ui.test)
-    androidTestImplementation(libs.androidx.compose.ui.tooling)
     androidTestImplementation(libs.androidx.compose.ui.testManifest)
+    androidTestImplementation(libs.androidx.compose.ui.tooling)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.ext)
 }

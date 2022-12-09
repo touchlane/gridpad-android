@@ -33,23 +33,21 @@ import org.gradle.kotlin.dsl.getByType
 @Suppress("UnstableApiUsage")
 internal fun Project.configureAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *>,
-) {
+) = commonExtension.apply {
     val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
-    commonExtension.apply {
-        buildFeatures {
-            compose = true
-        }
+    buildFeatures {
+        compose = true
+    }
 
-        composeOptions {
-            kotlinCompilerExtensionVersion =
-                libs.findVersion("androidxComposeCompiler").get().toString()
-        }
+    composeOptions {
+        kotlinCompilerExtensionVersion =
+            libs.findVersion("androidxComposeCompiler").get().toString()
+    }
 
-        dependencies {
-            val bom = libs.findLibrary("androidx-compose-bom").get()
-            add("implementation", platform(bom))
-            add("androidTestImplementation", platform(bom))
-        }
+    dependencies {
+        val bom = libs.findLibrary("androidx-compose-bom").get()
+        add("implementation", platform(bom))
+        add("androidTestImplementation", platform(bom))
     }
 }

@@ -25,34 +25,38 @@
 package com.touchlane.gridpad
 
 import com.android.build.api.dsl.CommonExtension
-import org.gradle.api.Project
 
 @Suppress("UnstableApiUsage")
-internal fun Project.configureAndroidCommon(
+internal fun configureAndroidCommon(
     extension: CommonExtension<*, *, *, *>,
-) {
-    extension.apply {
-        compileSdk = 33
+) = extension.apply {
+    compileSdk = 33
 
-        defaultConfig {
-            minSdk = 24
-            vectorDrawables {
-                useSupportLibrary = true
-            }
+    defaultConfig {
+        minSdk = 21
+        vectorDrawables {
+            useSupportLibrary = true
         }
+    }
 
-        buildFeatures {
-            compose = true
-            aidl = false
-            buildConfig = false
-            renderScript = false
-            shaders = false
+    buildFeatures {
+        compose = true
+        aidl = false
+        buildConfig = false
+        renderScript = false
+        shaders = false
+    }
+
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
 
-        packagingOptions {
-            resources {
-                excludes += "/META-INF/{AL2.0,LGPL2.1}"
-            }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
         }
     }
 }

@@ -30,15 +30,13 @@ import org.gradle.api.Project
 
 internal fun Project.configurePublishingRepository(
     extension: NexusPublishExtension
-) {
-    val credentials = PublishingCredentialsDelegate.from(this)
-    extension.apply {
-        with(repositories.sonatype()) {
-            stagingProfileId.set(credentials.sonatypeStagingProfileId)
-            username.set(credentials.ossrhUsername)
-            password.set(credentials.ossrhPassword)
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-        }
+) = extension.apply {
+    val credentials = PublishingCredentialsDelegate.from(this@configurePublishingRepository)
+    with(repositories.sonatype()) {
+        stagingProfileId.set(credentials.sonatypeStagingProfileId)
+        username.set(credentials.ossrhUsername)
+        password.set(credentials.ossrhPassword)
+        nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+        snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
     }
 }

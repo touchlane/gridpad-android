@@ -25,14 +25,11 @@
 package com.touchlane.gridpad
 
 import com.android.build.api.dsl.ApplicationExtension
-import org.gradle.api.Project
 
-internal fun Project.configureAndroidApplication(
+internal fun configureAndroidApplication(
     extension: ApplicationExtension,
-) {
-    extension.apply {
-        defaultConfig {
-            targetSdk = 33
-        }
+) = extension.apply {
+    defaultConfig {
+        targetSdk = 33
     }
 }

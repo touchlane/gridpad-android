@@ -24,6 +24,7 @@
 
 package com.touchlane.gridpad
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -132,7 +133,8 @@ public data class GridPadCells(
     }
 }
 
-private fun Iterable<GridPadCellSize>.calculateTotalSize(): TotalSize {
+@VisibleForTesting
+internal fun Iterable<GridPadCellSize>.calculateTotalSize(): TotalSize {
     var totalWeightSize = 0f
     var totalFixedSize = 0f.dp
     forEach {

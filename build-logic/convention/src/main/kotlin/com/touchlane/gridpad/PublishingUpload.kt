@@ -25,6 +25,7 @@
 package com.touchlane.gridpad
 
 import com.android.build.gradle.LibraryExtension
+import com.android.builder.model.SourceProvider
 import com.touchlane.gridpad.publishing.PublishingCredentialsDelegate
 import com.touchlane.gridpad.publishing.PublishingProperties
 import org.gradle.api.Project
@@ -38,69 +39,68 @@ import org.gradle.plugins.signing.SigningExtension
 
 internal fun Project.configurePublishingUpload(
     extension: PublishingExtension
-) {
+) = extension.apply {
     val sources = sources()
     val javadoc = javadoc()
-    extension.apply {
-        val properties = PublishingProperties.load(this@configurePublishingUpload)
 
-        publications {
-            create<MavenPublication>(properties.publicationName) {
-                from(components["release"])
-                groupId = properties.groupId
-                artifactId = properties.artifactId
-                version = properties.version
+    val properties = PublishingProperties.load(this@configurePublishingUpload)
 
-                artifact(sources.get())
-                artifact(javadoc.get())
+    publications {
+        create<MavenPublication>(properties.publicationName) {
+            from(components["release"])
+            groupId = properties.groupId
+            artifactId = properties.artifactId
+            version = properties.version
 
-                pom {
-                    name.set("Touchlane ${project.name}")
-                    description.set(properties.pomDescription)
-                    url.set(properties.pomUrl)
-                    licenses {
-                        license {
-                            name.set("MIT")
-                            url.set("https://choosealicense.com/licenses/mit/")
-                        }
+            artifact(sources.get())
+            artifact(javadoc.get())
+
+            pom {
+                name.set("Touchlane ${project.name}")
+                description.set(properties.pomDescription)
+                url.set(properties.pomUrl)
+                licenses {
+                    license {
+                        name.set("MIT")
+                        url.set("https://choosealicense.com/licenses/mit/")
                     }
-                    developers {
-                        developer {
-                            id.set("touchlane")
-                            name.set("Touchlane LLC")
-                            email.set("tech.touchlane@gmail.com")
-                        }
+                }
+                developers {
+                    developer {
+                        id.set("touchlane")
+                        name.set("Touchlane LLC")
+                        email.set("tech.touchlane@gmail.com")
                     }
-                    scm {
-                        connection.set(properties.scmConnection)
-                        developerConnection.set(properties.scmDeveloperConnection)
-                        url.set(properties.scmUrl)
-                    }
+                }
+                scm {
+                    connection.set(properties.scmConnection)
+                    developerConnection.set(properties.scmDeveloperConnection)
+                    url.set(properties.scmUrl)
                 }
             }
         }
+    }
 
-        val credentials = PublishingCredentialsDelegate.from(rootProject)
+    val credentials = PublishingCredentialsDelegate.from(rootProject)
 
-        configure<SigningExtension> {
-            if (credentials.isExists) {
-                if (credentials.signingKeyId.isNotBlank()) {
-                    useInMemoryPgpKeys(
-                        credentials.signingKeyId,
-                        credentials.signingKey,
-                        credentials.signingPassword
-                    )
-                } else {
-                    useInMemoryPgpKeys(
-                        credentials.signingKey,
-                        credentials.signingPassword
-                    )
-                }
-                sign(extension.publications[properties.publicationName])
-                sign(configurations["archives"])
+    configure<SigningExtension> {
+        if (credentials.isExists) {
+            if (credentials.signingKeyId.isNotBlank()) {
+                useInMemoryPgpKeys(
+                    credentials.signingKeyId,
+                    credentials.signingKey,
+                    credentials.signingPassword
+                )
             } else {
-                println("Signing skipped: not found credentials")
+                useInMemoryPgpKeys(
+                    credentials.signingKey,
+                    credentials.signingPassword
+                )
             }
+            sign(extension.publications[properties.publicationName])
+            sign(configurations["archives"])
+        } else {
+            println("Signing skipped: not found credentials")
         }
     }
 }
@@ -109,18 +109,16 @@ internal fun Project.sources(): TaskProvider<Jar> {
     val sourcesJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
         archiveClassifier.set("sources")
 
-        if (project.plugins.hasPlugin("com.android.library")) {
-            val libExt = checkNotNull(project.extensions.findByType(LibraryExtension::class.java))
-            val libMainSourceSet = libExt.sourceSets.getByName("main")
-
-            from(libMainSourceSet.java.srcDirs)
+        val sourceSet: SourceProvider = if (project.plugins.hasPlugin("com.android.library")) {
+            val ext = checkNotNull(project.extensions.findByType(LibraryExtension::class.java))
+            ext.sourceSets.getByName("main") as SourceProvider
         } else {
-            val sourceSetExt =
-                checkNotNull(project.extensions.findByType(SourceSetContainer::class.java))
-            val mainSourceSet = sourceSetExt.getByName("main")
-
-            from(mainSourceSet.java.srcDirs)
+            val ext = checkNotNull(project.extensions.findByType(SourceSetContainer::class.java))
+            ext.getByName("main") as SourceProvider
         }
+        from(sourceSet.kotlinDirectories)
+        from(sourceSet.javaDirectories)
+        println("Sources has been attached from directories:\n${sourceSet.kotlinDirectories}\n${sourceSet.javaDirectories}")
     }
     return sourcesJar
 }
