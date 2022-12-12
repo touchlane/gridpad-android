@@ -203,6 +203,10 @@ GridPad(
 > of placing all items to avoid unpredictable behavior and mistakes during the placement of the
 > items.
 
+# Enjoy using this library?
+
+Join [:dizzy:Stargazers](https://github.com/touchlane/gridpad-android/stargazers) to support future development.
+
 # License
 
 ```
