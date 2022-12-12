@@ -42,8 +42,8 @@ dependencies {
 
 ## Define the grid
 
-Specifying exact grid size is required but specifying each row and column size is optional.
-The following code initializes 3x4 grid with rows and columns weights equal to 1:
+Specifying the exact grid size is required, but specifying each row and column size is optional. The
+following code initializes a 3x4 grid with rows and columns weights equal to 1:
 
 ```kotlin
 GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
@@ -58,10 +58,10 @@ size to specific row or column.
 The library support 2 types of sizes:
 
 * **GridPadCellSize.Fixed** - fixed size in Dp, not change when the bounds of GridPad change.
-* **GridPadCellSize.Weight** - relative, depends on other weights, remaining space after placing
-  fixed sizes and the GridPad bounds.
+* **GridPadCellSize.Weight** - a relative, depends on other weights, remaining space after placing
+  fixed sizes, and the GridPad bounds.
 
-To define specific for row or column you need to use `GridPadCells.Builder` API:
+To define a specific size for a row or column you need to use `GridPadCells.Builder` API:
 
 ```kotlin
 GridPad(
@@ -95,9 +95,9 @@ GridPad(
 }
 ```
 
-Items in a GridPad can be placed explicitly and implicitly. In example above item placed implicitly.
-Implicit placing placed the item **next after the last placed item** (including span size) in the
-same row. First placing will be at position \[0;0].
+Items in a GridPad can be placed **explicitly** and **implicitly**. In the example above items are
+placed implicitly. Implicit placing placed the item **next to the last placed item** (including span
+size) in the same row. The first placing will be at position \[0;0].
 
 ```kotlin
 GridPad(
@@ -153,7 +153,7 @@ GridPad(
 
 ![place_items_specific_dark](https://user-images.githubusercontent.com/2251498/204765324-211e2044-593b-41aa-893e-ad62565c9ded.png)
 
-When specified only one of `row` and `column` properties the logic will be following:
+When specified only one of the `row` and `column` properties the logic will be the following:
 
 * If the `row` property is skipped, the row will be equal to the last placed item's row.
 * If the `column` property is skipped, the row will be next after the last placed item (including
@@ -166,7 +166,7 @@ When specified only one of `row` and `column` properties the logic will be follo
 
 ## Spans
 
-By default each item has a span of 1x1. To change it, specify one or both of the `rowSpan`
+By default, each item has a span of 1x1. To change it, specify one or both of the `rowSpan`
 and `columnSpan` properties of the item.
 
 ```kotlin
