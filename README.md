@@ -1,6 +1,8 @@
-<h1 align="center">GridPad Jetpack Compose layout</h1>
+# GridPad Jetpack Compose layout
 
-![grid_pad_logo](https://user-images.githubusercontent.com/2251498/204759114-b900efa7-8cf8-40bd-b221-5e4b6fb55013.png)
+![github_title](https://user-images.githubusercontent.com/2251498/207064470-d719699d-319a-4267-9636-c4f058d5a7aa.png)
+
+**GridPad** is a Jetpack Compose library that allows you to place UI elements in a predefined grid, manage spans in two dimensions, have flexible controls to manage row and column sizes.
 
 :construction: The library is still under construction and the API may change a bit, stay tuned and
 suggest ideas. :construction:
