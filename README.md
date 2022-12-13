@@ -203,6 +203,25 @@ GridPad(
 > of placing all items to avoid unpredictable behavior and mistakes during the placement of the
 > items.
 
+# Performance
+
+GridPad respect Jetpack Compose recommendations and avoid not necessary recompositions. You can
+always check restartability and skippability by running the following command in the sample project:
+
+```shell
+./gradlew assembleRelease -P gridpad.enableComposeCompilerReports=true
+```
+
+Results will be placed under the directory: `build/compose_metrics`
+
+```text
+restartable skippable scheme("[androidx.compose.ui.UiComposable]") fun GridPad(
+  stable cells: GridPadCells
+  stable modifier: Modifier? = @static Companion
+  stable content: @[ExtensionFunctionType] Function1<GridPadScope, Unit>
+)
+```
+
 # Enjoy using this library?
 
 Join [:dizzy:Stargazers](https://github.com/touchlane/gridpad-android/stargazers) to support future development.

@@ -25,25 +25,23 @@
 package com.touchlane.gridpad
 
 import androidx.annotation.VisibleForTesting
-import androidx.compose.runtime.Stable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableCollection
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 /**
  * Non-modifiable class that store information about grid: rows and columns count, size information.
  */
-@Stable
 public data class GridPadCells(
     /**
      * Contains information about size of each row
      */
-    val rowSizes: ImmutableCollection<GridPadCellSize>,
+    val rowSizes: ImmutableList<GridPadCellSize>,
     /**
      * Contains information about size of each column
      */
-    val columnSizes: ImmutableCollection<GridPadCellSize>
+    val columnSizes: ImmutableList<GridPadCellSize>
 ) {
     public constructor(
         rowSizes: Iterable<GridPadCellSize>, columnSizes: Iterable<GridPadCellSize>
@@ -166,7 +164,6 @@ internal data class TotalSize(
 /**
  * Class describes grid cell size
  */
-@Stable
 public sealed class GridPadCellSize {
 
     /**
