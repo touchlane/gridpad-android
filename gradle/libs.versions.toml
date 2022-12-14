@@ -1,5 +1,4 @@
 [versions]
-# Keep lines sorted (Edit -> Sort Lines)
 androidGradlePlugin = "7.3.1"
 androidxActivity = "1.6.1"
 androidxComposeBom = "2022.11.00"
@@ -15,13 +14,13 @@ junit4 = "4.13.2"
 kotlin = "1.7.20"
 kotlinCompatibilityValidator = "0.12.1"
 kotlinxCollectionsImmutable = "0.3.5"
+kover = "0.6.1"
 nexusPublish = "1.1.0"
 robolectric = "4.9"
 versionsChecker = "0.44.0"
 versionsUpdater = "0.7.0"
 
 [libraries]
-# Keep lines sorted (Edit -> Sort Lines)
 # @keep for the included build-logic
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
@@ -48,12 +47,12 @@ nexus-publish-gradlePlugin = { module = "io.github.gradle-nexus:publish-plugin",
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 
 [plugins]
-# Keep lines sorted (Edit -> Sort Lines)
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinCompatibilityValidator" }
+kotlin-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublish" }
 versions-checker = { id = "com.github.ben-manes.versions", version.ref = "versionsChecker" }
 versions-updater = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionsUpdater" }
