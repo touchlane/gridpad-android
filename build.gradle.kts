@@ -29,6 +29,7 @@ plugins {
     alias(libs.plugins.dokka) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compatibilityValidator) apply false
+    alias(libs.plugins.kotlin.kover) apply false
     alias(libs.plugins.nexus.publish)
     alias(libs.plugins.versions.checker)
     alias(libs.plugins.versions.updater)
