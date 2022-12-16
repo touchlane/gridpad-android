@@ -54,34 +54,34 @@ fun PinPad(modifier: Modifier = Modifier, onClick: (action: Char) -> Unit = {}) 
                 LargeTextPadButton(text = "7", onClick = { onClick('7') })
             }
             item {
-                LargeTextPadButton(text = "8", onClick = {onClick('8')})
+                LargeTextPadButton(text = "8", onClick = { onClick('8') })
             }
             item {
-                LargeTextPadButton(text = "9", onClick = {onClick('9')})
+                LargeTextPadButton(text = "9", onClick = { onClick('9') })
             }
             //row 1
             item {
-                LargeTextPadButton(text = "4", onClick = {onClick('4')})
+                LargeTextPadButton(text = "4", onClick = { onClick('4') })
             }
             item {
-                LargeTextPadButton(text = "5", onClick = {onClick('5')})
+                LargeTextPadButton(text = "5", onClick = { onClick('5') })
             }
             item {
-                LargeTextPadButton(text = "6", onClick = {onClick('6')})
+                LargeTextPadButton(text = "6", onClick = { onClick('6') })
             }
             //row 2
             item {
-                LargeTextPadButton(text = "1", onClick = {onClick('1')})
+                LargeTextPadButton(text = "1", onClick = { onClick('1') })
             }
             item {
-                LargeTextPadButton(text = "2", onClick = {onClick('2')})
+                LargeTextPadButton(text = "2", onClick = { onClick('2') })
             }
             item {
-                LargeTextPadButton(text = "3", onClick = {onClick('3')})
+                LargeTextPadButton(text = "3", onClick = { onClick('3') })
             }
             //row 3
             item(row = 3, column = 1) {
-                LargeTextPadButton(text = "0", onClick = {onClick('0')})
+                LargeTextPadButton(text = "0", onClick = { onClick('0') })
             }
             item {
                 PadButtonTheme(
@@ -90,7 +90,7 @@ fun PinPad(modifier: Modifier = Modifier, onClick: (action: Char) -> Unit = {}) 
                         background = PinPadTheme.colors.background
                     )
                 ) {
-                    IconPadButton(icon = Icons.Default.Backspace, onClick = {onClick('r')})
+                    IconPadButton(icon = Icons.Default.Backspace, onClick = { onClick('r') })
                 }
             }
         }

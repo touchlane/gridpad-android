@@ -53,7 +53,7 @@ public fun GridPad(
     val scopeContent: GridPadScopeImpl = GridPadScopeImpl(cells).apply(content)
     Layout(modifier = modifier, content = {
         scopeContent.data.forEach {
-            it.item()
+            it.item(GridPadItemScopeImpl)
         }
     }) { measurables, constraints ->
         check(constraints.maxWidth != Constraints.Infinity) {
@@ -181,6 +181,6 @@ public sealed interface GridPadScope {
         column: Int? = null,
         rowSpan: Int = 1,
         columnSpan: Int = 1,
-        itemContent: @Composable () -> Unit
+        itemContent: @Composable GridPadItemScope.() -> Unit
     )
 }
