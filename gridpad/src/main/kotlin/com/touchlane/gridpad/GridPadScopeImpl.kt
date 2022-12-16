@@ -42,7 +42,7 @@ internal class GridPadScopeImpl(private val cells: GridPadCells) : GridPadScope 
         column: Int?,
         rowSpan: Int,
         columnSpan: Int,
-        itemContent: @Composable () -> Unit
+        itemContent: @Composable GridPadItemScope.() -> Unit
     ) {
         check(rowSpan > 0) {
             "`rowSpan` must be > 0"
@@ -122,7 +122,7 @@ internal class GridPadContent(
     val column: Int,
     val rowSpan: Int,
     val columnSpan: Int,
-    val item: @Composable () -> Unit
+    val item: @Composable GridPadItemScope.() -> Unit
 )
 
 private fun <T : Comparable<T>> ClosedRange<T>.isOutOf(value: T): Boolean {
