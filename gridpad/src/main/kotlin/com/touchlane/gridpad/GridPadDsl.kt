@@ -27,8 +27,12 @@ package com.touchlane.gridpad
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.MeasureScope
+import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.unit.Constraints
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -51,8 +55,9 @@ public fun GridPad(
     cells: GridPadCells, modifier: Modifier = Modifier, content: GridPadScope.() -> Unit
 ) {
     val scopeContent: GridPadScopeImpl = GridPadScopeImpl(cells).apply(content)
+    val displayContent: ImmutableList<GridPadContent> = scopeContent.data.toImmutableList()
     Layout(modifier = modifier, content = {
-        scopeContent.data.forEach {
+        displayContent.forEach {
             it.item(GridPadItemScopeImpl)
         }
     }) { measurables, constraints ->
@@ -64,27 +69,7 @@ public fun GridPad(
         }
         val cellPlaces =
             calculateCellPlaces(cells, width = constraints.maxWidth, height = constraints.maxHeight)
-        // Don't constrain child views further, measure them with given constraints
-        // List of measured children
-        val placeables = measurables.mapIndexed { index, measurable ->
-            val contentMetaInfo = scopeContent.data[index]
-            val maxWidth = (0 until contentMetaInfo.columnSpan).sumOf {
-                cellPlaces[contentMetaInfo.row][contentMetaInfo.column + it].width
-            }
-            val maxHeight = (0 until contentMetaInfo.rowSpan).sumOf {
-                cellPlaces[contentMetaInfo.row + it][contentMetaInfo.column].height
-            }
-
-            // Measure each children
-            measurable.measure(
-                constraints.copy(
-                    minWidth = min(constraints.minWidth, maxWidth),
-                    maxWidth = maxWidth,
-                    minHeight = min(constraints.minHeight, maxHeight),
-                    maxHeight = maxHeight
-                )
-            )
-        }
+        val placeables = measurables.measure(displayContent, cellPlaces, constraints)
 
         //in cases when all columns have a fixed size, we limit layout width to the sum of them
         val layoutWidth = if (cells.columnsTotalSize.weight == 0f) {
@@ -103,7 +88,7 @@ public fun GridPad(
         //place items
         layout(layoutWidth, layoutHeight) {
             placeables.forEachIndexed { index, placeable ->
-                val contentMetaInfo = scopeContent.data[index]
+                val contentMetaInfo = displayContent[index]
                 val cellPlaceInfo = cellPlaces[contentMetaInfo.row][contentMetaInfo.column]
                 placeable.placeRelative(x = cellPlaceInfo.x, y = cellPlaceInfo.y)
             }
@@ -111,27 +96,41 @@ public fun GridPad(
     }
 }
 
+/**
+ * Measure children
+ */
+private fun List<Measurable>.measure(
+    content: ImmutableList<GridPadContent>,
+    cellPlaces: Array<Array<CellPlaceInfo>>,
+    constraints: Constraints
+): List<Placeable> = mapIndexed { index, measurable ->
+    val contentMetaInfo = content[index]
+    val maxWidth = (0 until contentMetaInfo.columnSpan).sumOf {
+        cellPlaces[contentMetaInfo.row][contentMetaInfo.column + it].width
+    }
+    val maxHeight = (0 until contentMetaInfo.rowSpan).sumOf {
+        cellPlaces[contentMetaInfo.row + it][contentMetaInfo.column].height
+    }
+
+    // Measure each children
+    measurable.measure(
+        constraints.copy(
+            minWidth = min(constraints.minWidth, maxWidth),
+            maxWidth = maxWidth,
+            minHeight = min(constraints.minHeight, maxHeight),
+            maxHeight = maxHeight
+        )
+    )
+}
+
+/**
+ * Build the grid that will be used in the measurement and placement stage.
+ */
 private fun MeasureScope.calculateCellPlaces(
     cells: GridPadCells, width: Int, height: Int
 ): Array<Array<CellPlaceInfo>> {
-    val availableWeightWidth = width - cells.columnsTotalSize.fixed.roundToPx()
-    val availableWeightHeight = height - cells.rowsTotalSize.fixed.roundToPx()
-
-    //Calculate real cell widths
-    val columnWidths = cells.columnSizes.map { columnSize ->
-        when (columnSize) {
-            is GridPadCellSize.Fixed -> columnSize.size.roundToPx()
-            is GridPadCellSize.Weight -> (availableWeightWidth * columnSize.size / cells.columnsTotalSize.weight).roundToInt()
-        }
-    }
-
-    //Calculate real cell heights
-    val columnHeights = cells.rowSizes.map { rowSize ->
-        when (rowSize) {
-            is GridPadCellSize.Fixed -> rowSize.size.roundToPx()
-            is GridPadCellSize.Weight -> (availableWeightHeight * rowSize.size / cells.rowsTotalSize.weight).roundToInt()
-        }
-    }
+    val columnWidths = calculateSizesForDimension(width, cells.columnSizes, cells.columnsTotalSize)
+    val columnHeights = calculateSizesForDimension(height, cells.rowSizes, cells.rowsTotalSize)
 
     //Calculate grid with positions and cell sizes
     var y = 0f
@@ -151,6 +150,56 @@ private fun MeasureScope.calculateCellPlaces(
         }
     }
     return cellPlaces.map { it.toTypedArray() }.toTypedArray()
+}
+
+/**
+ * Calculate sizes for row or column.
+ * The remaining pixels should be distributed equally between the last cells in cases where
+ * the first pass did not distribute them. For example, we have to split 101px among 3 cells
+ * with a weight equal to 1. This means that after the first pass the cell sizes
+ * would be [33, 33, 33] with the remainder size equal to 2. In a second pass,
+ * the remaining 2 pixels will be distributed between the last 2 cells and the final
+ * result will be [33, 34, 34].
+ *
+ * @param availableSize parent size that available for distribution
+ * @param cellSizes sizes for rows or columns
+ * @param totalSize precalculated total size
+ */
+private fun MeasureScope.calculateSizesForDimension(
+    availableSize: Int, cellSizes: ImmutableList<GridPadCellSize>, totalSize: TotalSize
+): List<Int> {
+    val availableWeight = availableSize - totalSize.fixed.roundToPx()
+
+    //First pass calculation
+    var distributedSize = 0
+    val sizes = cellSizes.map { cellSize ->
+        when (cellSize) {
+            is GridPadCellSize.Fixed -> {
+                val size = cellSize.size.roundToPx()
+                distributedSize += size
+                size
+            }
+            is GridPadCellSize.Weight -> {
+                val size = (availableWeight * cellSize.size / totalSize.weight).toInt()
+                distributedSize += size
+                size
+            }
+        }
+    }.toMutableList()
+
+    //Distribute remaining pixels
+    var notDistributedSize = availableSize - distributedSize
+    cellSizes.reversed().mapIndexed { index, gridPadCellSize ->
+        if (notDistributedSize <= 0) {
+            return@mapIndexed
+        }
+        val originalIndex = cellSizes.size - index - 1
+        if (gridPadCellSize is GridPadCellSize.Weight) {
+            sizes[originalIndex] = sizes[originalIndex] + 1
+            notDistributedSize--
+        }
+    }
+    return sizes
 }
 
 private data class CellPlaceInfo(val x: Int, val y: Int, val width: Int, val height: Int)

@@ -273,6 +273,21 @@ fun SimpleBlueprintCardWithSpansOverlapped() {
 fun ListOfPads(modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
         item {
+            InteractivePinPadCard()
+        }
+        item {
+            EngineeringCalculatorPadCard()
+        }
+        item {
+            SimplePriorityCalculatorPadCard()
+        }
+        item {
+            SimpleCalculatorPadCard()
+        }
+        item {
+            PinPadCard()
+        }
+        item {
             SimpleBlueprintCard()
         }
         item {
@@ -289,21 +304,6 @@ fun ListOfPads(modifier: Modifier = Modifier) {
         }
         item {
             SimpleBlueprintCardWithSpansOverlapped()
-        }
-        item {
-            PinPadCard()
-        }
-        item {
-            SimpleCalculatorPadCard()
-        }
-        item {
-            SimplePriorityCalculatorPadCard()
-        }
-        item {
-            EngineeringCalculatorPadCard()
-        }
-        item {
-            InteractivePinPadCard()
         }
     }
 }
