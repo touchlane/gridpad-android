@@ -48,13 +48,17 @@ import kotlin.math.roundToInt
  *
  * @param cells grid specification
  * @param modifier container modifier
+ * @param placementPolicy implicit placement policy
  * @param content content
  */
 @Composable
 public fun GridPad(
-    cells: GridPadCells, modifier: Modifier = Modifier, content: GridPadScope.() -> Unit
+    cells: GridPadCells,
+    modifier: Modifier = Modifier,
+    placementPolicy: GridPadPlacementPolicy = GridPadPlacementPolicy.DEFAULT,
+    content: GridPadScope.() -> Unit
 ) {
-    val scopeContent: GridPadScopeImpl = GridPadScopeImpl(cells).apply(content)
+    val scopeContent: GridPadScopeImpl = GridPadScopeImpl(cells, placementPolicy).apply(content)
     val displayContent: ImmutableList<GridPadContent> = scopeContent.data.toImmutableList()
     Layout(modifier = modifier, content = {
         displayContent.forEach {

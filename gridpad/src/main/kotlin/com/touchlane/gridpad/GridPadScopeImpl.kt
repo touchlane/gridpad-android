@@ -30,7 +30,10 @@ import androidx.compose.runtime.Composable
  * Implementation for [GridPadScope].
  * Checks and puts composables to display list with exact location specification.
  */
-internal class GridPadScopeImpl(private val cells: GridPadCells) : GridPadScope {
+internal class GridPadScopeImpl(
+    private val cells: GridPadCells,
+    private val placementPolicy: GridPadPlacementPolicy
+) : GridPadScope {
 
     /**
      * Display list with locations in a grid
