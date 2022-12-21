@@ -7,12 +7,10 @@
 :construction: The library is still under construction and the API may change a bit, stay tuned and
 suggest ideas. :construction:
 
-<p>
-  <a hfer="https://maven-badges.herokuapp.com/maven-central/com.touchlane/gridpad"><img alt="Latest Version" src="https://maven-badges.herokuapp.com/maven-central/com.touchlane/gridpad/badge.svg?style=flat"/></a>
-  <a href="https://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/badge/License-MIT-blue.svg"/></a>
-  <a href="https://android-arsenal.com/api?level=21"><img alt="API" src="https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat"/></a>
-  <a href="https://github.com/touchlane/gridpad-android/actions"><img alt="Build Status" src="https://github.com/touchlane/gridpad-android/workflows/Test/badge.svg"/></a> 
-</p>
+[![Maven Central](https://img.shields.io/maven-central/v/com.touchlane/gridpad?label=MavenCentral&logo=apache-maven)](https://search.maven.org/artifact/com.touchlane/gridpad)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+[![Build Status](https://github.com/touchlane/gridpad-android/workflows/Test/badge.svg)](https://github.com/touchlane/gridpad-android/actions)
 
 # Usage
 
