@@ -71,6 +71,7 @@ public fun GridPad(
         check(constraints.maxHeight != Constraints.Infinity) {
             "Infinity height not allowed in GridPad"
         }
+
         val cellPlaces =
             calculateCellPlaces(cells, width = constraints.maxWidth, height = constraints.maxHeight)
         val placeables = measurables.measure(displayContent, cellPlaces, constraints)
@@ -93,7 +94,7 @@ public fun GridPad(
         layout(layoutWidth, layoutHeight) {
             placeables.forEachIndexed { index, placeable ->
                 val contentMetaInfo = displayContent[index]
-                val cellPlaceInfo = cellPlaces[contentMetaInfo.row][contentMetaInfo.column]
+                val cellPlaceInfo = cellPlaces[contentMetaInfo.top][contentMetaInfo.left]
                 placeable.placeRelative(x = cellPlaceInfo.x, y = cellPlaceInfo.y)
             }
         }
@@ -110,10 +111,10 @@ private fun List<Measurable>.measure(
 ): List<Placeable> = mapIndexed { index, measurable ->
     val contentMetaInfo = content[index]
     val maxWidth = (0 until contentMetaInfo.columnSpan).sumOf {
-        cellPlaces[contentMetaInfo.row][contentMetaInfo.column + it].width
+        cellPlaces[contentMetaInfo.top][contentMetaInfo.left + it].width
     }
     val maxHeight = (0 until contentMetaInfo.rowSpan).sumOf {
-        cellPlaces[contentMetaInfo.row + it][contentMetaInfo.column].height
+        cellPlaces[contentMetaInfo.top + it][contentMetaInfo.left].height
     }
 
     // Measure each children

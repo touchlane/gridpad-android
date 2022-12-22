@@ -61,8 +61,8 @@ internal class GridPadScopeImpl(
         ) { cellRow, cellColumn ->
             this.data.add(
                 GridPadContent(
-                    row = cellRow,
-                    column = cellColumn,
+                    top = cellRow,
+                    left = cellColumn,
                     rowSpan = rowSpan,
                     columnSpan = columnSpan,
                     item = { itemContent() }
@@ -79,40 +79,75 @@ internal class GridPadScopeImpl(
         callback: (row: Int, column: Int) -> Unit
     ): Boolean {
         //Skipping displaying items that out of grid
-        if (row != null && (0 until cells.rowCount).isOutOf(row)) {
-            return false
-        }
-        if (column != null && (0 until cells.columnCount).isOutOf(column)) {
+        if (cells.isOutsideOfGrid(row = row, column = column)) {
             return false
         }
 
         val lastItem = data.lastOrNull()
-        val lastRowSpan = lastItem?.rowSpan ?: 0
-        val lastColumnSpan = lastItem?.columnSpan ?: 0
-        // detect actual column for item
-        var cellColumn = column ?: run {
-            val lastColumn = lastItem?.column ?: 0
-            lastColumn + lastColumnSpan
+        var cellRow: Int
+        var cellColumn: Int
+        if (placementPolicy.mainAxis == GridPadPlacementPolicy.MainAxis.HORIZONTAL) {
+            cellRow = row ?: findRow(lastItem)
+            cellColumn = column ?: findNextColumn(lastItem)
+            if (cells.isColumnOutsideOfGrid(cellColumn, columnSpan)) {
+                cellColumn = firstColumn()
+                cellRow = findNextRow(lastItem)
+            }
+        } else {
+            cellColumn = column ?: findColumn(lastItem)
+            cellRow = row ?: findNextRow(lastItem)
+            if (cells.isRowOutsideOfGrid(cellRow, rowSpan)) {
+                cellRow = firstRow()
+                cellColumn = findNextColumn(lastItem)
+            }
         }
-        // detect actual row for item
-        var cellRow = row ?: run {
-            val lastRow = lastItem?.row ?: 0
-            lastRow
-        }
-        if (cellColumn >= cells.columnCount) {
-            cellColumn = 0
-            cellRow += lastRowSpan
-        }
-        val rowPlacedOutside = (0 until cells.rowCount).isOutOf(cellRow)
-        val columnPlacedOutside = (0 until cells.columnCount).isOutOf(cellColumn)
-        val rowSpanOutside = cells.rowCount - cellRow < rowSpan
-        val columnSpanOutside = cells.columnCount - cellColumn < columnSpan
-        //Skipping displaying items that out of grid
-        return if (rowPlacedOutside || columnPlacedOutside || rowSpanOutside || columnSpanOutside) {
+        val rowOutside = cells.isRowOutsideOfGrid(cellRow, rowSpan)
+        val columnOutside = cells.isColumnOutsideOfGrid(cellColumn, columnSpan)
+        return if (rowOutside || columnOutside) {
             false
         } else {
             callback(cellRow, cellColumn)
             true
+        }
+    }
+
+    private fun firstRow(): Int {
+        return when (placementPolicy.vertical) {
+            GridPadPlacementPolicy.Vertical.FROM_TOP -> 0
+            GridPadPlacementPolicy.Vertical.FROM_BOTTOM -> cells.rowCount - 1
+        }
+    }
+
+    private fun firstColumn(): Int {
+        return when (placementPolicy.horizontal) {
+            GridPadPlacementPolicy.Horizontal.FROM_START -> 0
+            GridPadPlacementPolicy.Horizontal.FROM_END -> cells.columnCount - 1
+        }
+    }
+
+    private fun findRow(lastItem: GridPadContent?): Int {
+        return lastItem?.top ?: firstRow()
+    }
+
+    private fun findNextRow(lastItem: GridPadContent?): Int {
+        val lastRow = findRow(lastItem)
+        val lastRowSpan = lastItem?.rowSpan ?: 0
+        return when (placementPolicy.vertical) {
+            GridPadPlacementPolicy.Vertical.FROM_TOP -> lastRow + lastRowSpan
+            GridPadPlacementPolicy.Vertical.FROM_BOTTOM -> lastRow - lastRowSpan
+        }
+    }
+
+    private fun findColumn(lastItem: GridPadContent?): Int {
+        return lastItem?.left ?: firstColumn()
+    }
+
+    private fun findNextColumn(lastItem: GridPadContent?): Int {
+        val lastColumn = findColumn(lastItem)
+        val lastColumnSpan = lastItem?.columnSpan ?: 0
+        return when (placementPolicy.horizontal) {
+            GridPadPlacementPolicy.Horizontal.FROM_START -> lastColumn + lastColumnSpan
+            GridPadPlacementPolicy.Horizontal.FROM_END -> lastColumn - lastColumnSpan
         }
     }
 }
@@ -121,8 +156,8 @@ internal class GridPadScopeImpl(
  * Contains information about exact place in a grid and the placed composable
  */
 internal class GridPadContent(
-    val row: Int,
-    val column: Int,
+    val left: Int,
+    val top: Int,
     val rowSpan: Int,
     val columnSpan: Int,
     val item: @Composable GridPadItemScope.() -> Unit
@@ -130,4 +165,24 @@ internal class GridPadContent(
 
 private fun <T : Comparable<T>> ClosedRange<T>.isOutOf(value: T): Boolean {
     return !contains(value)
+}
+
+private fun GridPadCells.isRowOutsideOfGrid(row: Int?): Boolean {
+    return row != null && (0 until rowCount).isOutOf(row)
+}
+
+private fun GridPadCells.isRowOutsideOfGrid(row: Int, rowSpan: Int): Boolean {
+    return (0 until rowCount).isOutOf(row) || (0 until rowCount).isOutOf(row + rowSpan - 1)
+}
+
+private fun GridPadCells.isColumnOutsideOfGrid(column: Int?): Boolean {
+    return column != null && (0 until columnCount).isOutOf(column)
+}
+
+private fun GridPadCells.isColumnOutsideOfGrid(column: Int, columnSpan: Int): Boolean {
+    return (0 until columnCount).isOutOf(column) || (0 until columnCount).isOutOf(column + columnSpan - 1)
+}
+
+private fun GridPadCells.isOutsideOfGrid(row: Int?, column: Int?): Boolean {
+    return isRowOutsideOfGrid(row) || isColumnOutsideOfGrid(column)
 }
