@@ -81,6 +81,7 @@ internal class GridPadScopeImpl(
         val anchor = placementPolicy.anchor
         //Skipping displaying items that out of grid
         if (cells.isOutsideOfGrid(row = row, column = column)) {
+            onSkipped(row, column, rowSpan, columnSpan)
             return false
         }
 
@@ -105,6 +106,7 @@ internal class GridPadScopeImpl(
         val rowOutside = cells.isRowOutsideOfGrid(cellRow, rowSpan, anchor)
         val columnOutside = cells.isColumnOutsideOfGrid(cellColumn, columnSpan, anchor)
         return if (rowOutside || columnOutside) {
+            onSkipped(cellRow, cellColumn, rowSpan, columnSpan)
             false
         } else {
             callback(
@@ -114,6 +116,12 @@ internal class GridPadScopeImpl(
                 anchor.bottomBound(cellRow, rowSpan)
             )
             true
+        }
+    }
+
+    private fun onSkipped(row: Int?, column: Int?, rowSpan: Int, columnSpan: Int) {
+        GridPadDiagnosticLogger.onItemSkipped {
+            "Skipped, row: $row, column: $column, rowSpan: $rowSpan, columnSpan: $columnSpan\nGrid: [${cells.rowCount}x${cells.columnCount}]"
         }
     }
 
@@ -223,29 +231,29 @@ private fun GridPadCells.isOutsideOfGrid(row: Int?, column: Int?): Boolean {
 }
 
 private fun GridPadSpanAnchor.leftBound(column: Int, span: Int): Int {
-    return when (this) {
-        GridPadSpanAnchor.TOP_START, GridPadSpanAnchor.BOTTOM_START -> column
-        GridPadSpanAnchor.TOP_END, GridPadSpanAnchor.BOTTOM_END -> column - span + 1
+    return when (horizontal) {
+        GridPadSpanAnchor.Horizontal.START -> column
+        GridPadSpanAnchor.Horizontal.END -> column - span + 1
     }
 }
 
 private fun GridPadSpanAnchor.rightBound(column: Int, span: Int): Int {
-    return when (this) {
-        GridPadSpanAnchor.TOP_START, GridPadSpanAnchor.BOTTOM_START -> column + span - 1
-        GridPadSpanAnchor.TOP_END, GridPadSpanAnchor.BOTTOM_END -> column
+    return when (this.horizontal) {
+        GridPadSpanAnchor.Horizontal.START -> column + span - 1
+        GridPadSpanAnchor.Horizontal.END -> column
     }
 }
 
 private fun GridPadSpanAnchor.topBound(row: Int, span: Int): Int {
-    return when (this) {
-        GridPadSpanAnchor.TOP_START, GridPadSpanAnchor.TOP_END -> row
-        GridPadSpanAnchor.BOTTOM_START, GridPadSpanAnchor.BOTTOM_END -> row - span + 1
+    return when (this.vertical) {
+        GridPadSpanAnchor.Vertical.TOP -> row
+        GridPadSpanAnchor.Vertical.BOTTOM -> row - span + 1
     }
 }
 
 private fun GridPadSpanAnchor.bottomBound(row: Int, span: Int): Int {
-    return when (this) {
-        GridPadSpanAnchor.TOP_START, GridPadSpanAnchor.TOP_END -> row + span - 1
-        GridPadSpanAnchor.BOTTOM_START, GridPadSpanAnchor.BOTTOM_END -> row
+    return when (this.vertical) {
+        GridPadSpanAnchor.Vertical.TOP -> row + span - 1
+        GridPadSpanAnchor.Vertical.BOTTOM -> row
     }
 }

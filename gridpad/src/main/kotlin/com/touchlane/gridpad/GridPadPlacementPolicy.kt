@@ -27,12 +27,16 @@ public data class GridPadPlacementPolicy(
     /**
      * Anchor for spanned cells
      */
-    internal val anchor: GridPadSpanAnchor = when {
-        horizontal == Horizontal.FROM_START && vertical == Vertical.FROM_TOP -> GridPadSpanAnchor.TOP_START
-        horizontal == Horizontal.FROM_END && vertical == Vertical.FROM_TOP -> GridPadSpanAnchor.TOP_END
-        horizontal == Horizontal.FROM_START && vertical == Vertical.FROM_BOTTOM -> GridPadSpanAnchor.BOTTOM_START
-        horizontal == Horizontal.FROM_END && vertical == Vertical.FROM_BOTTOM -> GridPadSpanAnchor.BOTTOM_END
-        else -> GridPadSpanAnchor.TOP_START
+    internal val anchor: GridPadSpanAnchor = run {
+        val horizontal = when (this.horizontal) {
+            Horizontal.FROM_START -> GridPadSpanAnchor.Horizontal.START
+            Horizontal.FROM_END -> GridPadSpanAnchor.Horizontal.END
+        }
+        val vertical = when (this.vertical) {
+            Vertical.FROM_TOP -> GridPadSpanAnchor.Vertical.TOP
+            Vertical.FROM_BOTTOM -> GridPadSpanAnchor.Vertical.BOTTOM
+        }
+        GridPadSpanAnchor(horizontal, vertical)
     }
 
     /**

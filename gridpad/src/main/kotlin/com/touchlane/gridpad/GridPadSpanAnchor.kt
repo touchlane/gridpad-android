@@ -3,6 +3,12 @@ package com.touchlane.gridpad
 /**
  * Anchor for spanned cells
  */
-internal enum class GridPadSpanAnchor {
-    TOP_START, TOP_END, BOTTOM_START, BOTTOM_END
+internal data class GridPadSpanAnchor(val horizontal: Horizontal, val vertical: Vertical) {
+    enum class Horizontal {
+        START, END
+    }
+
+    enum class Vertical {
+        TOP, BOTTOM
+    }
 }
