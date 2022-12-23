@@ -110,10 +110,10 @@ private fun List<Measurable>.measure(
     constraints: Constraints
 ): List<Placeable> = mapIndexed { index, measurable ->
     val contentMetaInfo = content[index]
-    val maxWidth = (contentMetaInfo.left until contentMetaInfo.right).sumOf { column ->
+    val maxWidth = (contentMetaInfo.left .. contentMetaInfo.right).sumOf { column ->
         cellPlaces[contentMetaInfo.top][column].width
     }
-    val maxHeight = (contentMetaInfo.top until contentMetaInfo.bottom).sumOf { row ->
+    val maxHeight = (contentMetaInfo.top .. contentMetaInfo.bottom).sumOf { row ->
         cellPlaces[row][contentMetaInfo.left].height
     }
 

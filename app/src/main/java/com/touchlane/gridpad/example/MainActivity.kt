@@ -347,15 +347,17 @@ fun SimpleBlueprintCardPolicy(
         ratio = 1.2f,
         title = "LayoutDirection = $layoutDirection\nmainAxis = $mainAxis\nhorizontal = $horizontal\nvertical = $vertical"
     ) {
+        val rowCount = 3
+        val columnCount = 4
         GridPad(
-            cells = GridPadCells(rowCount = 3, columnCount = 4),
+            cells = GridPadCells(rowCount = rowCount, columnCount = columnCount),
             placementPolicy = GridPadPlacementPolicy(
                 mainAxis = mainAxis,
                 horizontal = horizontal,
                 vertical = vertical
             )
         ) {
-            repeat(12) {
+            repeat(rowCount * columnCount) {
                 item {
                     ContentBlueprintBox("$it")
                 }
