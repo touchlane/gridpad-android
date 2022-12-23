@@ -110,10 +110,10 @@ private fun List<Measurable>.measure(
     constraints: Constraints
 ): List<Placeable> = mapIndexed { index, measurable ->
     val contentMetaInfo = content[index]
-    val maxWidth = (contentMetaInfo.left .. contentMetaInfo.right).sumOf { column ->
+    val maxWidth = (contentMetaInfo.left..contentMetaInfo.right).sumOf { column ->
         cellPlaces[contentMetaInfo.top][column].width
     }
-    val maxHeight = (contentMetaInfo.top .. contentMetaInfo.bottom).sumOf { row ->
+    val maxHeight = (contentMetaInfo.top..contentMetaInfo.bottom).sumOf { row ->
         cellPlaces[row][contentMetaInfo.left].height
     }
 
@@ -216,23 +216,39 @@ private data class CellPlaceInfo(val x: Int, val y: Int, val width: Int, val hei
 public sealed interface GridPadScope {
 
     /**
-     * Adds a single item to the scope.
+     * Explicit placement of content on the grid.
      * It's possible to overlap items if they will have intersected spans or same location.
-     * If [row] is null then content will be placed in a next after last placed item's column,
-     * the same logic will work for cases when [column] is null - content will be placed in a next
-     * after last placed item's column. When column reach last one - row value will be increased.
      *
-     * **Be careful: item that is completely or partially out of grid bounds wouldn't be displayed.**
+     * **Be careful: item that is completely or partially out of grid bounds wouldn't be
+     * placed and displayed.**
      *
      * @param row row index
      * @param column column index
-     * @param rowSpan row span size
-     * @param columnSpan column span size
+     * @param rowSpan row span size, must be > 0
+     * @param columnSpan column span size, must be > 0
      * @param itemContent the content of the item
      */
     public fun item(
-        row: Int? = null,
-        column: Int? = null,
+        row: Int,
+        column: Int,
+        rowSpan: Int = 1,
+        columnSpan: Int = 1,
+        itemContent: @Composable GridPadItemScope.() -> Unit
+    )
+
+    /**
+     * Implicit placement of content on the grid.
+     * Content will be placed in the next position after the last placed item.
+     * The next position depends on the [GridPadPlacementPolicy] value in the [GridPad] method.
+     *
+     * @see item all limitations from the explicit method are also applicable to this method
+     * @see GridPadPlacementPolicy placement policy description
+     *
+     * @param rowSpan row span size, must be > 0
+     * @param columnSpan column span size, must be > 0
+     * @param itemContent the content of the item
+     */
+    public fun item(
         rowSpan: Int = 1,
         columnSpan: Int = 1,
         itemContent: @Composable GridPadItemScope.() -> Unit

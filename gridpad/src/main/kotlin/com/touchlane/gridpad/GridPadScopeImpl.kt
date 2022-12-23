@@ -39,10 +39,32 @@ internal class GridPadScopeImpl(
      * Display list with locations in a grid
      */
     internal val data: MutableList<GridPadContent> = mutableListOf()
+    override fun item(
+        row: Int,
+        column: Int,
+        rowSpan: Int,
+        columnSpan: Int,
+        itemContent: GridPadItemScope.() -> Unit
+    ) {
+        placeImplicitly(
+            row = row,
+            column = column,
+            rowSpan = rowSpan,
+            columnSpan = columnSpan
+        ) { top, left, right, bottom ->
+            this.data.add(
+                GridPadContent(
+                    top = top,
+                    left = left,
+                    right = right,
+                    bottom = bottom,
+                    item = { itemContent() }
+                )
+            )
+        }
+    }
 
     override fun item(
-        row: Int?,
-        column: Int?,
         rowSpan: Int,
         columnSpan: Int,
         itemContent: @Composable GridPadItemScope.() -> Unit
@@ -54,8 +76,8 @@ internal class GridPadScopeImpl(
             "`columnSpan` must be > 0"
         }
         placeImplicitly(
-            row = row,
-            column = column,
+            row = null,
+            column = null,
             rowSpan = rowSpan,
             columnSpan = columnSpan
         ) { top, left, right, bottom ->
