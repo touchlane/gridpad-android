@@ -58,13 +58,13 @@ internal class GridPadScopeImpl(
             column = column,
             rowSpan = rowSpan,
             columnSpan = columnSpan
-        ) { cellRow, cellColumn ->
+        ) { top, left, right, bottom ->
             this.data.add(
                 GridPadContent(
-                    top = cellRow,
-                    left = cellColumn,
-                    rowSpan = rowSpan,
-                    columnSpan = columnSpan,
+                    top = top,
+                    left = left,
+                    right = right,
+                    bottom = bottom,
                     item = { itemContent() }
                 )
             )
@@ -76,7 +76,7 @@ internal class GridPadScopeImpl(
         column: Int?,
         rowSpan: Int,
         columnSpan: Int,
-        callback: (row: Int, column: Int) -> Unit
+        callback: (top: Int, left: Int, right: Int, bottom: Int) -> Unit
     ): Boolean {
         //Skipping displaying items that out of grid
         if (cells.isOutsideOfGrid(row = row, column = column)) {
@@ -106,7 +106,7 @@ internal class GridPadScopeImpl(
         return if (rowOutside || columnOutside) {
             false
         } else {
-            callback(cellRow, cellColumn)
+            callback(cellRow, cellColumn, cellColumn + columnSpan, cellRow + rowSpan)
             true
         }
     }
@@ -158,10 +158,13 @@ internal class GridPadScopeImpl(
 internal class GridPadContent(
     val left: Int,
     val top: Int,
-    val rowSpan: Int,
-    val columnSpan: Int,
+    val right: Int,
+    val bottom: Int,
     val item: @Composable GridPadItemScope.() -> Unit
-)
+) {
+    val rowSpan: Int = bottom - top
+    val columnSpan: Int = right - left
+}
 
 private fun <T : Comparable<T>> ClosedRange<T>.isOutOf(value: T): Boolean {
     return !contains(value)

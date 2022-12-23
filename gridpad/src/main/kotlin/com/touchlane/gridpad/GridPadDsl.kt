@@ -110,11 +110,11 @@ private fun List<Measurable>.measure(
     constraints: Constraints
 ): List<Placeable> = mapIndexed { index, measurable ->
     val contentMetaInfo = content[index]
-    val maxWidth = (0 until contentMetaInfo.columnSpan).sumOf {
-        cellPlaces[contentMetaInfo.top][contentMetaInfo.left + it].width
+    val maxWidth = (contentMetaInfo.left until contentMetaInfo.right).sumOf { column ->
+        cellPlaces[contentMetaInfo.top][column].width
     }
-    val maxHeight = (0 until contentMetaInfo.rowSpan).sumOf {
-        cellPlaces[contentMetaInfo.top + it][contentMetaInfo.left].height
+    val maxHeight = (contentMetaInfo.top until contentMetaInfo.bottom).sumOf { row ->
+        cellPlaces[row][contentMetaInfo.left].height
     }
 
     // Measure each children
