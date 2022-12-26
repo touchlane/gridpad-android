@@ -268,8 +268,8 @@ fun SimpleBlueprintCardWithSpansOverlapped() {
 fun SimpleBlueprintCardPolicyHorizontalSeTb() {
     SimpleBlueprintCardPolicy(
         mainAxis = GridPadPlacementPolicy.MainAxis.HORIZONTAL,
-        horizontal = GridPadPlacementPolicy.Horizontal.FROM_START,
-        vertical = GridPadPlacementPolicy.Vertical.FROM_TOP
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.START_END,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.TOP_BOTTOM
     )
 }
 
@@ -277,8 +277,8 @@ fun SimpleBlueprintCardPolicyHorizontalSeTb() {
 fun SimpleBlueprintCardPolicyHorizontalEsTb() {
     SimpleBlueprintCardPolicy(
         mainAxis = GridPadPlacementPolicy.MainAxis.HORIZONTAL,
-        horizontal = GridPadPlacementPolicy.Horizontal.FROM_END,
-        vertical = GridPadPlacementPolicy.Vertical.FROM_TOP
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.END_START,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.TOP_BOTTOM
     )
 }
 
@@ -286,8 +286,8 @@ fun SimpleBlueprintCardPolicyHorizontalEsTb() {
 fun SimpleBlueprintCardPolicyHorizontalSeBt() {
     SimpleBlueprintCardPolicy(
         mainAxis = GridPadPlacementPolicy.MainAxis.HORIZONTAL,
-        horizontal = GridPadPlacementPolicy.Horizontal.FROM_START,
-        vertical = GridPadPlacementPolicy.Vertical.FROM_BOTTOM
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.START_END,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.BOTTOM_TOP
     )
 }
 
@@ -295,8 +295,8 @@ fun SimpleBlueprintCardPolicyHorizontalSeBt() {
 fun SimpleBlueprintCardPolicyHorizontalEsBt() {
     SimpleBlueprintCardPolicy(
         mainAxis = GridPadPlacementPolicy.MainAxis.HORIZONTAL,
-        horizontal = GridPadPlacementPolicy.Horizontal.FROM_END,
-        vertical = GridPadPlacementPolicy.Vertical.FROM_BOTTOM
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.END_START,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.BOTTOM_TOP
     )
 }
 
@@ -304,8 +304,8 @@ fun SimpleBlueprintCardPolicyHorizontalEsBt() {
 fun SimpleBlueprintCardPolicyVerticalSeTb() {
     SimpleBlueprintCardPolicy(
         mainAxis = GridPadPlacementPolicy.MainAxis.VERTICAL,
-        horizontal = GridPadPlacementPolicy.Horizontal.FROM_START,
-        vertical = GridPadPlacementPolicy.Vertical.FROM_TOP
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.START_END,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.TOP_BOTTOM
     )
 }
 
@@ -313,8 +313,8 @@ fun SimpleBlueprintCardPolicyVerticalSeTb() {
 fun SimpleBlueprintCardPolicyVerticalEsTb() {
     SimpleBlueprintCardPolicy(
         mainAxis = GridPadPlacementPolicy.MainAxis.VERTICAL,
-        horizontal = GridPadPlacementPolicy.Horizontal.FROM_END,
-        vertical = GridPadPlacementPolicy.Vertical.FROM_TOP
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.END_START,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.TOP_BOTTOM
     )
 }
 
@@ -322,8 +322,8 @@ fun SimpleBlueprintCardPolicyVerticalEsTb() {
 fun SimpleBlueprintCardPolicyVerticalSeBt() {
     SimpleBlueprintCardPolicy(
         mainAxis = GridPadPlacementPolicy.MainAxis.VERTICAL,
-        horizontal = GridPadPlacementPolicy.Horizontal.FROM_START,
-        vertical = GridPadPlacementPolicy.Vertical.FROM_BOTTOM
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.START_END,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.BOTTOM_TOP
     )
 }
 
@@ -331,21 +331,21 @@ fun SimpleBlueprintCardPolicyVerticalSeBt() {
 fun SimpleBlueprintCardPolicyVerticalEsBt() {
     SimpleBlueprintCardPolicy(
         mainAxis = GridPadPlacementPolicy.MainAxis.VERTICAL,
-        horizontal = GridPadPlacementPolicy.Horizontal.FROM_END,
-        vertical = GridPadPlacementPolicy.Vertical.FROM_BOTTOM
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.END_START,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.BOTTOM_TOP
     )
 }
 
 @Composable
 fun SimpleBlueprintCardPolicy(
     mainAxis: GridPadPlacementPolicy.MainAxis,
-    horizontal: GridPadPlacementPolicy.Horizontal,
-    vertical: GridPadPlacementPolicy.Vertical
+    horizontalDirection: GridPadPlacementPolicy.HorizontalDirection,
+    verticalDirection: GridPadPlacementPolicy.VerticalDirection
 ) {
     val layoutDirection = LocalLayoutDirection.current
     BlueprintCard(
         ratio = 1.2f,
-        title = "LayoutDirection = $layoutDirection\nmainAxis = $mainAxis\nhorizontal = $horizontal\nvertical = $vertical"
+        title = "LayoutDirection = $layoutDirection\nmainAxis = $mainAxis\nhorizontal = $horizontalDirection\nvertical = $verticalDirection"
     ) {
         val rowCount = 3
         val columnCount = 4
@@ -353,8 +353,8 @@ fun SimpleBlueprintCardPolicy(
             cells = GridPadCells(rowCount = rowCount, columnCount = columnCount),
             placementPolicy = GridPadPlacementPolicy(
                 mainAxis = mainAxis,
-                horizontal = horizontal,
-                vertical = vertical
+                horizontalDirection = horizontalDirection,
+                verticalDirection = verticalDirection
             )
         ) {
             repeat(rowCount * columnCount) {
