@@ -98,7 +98,7 @@ GridPad(
 
 Items in a GridPad can be placed **explicitly** and **implicitly**. In the example above items are
 placed implicitly. Implicit placing placed the item **next to the last placed item** (including span
-size). Placement direction and first placement position depend on `placementPolicy`. By default,
+size). Placement direction and first placement position depend on [`placementPolicy`](#placement-policy). By default,
 the first placing will be at position \[0;0] with a horizontal direction from start to end.
 
 ```kotlin
@@ -119,8 +119,6 @@ GridPad(
     }
 }
 ```
-
-![place_items_dark](https://user-images.githubusercontent.com/2251498/204765288-5c55bc60-4053-4556-b68a-d257944435c6.png)
 
 > :warning: When the placement reaches the last cell, the following items will be ignored.
 > Placing items outside the grid is not allowed.
@@ -184,6 +182,8 @@ of placement items.
   is `HORIZONTAL` this property describes the direction of moving to the next axis. The `TOP_BOTTOM`
   means that the direction of placement items or moving main axis will begin from the top and
   move to the bottom. The `BOTTOM_TOP` means the same but in the opposite order.
+
+![placement_policy](https://user-images.githubusercontent.com/2251498/209689448-3a89070b-7640-4a2d-8654-9873f960e747.png)
 
 ## Spans
 
