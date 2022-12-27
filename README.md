@@ -2,7 +2,8 @@
 
 ![github_title](https://user-images.githubusercontent.com/2251498/207064470-d719699d-319a-4267-9636-c4f058d5a7aa.png)
 
-**GridPad** is a Jetpack Compose library that allows you to place UI elements in a predefined grid, manage spans in two dimensions, have flexible controls to manage row and column sizes.
+**GridPad** is a Jetpack Compose library that allows you to place UI elements in a predefined grid, 
+manage spans in two dimensions, have flexible controls to manage row and column sizes.
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.touchlane/gridpad?label=MavenCentral&logo=apache-maven)](https://search.maven.org/artifact/com.touchlane/gridpad)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -95,8 +96,9 @@ GridPad(
 
 Items in a GridPad can be placed **explicitly** and **implicitly**. In the example above items are
 placed implicitly. Implicit placing placed the item **next to the last placed item** (including span
-size). Placement direction and first placement position depend on [`placementPolicy`](#placement-policy). By default,
-the first placing will be at position \[0;0] with a horizontal direction from start to end.
+size). Placement direction and first placement position depend
+on [`placementPolicy`](#placement-policy). By default, the first placing will be at position \[0;0] 
+with a horizontal direction from start to end.
 
 ```kotlin
 GridPad(
@@ -218,6 +220,14 @@ GridPad(
 > :warning: When you have a complex structure it's highly recommended to use an **explicit** method
 > of placing all items to avoid unpredictable behavior and mistakes during the placement of the
 > items.
+
+
+## Anchor
+
+When `rowSpan` or `columnSpan` is more than 1 then the content is placed relative to the implicit 
+parameter - **anchor**. The anchor is the point in the corner from which the span expands. 
+The value depends on `horizontalDirection` and `verticalDirection` values in the `placementPolicy` 
+property.
 
 # Performance
 
