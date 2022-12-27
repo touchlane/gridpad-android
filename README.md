@@ -4,9 +4,6 @@
 
 **GridPad** is a Jetpack Compose library that allows you to place UI elements in a predefined grid, manage spans in two dimensions, have flexible controls to manage row and column sizes.
 
-:construction: The library is still under construction and the API may change a bit, stay tuned and
-suggest ideas. :construction:
-
 [![Maven Central](https://img.shields.io/maven-central/v/com.touchlane/gridpad?label=MavenCentral&logo=apache-maven)](https://search.maven.org/artifact/com.touchlane/gridpad)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
