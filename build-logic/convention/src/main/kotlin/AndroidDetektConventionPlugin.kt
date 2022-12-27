@@ -1,3 +1,6 @@
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+
 /*
  * MIT License
  *
@@ -22,10 +25,12 @@
  * SOFTWARE.
  */
 
-package com.touchlane.gridpad
-
-import androidx.compose.runtime.Stable
-
-@Stable
-@GridPadScopeMarker
-public interface GridPadItemScope
+class AndroidDetektConventionPlugin : Plugin<Project> {
+    override fun apply(target: Project) {
+        with(target) {
+            with(pluginManager) {
+                apply("io.gitlab.arturbosch.detekt")
+            }
+        }
+    }
+}

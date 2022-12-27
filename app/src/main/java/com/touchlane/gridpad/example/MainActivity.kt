@@ -180,7 +180,7 @@ fun SimpleBlueprintCard() {
         GridPad(
             cells = GridPadCells(rowCount = 3, columnCount = 4)
         ) {
-            repeat(12) { item { BlueprintBox() } }
+            repeat(13) { item { BlueprintBox() } }
         }
     }
 }

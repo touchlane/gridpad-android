@@ -137,7 +137,10 @@ internal class GridPadScopeImpl(
 
     private fun onSkipped(row: Int?, column: Int?, rowSpan: Int, columnSpan: Int) {
         GridPadDiagnosticLogger.onItemSkipped {
-            "Skipped, row: $row, column: $column, rowSpan: $rowSpan, columnSpan: $columnSpan\nGrid: [${cells.rowCount}x${cells.columnCount}]"
+            """
+                Skipped position: [${row}x$column], span size: [${rowSpan}x$columnSpan]
+                Grid size: [${cells.rowCount}x${cells.columnCount}]
+            """.trimIndent()
         }
     }
 
