@@ -229,6 +229,8 @@ parameter - **anchor**. The anchor is the point in the corner from which the spa
 The value depends on `horizontalDirection` and `verticalDirection` values in the `placementPolicy` 
 property.
 
+![anchor](https://user-images.githubusercontent.com/2251498/209725897-ab8d840d-0744-4ff6-89a7-f786e1522203.png)
+
 # Performance
 
 GridPad respect Jetpack Compose recommendations and avoid not necessary recompositions. You can
