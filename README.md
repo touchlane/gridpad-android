@@ -98,29 +98,19 @@ GridPad(
 
 Items in a GridPad can be placed **explicitly** and **implicitly**. In the example above items are
 placed implicitly. Implicit placing placed the item **next to the last placed item** (including span
-size) in the same row. The first placing will be at position \[0;0].
+size). Placement direction and first placement position depend on `placementPolicy`. By default,
+the first placing will be at position \[0;0] with a horizontal direction from start to end.
 
 ```kotlin
 GridPad(
     cells = GridPadCells(rowCount = 3, columnCount = 4)
 ) {
     item {
-        // row = 0, column = 0
+        // 1-st item, row = 0, column = 0
     }
     item {
-        // row = 0, column = 1
+        // 2-nd item, row = 0, column = 1
     }
-}
-```
-
-When an item is placed at the last column in a row then the next items start placed at the next line
-from the first column.
-
-```kotlin
-GridPad(
-    cells = GridPadCells(rowCount = 3, columnCount = 4)
-) {
-    // 2 items 
     item {
         // 3-rd item, row = 0, column = 2
     }
@@ -132,10 +122,10 @@ GridPad(
 
 ![place_items_dark](https://user-images.githubusercontent.com/2251498/204765288-5c55bc60-4053-4556-b68a-d257944435c6.png)
 
-> :warning: When the placement reaches the last row and column, the following items will be ignored.
+> :warning: When the placement reaches the last cell, the following items will be ignored.
 > Placing items outside the grid is not allowed.
 
-To place an item explicitly needs to specify one or both properties `row` and `column` in the item.
+To place an item explicitly needs to specify both properties `row` and `column` in the item.
 When defines `row` and `column` property it's also possible to place all items in a different order
 without regard to the actual location.
 
@@ -154,16 +144,46 @@ GridPad(
 
 ![place_items_specific_dark](https://user-images.githubusercontent.com/2251498/204765324-211e2044-593b-41aa-893e-ad62565c9ded.png)
 
-When specified only one of the `row` and `column` properties the logic will be the following:
-
-* If the `row` property is skipped, the row will be equal to the last placed item's row.
-* If the `column` property is skipped, the row will be next after the last placed item (including
-  span size). When the last item is placed at the last column in a row then the next items start
-  placed at the next line from the first column.
-
 > :warning: A cell can contain more than one item. The draw order will be the same as the place
 > order. GridPad does not limit the item's size when the child has an explicit size. That means that
 > the item can go outside the cell bounds.
+
+## Placement policy
+
+To define the direction of placement items in an implicit method used the `placementPolicy` 
+property.
+
+```kotlin
+GridPad(
+    cells = GridPadCells(rowCount = 3, columnCount = 4),
+    placementPolicy = GridPadPlacementPolicy(
+        mainAxis = GridPadPlacementPolicy.MainAxis.HORIZONTAL,
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.START_END,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.TOP_BOTTOM
+    )
+) {
+    // content
+}
+```
+
+The `GridPadPlacementPolicy` class has three properties that allow controlling different aspects 
+of placement items.
+
+* `mainAxis` sets the axis along which the item will be placed. When the axis is filled to the end,
+  the next item will be placed on the next axis. If `mainAxis` is `HORIZONTAL` then items will be
+  placed sequentially one by one by horizontal line. If `mainAxis` is `VERTICAL` then items will be
+  placed sequentially one by one by vertical line.
+* `horizontalDirection` sets the direction of placement horizontally. When `mainAxis` is
+  `HORIZONTAL` this property describes the direction of placement of the next item. When `mainAxis`
+  is `VERTICAL` this property describes the direction of moving to the next axis. The `START_END`
+  means that the direction of placement items or moving main axis will begin from the start layout
+  direction and move to the end layout direction (depending on LTR or RTL). The `END_START` means
+  the same but in the opposite order.
+* `verticalDirection` sets the direction of placement vertically. When `mainAxis` is
+  `VERTICAL` this property describes the direction of placement of the next item. When `mainAxis`
+  is `HORIZONTAL` this property describes the direction of moving to the next axis. The `TOP_BOTTOM`
+  means that the direction of placement items or moving main axis will begin from the top and
+  move to the bottom. The `BOTTOM_TOP` means the same but in the opposite order.
 
 ## Spans
 
