@@ -203,10 +203,14 @@ fun CustomSizeBlueprintCard() {
 @Composable
 fun SimpleBlueprintCardWithContent() {
     BlueprintCard(ratio = 1.5f) {
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
-            repeat(12) { item { BlueprintBox() } }
+        val rowCount = 3
+        val columnCount = 4
+        GridPad(cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)) {
+            repeat(rowCount * columnCount) { item { BlueprintBox() } }
         }
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
+        GridPad(
+            cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)
+        ) {
             item { ContentBlueprintBox("[0;0]") }
             item { ContentBlueprintBox("[0;1]") }
         }
@@ -216,10 +220,14 @@ fun SimpleBlueprintCardWithContent() {
 @Composable
 fun SimpleBlueprintCardWithContentMixOrdering() {
     BlueprintCard(ratio = 1.5f) {
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
-            repeat(12) { item { BlueprintBox() } }
+        val rowCount = 3
+        val columnCount = 4
+        GridPad(cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)) {
+            repeat(rowCount * columnCount) { item { BlueprintBox() } }
         }
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
+        GridPad(
+            cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)
+        ) {
             item(row = 1, column = 2) { ContentBlueprintBox("[1;2]\nOrder: 1") }
             item(row = 0, column = 1) { ContentBlueprintBox("[0;1]\nOrder: 2") }
         }
@@ -229,11 +237,13 @@ fun SimpleBlueprintCardWithContentMixOrdering() {
 @Composable
 fun SimpleBlueprintCardWithSpans() {
     BlueprintCard(ratio = 1.5f) {
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
-            repeat(12) { item { BlueprintBox() } }
+        val rowCount = 3
+        val columnCount = 4
+        GridPad(cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)) {
+            repeat(rowCount * columnCount) { item { BlueprintBox() } }
         }
         GridPad(
-            cells = GridPadCells(rowCount = 3, columnCount = 4)
+            cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)
         ) {
             item(rowSpan = 3, columnSpan = 2) {
                 ContentBlueprintBox("[0;0]\nSpan: 3x2")
@@ -248,11 +258,13 @@ fun SimpleBlueprintCardWithSpans() {
 @Composable
 fun SimpleBlueprintCardWithSpansOverlapped() {
     BlueprintCard(ratio = 1.5f) {
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
-            repeat(12) { item { BlueprintBox() } }
+        val rowCount = 3
+        val columnCount = 4
+        GridPad(cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)) {
+            repeat(rowCount * columnCount) { item { BlueprintBox() } }
         }
         GridPad(
-            cells = GridPadCells(rowCount = 3, columnCount = 4)
+            cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)
         ) {
             item(rowSpan = 3, columnSpan = 2) {
                 ContentBlueprintBox("[0;0]\nSpan: 3x2")
@@ -349,6 +361,9 @@ fun SimpleBlueprintCardPolicy(
     ) {
         val rowCount = 3
         val columnCount = 4
+        GridPad(cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)) {
+            repeat(rowCount * columnCount) { item { BlueprintBox() } }
+        }
         GridPad(
             cells = GridPadCells(rowCount = rowCount, columnCount = columnCount),
             placementPolicy = GridPadPlacementPolicy(
