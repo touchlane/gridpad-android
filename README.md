@@ -205,6 +205,7 @@ GridPad(
 ![spanned_dark](https://user-images.githubusercontent.com/2251498/204765367-86177508-5551-4076-b6a1-b48b8f183f9d.png)
 
 When an item has a span that goes outside the grid, the item is skipped and doesn't draw at all.
+You can handle skipping cases by [diagnostic logger](#diagnostic).
 
 ```kotlin
 GridPad(
@@ -236,6 +237,23 @@ property.
 The library handles the parent's layout direction value. That means that placement in **RTL**
 direction with `horizontalDirection = START_END` will have the same behavior as **LTR** direction
 with `horizontalDirection = END_START`.
+
+## Diagnostic
+
+The library doesn't throw any exceptions when an item is tried to place outside of the defined grid. 
+Instead, the library just sends a signal through the special class `GridPadDiagnosticLogger`, 
+skipping this item and moving to the next one. This silent behavior might be not suitable during 
+the development process, so there is a way to have more control - define a custom listener. 
+As a dev solution, you can just redirect the message to the console log or throw an exception to 
+fix it immediately.
+
+```kotlin
+GridPadDiagnosticLogger.listener = object : GridPadDiagnosticLogger.Listener {
+    override fun onItemSkipped(message: String) {
+        Log.w("GridPad", message)
+    }
+}
+```
 
 # Performance
 

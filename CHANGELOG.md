@@ -3,6 +3,10 @@ Change Log
 
 ## Version 1.0.0
 
+* **New**: added `GridPadPlacementPolicy` class that used to control implicit placement policy
+  for items
+* **New**: added `GridPadDiagnosticLogger` diagnostic class to receive information about skipped
+  items
 * **API Change**: to `GridPad` added `placementPolicy` property
 * **API Change**: `GridPadScope.item()` split to two methods - explicit and implicit
 * **Behavior Change**: implicit placement of elements depends on `placementPolicy` property
