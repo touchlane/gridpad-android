@@ -231,6 +231,12 @@ property.
 
 ![anchor](https://user-images.githubusercontent.com/2251498/209725897-ab8d840d-0744-4ff6-89a7-f786e1522203.png)
 
+## Layout Direction
+
+The library handles the parent's layout direction value. That means that placement in **RTL**
+direction with `horizontalDirection = START_END` will have the same behavior as **LTR** direction
+with `horizontalDirection = END_START`.
+
 # Performance
 
 GridPad respect Jetpack Compose recommendations and avoid not necessary recompositions. You can
