@@ -32,10 +32,8 @@ class GridPadExampleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        GridPadDiagnosticLogger.listener = object : GridPadDiagnosticLogger.Listener {
-            override fun onItemSkipped(message: String) {
-                Log.w("GridPad", message)
-            }
+        GridPadDiagnosticLogger.skippingItemListener = { message ->
+            Log.w("GridPad", message)
         }
     }
 }

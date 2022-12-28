@@ -248,10 +248,8 @@ As a dev solution, you can just redirect the message to the console log or throw
 fix it immediately.
 
 ```kotlin
-GridPadDiagnosticLogger.listener = object : GridPadDiagnosticLogger.Listener {
-    override fun onItemSkipped(message: String) {
-        Log.w("GridPad", message)
-    }
+GridPadDiagnosticLogger.skippingItemListener = { message -> 
+    Log.w("GridPad", message)
 }
 ```
 

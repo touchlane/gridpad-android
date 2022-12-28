@@ -26,29 +26,20 @@ package com.touchlane.gridpad
 
 /**
  * Used to send diagnostic signals.
- * Default implementation is `null` and doing nothing, to handle need to set custom [listener].
+ * Default implementation is `null` and doing nothing, to handle need to set custom
+ * [skippingItemListener].
  */
 public object GridPadDiagnosticLogger {
 
-    @Suppress("MemberVisibilityCanBePrivate")
-    public var listener: Listener? = null
+    /**
+     * Called when item has been skipped due to out the grid bounds.
+     */
+    public var skippingItemListener: ((message: String) -> Unit)? = null
 
     /**
      * Send skipped item signal
      */
     internal fun onItemSkipped(message: () -> String) {
-        listener?.onItemSkipped(message())
-    }
-
-    /**
-     * Diagnostic signals listener
-     */
-    public interface Listener {
-        /**
-         * Called when item has been skipped due to out the grid bounds.
-         *
-         * @param message detailed information
-         */
-        public fun onItemSkipped(message: String) {}
+        skippingItemListener?.invoke(message())
     }
 }
