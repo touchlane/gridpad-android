@@ -32,6 +32,7 @@ plugins {
     id("gridpad.jetbrains.kotlin.android.explicit")
     id("gridpad.github.gradle-nexus.publish-plugin-module")
     id("gridpad.jacoco")
+    id("gridpad.detekt")
 }
 
 // see details in build-logic/convention/src/main/com/touchlane/gridpad/AndroidJacoco.kt

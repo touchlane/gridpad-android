@@ -73,5 +73,9 @@ gradlePlugin {
             id = "gridpad.jacoco"
             implementationClass = "AndroidJacocoConventionPlugin"
         }
+        register("androidDetekt") {
+            id = "gridpad.detekt"
+            implementationClass = "AndroidDetektConventionPlugin"
+        }
     }
 }

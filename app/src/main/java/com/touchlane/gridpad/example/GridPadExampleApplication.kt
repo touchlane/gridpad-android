@@ -22,10 +22,18 @@
  * SOFTWARE.
  */
 
-package com.touchlane.gridpad
+package com.touchlane.gridpad.example
 
-import androidx.compose.runtime.Stable
+import android.app.Application
+import android.util.Log
+import com.touchlane.gridpad.GridPadDiagnosticLogger
 
-@Stable
-@GridPadScopeMarker
-public interface GridPadItemScope
+class GridPadExampleApplication : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        GridPadDiagnosticLogger.skippingItemListener = { message ->
+            Log.w("GridPad", message)
+        }
+    }
+}

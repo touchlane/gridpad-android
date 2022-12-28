@@ -2,16 +2,13 @@
 
 ![github_title](https://user-images.githubusercontent.com/2251498/207064470-d719699d-319a-4267-9636-c4f058d5a7aa.png)
 
-**GridPad** is a Jetpack Compose library that allows you to place UI elements in a predefined grid, manage spans in two dimensions, have flexible controls to manage row and column sizes.
+**GridPad** is a Jetpack Compose library that allows you to place UI elements in a predefined grid, 
+manage spans in two dimensions, have flexible controls to manage row and column sizes.
 
-:construction: The library is still under construction and the API may change a bit, stay tuned and
-suggest ideas. :construction:
-
-<p>
-  <a href="https://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/badge/License-MIT-blue.svg"/></a>
-  <a href="https://android-arsenal.com/api?level=21"><img alt="API" src="https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat"/></a>
-  <a href="https://github.com/touchlane/gridpad-android/actions"><img alt="Build Status" src="https://github.com/touchlane/gridpad-android/workflows/Test/badge.svg"/></a> 
-</p>
+[![Maven Central](https://img.shields.io/maven-central/v/com.touchlane/gridpad?label=MavenCentral&logo=apache-maven)](https://search.maven.org/artifact/com.touchlane/gridpad)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+[![Build Status](https://github.com/touchlane/gridpad-android/workflows/Test/badge.svg)](https://github.com/touchlane/gridpad-android/actions)
 
 # Usage
 
@@ -38,7 +35,7 @@ Add the dependency below to your **module's** `build.gradle` file:
 
 ```groovy
 dependencies {
-    implementation "com.touchlane:gridpad:0.0.4"
+    implementation "com.touchlane:gridpad:1.0.0"
 }
 ```
 
@@ -99,29 +96,20 @@ GridPad(
 
 Items in a GridPad can be placed **explicitly** and **implicitly**. In the example above items are
 placed implicitly. Implicit placing placed the item **next to the last placed item** (including span
-size) in the same row. The first placing will be at position \[0;0].
+size). Placement direction and first placement position depend
+on [`placementPolicy`](#placement-policy). By default, the first placing will be at position \[0;0] 
+with a horizontal direction from start to end.
 
 ```kotlin
 GridPad(
     cells = GridPadCells(rowCount = 3, columnCount = 4)
 ) {
     item {
-        // row = 0, column = 0
+        // 1-st item, row = 0, column = 0
     }
     item {
-        // row = 0, column = 1
+        // 2-nd item, row = 0, column = 1
     }
-}
-```
-
-When an item is placed at the last column in a row then the next items start placed at the next line
-from the first column.
-
-```kotlin
-GridPad(
-    cells = GridPadCells(rowCount = 3, columnCount = 4)
-) {
-    // 2 items 
     item {
         // 3-rd item, row = 0, column = 2
     }
@@ -131,12 +119,10 @@ GridPad(
 }
 ```
 
-![place_items_dark](https://user-images.githubusercontent.com/2251498/204765288-5c55bc60-4053-4556-b68a-d257944435c6.png)
-
-> :warning: When the placement reaches the last row and column, the following items will be ignored.
+> :warning: When the placement reaches the last cell, the following items will be ignored.
 > Placing items outside the grid is not allowed.
 
-To place an item explicitly needs to specify one or both properties `row` and `column` in the item.
+To place an item explicitly needs to specify both properties `row` and `column` in the item.
 When defines `row` and `column` property it's also possible to place all items in a different order
 without regard to the actual location.
 
@@ -155,16 +141,48 @@ GridPad(
 
 ![place_items_specific_dark](https://user-images.githubusercontent.com/2251498/204765324-211e2044-593b-41aa-893e-ad62565c9ded.png)
 
-When specified only one of the `row` and `column` properties the logic will be the following:
-
-* If the `row` property is skipped, the row will be equal to the last placed item's row.
-* If the `column` property is skipped, the row will be next after the last placed item (including
-  span size). When the last item is placed at the last column in a row then the next items start
-  placed at the next line from the first column.
-
 > :warning: A cell can contain more than one item. The draw order will be the same as the place
 > order. GridPad does not limit the item's size when the child has an explicit size. That means that
 > the item can go outside the cell bounds.
+
+## Placement policy
+
+To define the direction of placement items in an implicit method used the `placementPolicy` 
+property.
+
+```kotlin
+GridPad(
+    cells = GridPadCells(rowCount = 3, columnCount = 4),
+    placementPolicy = GridPadPlacementPolicy(
+        mainAxis = GridPadPlacementPolicy.MainAxis.HORIZONTAL,
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.START_END,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.TOP_BOTTOM
+    )
+) {
+    // content
+}
+```
+
+The `GridPadPlacementPolicy` class has three properties that allow controlling different aspects 
+of placement items.
+
+* `mainAxis` sets the axis along which the item will be placed. When the axis is filled to the end,
+  the next item will be placed on the next axis. If `mainAxis` is `HORIZONTAL` then items will be
+  placed sequentially one by one by horizontal line. If `mainAxis` is `VERTICAL` then items will be
+  placed sequentially one by one by vertical line.
+* `horizontalDirection` sets the direction of placement horizontally. When `mainAxis` is
+  `HORIZONTAL` this property describes the direction of placement of the next item. When `mainAxis`
+  is `VERTICAL` this property describes the direction of moving to the next axis. The `START_END`
+  means that the direction of placement items or moving main axis will begin from the start layout
+  direction and move to the end layout direction (depending on LTR or RTL). The `END_START` means
+  the same but in the opposite order.
+* `verticalDirection` sets the direction of placement vertically. When `mainAxis` is
+  `VERTICAL` this property describes the direction of placement of the next item. When `mainAxis`
+  is `HORIZONTAL` this property describes the direction of moving to the next axis. The `TOP_BOTTOM`
+  means that the direction of placement items or moving main axis will begin from the top and
+  move to the bottom. The `BOTTOM_TOP` means the same but in the opposite order.
+
+![placement_policy](https://user-images.githubusercontent.com/2251498/209689448-3a89070b-7640-4a2d-8654-9873f960e747.png)
 
 ## Spans
 
@@ -187,6 +205,7 @@ GridPad(
 ![spanned_dark](https://user-images.githubusercontent.com/2251498/204765367-86177508-5551-4076-b6a1-b48b8f183f9d.png)
 
 When an item has a span that goes outside the grid, the item is skipped and doesn't draw at all.
+You can handle skipping cases by [diagnostic logger](#diagnostic).
 
 ```kotlin
 GridPad(
@@ -202,6 +221,37 @@ GridPad(
 > :warning: When you have a complex structure it's highly recommended to use an **explicit** method
 > of placing all items to avoid unpredictable behavior and mistakes during the placement of the
 > items.
+
+
+## Anchor
+
+When `rowSpan` or `columnSpan` is more than 1 then the content is placed relative to the implicit 
+parameter - **anchor**. The anchor is the point in the corner from which the span expands. 
+The value depends on `horizontalDirection` and `verticalDirection` values in the `placementPolicy` 
+property.
+
+![anchor](https://user-images.githubusercontent.com/2251498/209725897-ab8d840d-0744-4ff6-89a7-f786e1522203.png)
+
+## Layout Direction
+
+The library handles the parent's layout direction value. That means that placement in **RTL**
+direction with `horizontalDirection = START_END` will have the same behavior as **LTR** direction
+with `horizontalDirection = END_START`.
+
+## Diagnostic
+
+The library doesn't throw any exceptions when an item is tried to place outside of the defined grid. 
+Instead, the library just sends a signal through the special class `GridPadDiagnosticLogger`, 
+skipping this item and moving to the next one. This silent behavior might be not suitable during 
+the development process, so there is a way to have more control - define a custom listener. 
+As a dev solution, you can just redirect the message to the console log or throw an exception to 
+fix it immediately.
+
+```kotlin
+GridPadDiagnosticLogger.skippingItemListener = { message -> 
+    Log.w("GridPad", message)
+}
+```
 
 # Performance
 
