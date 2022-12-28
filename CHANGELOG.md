@@ -3,6 +3,8 @@ Change Log
 
 ## Version 1.0.0
 
+_2022-12-28_
+
 * **New**: added `GridPadPlacementPolicy` class that used to control implicit placement policy
   for items
 * **New**: added `GridPadDiagnosticLogger` diagnostic class to receive information about skipped
