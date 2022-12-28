@@ -35,7 +35,7 @@ Add the dependency below to your **module's** `build.gradle` file:
 
 ```groovy
 dependencies {
-    implementation "com.touchlane:gridpad:0.0.4"
+    implementation "com.touchlane:gridpad:1.0.0"
 }
 ```
 
