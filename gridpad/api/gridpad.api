@@ -1,4 +1,5 @@
 public abstract class com/touchlane/gridpad/GridPadCellSize {
+	public static final field $stable I
 	public static final field Companion Lcom/touchlane/gridpad/GridPadCellSize$Companion;
 }
 
@@ -32,18 +33,19 @@ public final class com/touchlane/gridpad/GridPadCellSize$Weight : com/touchlane/
 }
 
 public final class com/touchlane/gridpad/GridPadCells {
+	public static final field $stable I
 	public fun <init> (II)V
 	public fun <init> (Ljava/lang/Iterable;Ljava/lang/Iterable;)V
-	public fun <init> (Lkotlinx/collections/immutable/ImmutableCollection;Lkotlinx/collections/immutable/ImmutableCollection;)V
-	public final fun component1 ()Lkotlinx/collections/immutable/ImmutableCollection;
-	public final fun component2 ()Lkotlinx/collections/immutable/ImmutableCollection;
-	public final fun copy (Lkotlinx/collections/immutable/ImmutableCollection;Lkotlinx/collections/immutable/ImmutableCollection;)Lcom/touchlane/gridpad/GridPadCells;
-	public static synthetic fun copy$default (Lcom/touchlane/gridpad/GridPadCells;Lkotlinx/collections/immutable/ImmutableCollection;Lkotlinx/collections/immutable/ImmutableCollection;ILjava/lang/Object;)Lcom/touchlane/gridpad/GridPadCells;
+	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;)V
+	public final fun component1 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component2 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;)Lcom/touchlane/gridpad/GridPadCells;
+	public static synthetic fun copy$default (Lcom/touchlane/gridpad/GridPadCells;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;ILjava/lang/Object;)Lcom/touchlane/gridpad/GridPadCells;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getColumnCount ()I
-	public final fun getColumnSizes ()Lkotlinx/collections/immutable/ImmutableCollection;
+	public final fun getColumnSizes ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun getRowCount ()I
-	public final fun getRowSizes ()Lkotlinx/collections/immutable/ImmutableCollection;
+	public final fun getRowSizes ()Lkotlinx/collections/immutable/ImmutableList;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -66,16 +68,80 @@ public final class com/touchlane/gridpad/GridPadCellsKt {
 	public static synthetic fun weight$default (Lcom/touchlane/gridpad/GridPadCellSize$Companion;IFILjava/lang/Object;)Ljava/util/List;
 }
 
+public final class com/touchlane/gridpad/GridPadDiagnosticLogger {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/touchlane/gridpad/GridPadDiagnosticLogger;
+	public final fun getListener ()Lcom/touchlane/gridpad/GridPadDiagnosticLogger$Listener;
+	public final fun setListener (Lcom/touchlane/gridpad/GridPadDiagnosticLogger$Listener;)V
+}
+
+public abstract interface class com/touchlane/gridpad/GridPadDiagnosticLogger$Listener {
+	public abstract fun onItemSkipped (Ljava/lang/String;)V
+}
+
+public final class com/touchlane/gridpad/GridPadDiagnosticLogger$Listener$DefaultImpls {
+	public static fun onItemSkipped (Lcom/touchlane/gridpad/GridPadDiagnosticLogger$Listener;Ljava/lang/String;)V
+}
+
 public final class com/touchlane/gridpad/GridPadDslKt {
-	public static final fun GridPad (Lcom/touchlane/gridpad/GridPadCells;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun GridPad (Lcom/touchlane/gridpad/GridPadCells;Landroidx/compose/ui/Modifier;Lcom/touchlane/gridpad/GridPadPlacementPolicy;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
+public abstract interface class com/touchlane/gridpad/GridPadItemScope {
+}
+
+public final class com/touchlane/gridpad/GridPadPlacementPolicy {
+	public static final field $stable I
+	public static final field Companion Lcom/touchlane/gridpad/GridPadPlacementPolicy$Companion;
+	public fun <init> ()V
+	public fun <init> (Lcom/touchlane/gridpad/GridPadPlacementPolicy$MainAxis;Lcom/touchlane/gridpad/GridPadPlacementPolicy$HorizontalDirection;Lcom/touchlane/gridpad/GridPadPlacementPolicy$VerticalDirection;)V
+	public synthetic fun <init> (Lcom/touchlane/gridpad/GridPadPlacementPolicy$MainAxis;Lcom/touchlane/gridpad/GridPadPlacementPolicy$HorizontalDirection;Lcom/touchlane/gridpad/GridPadPlacementPolicy$VerticalDirection;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/touchlane/gridpad/GridPadPlacementPolicy$MainAxis;
+	public final fun component2 ()Lcom/touchlane/gridpad/GridPadPlacementPolicy$HorizontalDirection;
+	public final fun component3 ()Lcom/touchlane/gridpad/GridPadPlacementPolicy$VerticalDirection;
+	public final fun copy (Lcom/touchlane/gridpad/GridPadPlacementPolicy$MainAxis;Lcom/touchlane/gridpad/GridPadPlacementPolicy$HorizontalDirection;Lcom/touchlane/gridpad/GridPadPlacementPolicy$VerticalDirection;)Lcom/touchlane/gridpad/GridPadPlacementPolicy;
+	public static synthetic fun copy$default (Lcom/touchlane/gridpad/GridPadPlacementPolicy;Lcom/touchlane/gridpad/GridPadPlacementPolicy$MainAxis;Lcom/touchlane/gridpad/GridPadPlacementPolicy$HorizontalDirection;Lcom/touchlane/gridpad/GridPadPlacementPolicy$VerticalDirection;ILjava/lang/Object;)Lcom/touchlane/gridpad/GridPadPlacementPolicy;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHorizontalDirection ()Lcom/touchlane/gridpad/GridPadPlacementPolicy$HorizontalDirection;
+	public final fun getMainAxis ()Lcom/touchlane/gridpad/GridPadPlacementPolicy$MainAxis;
+	public final fun getVerticalDirection ()Lcom/touchlane/gridpad/GridPadPlacementPolicy$VerticalDirection;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/touchlane/gridpad/GridPadPlacementPolicy$Companion {
+	public final fun getDEFAULT ()Lcom/touchlane/gridpad/GridPadPlacementPolicy;
+}
+
+public final class com/touchlane/gridpad/GridPadPlacementPolicy$HorizontalDirection : java/lang/Enum {
+	public static final field END_START Lcom/touchlane/gridpad/GridPadPlacementPolicy$HorizontalDirection;
+	public static final field START_END Lcom/touchlane/gridpad/GridPadPlacementPolicy$HorizontalDirection;
+	public static fun valueOf (Ljava/lang/String;)Lcom/touchlane/gridpad/GridPadPlacementPolicy$HorizontalDirection;
+	public static fun values ()[Lcom/touchlane/gridpad/GridPadPlacementPolicy$HorizontalDirection;
+}
+
+public final class com/touchlane/gridpad/GridPadPlacementPolicy$MainAxis : java/lang/Enum {
+	public static final field HORIZONTAL Lcom/touchlane/gridpad/GridPadPlacementPolicy$MainAxis;
+	public static final field VERTICAL Lcom/touchlane/gridpad/GridPadPlacementPolicy$MainAxis;
+	public static fun valueOf (Ljava/lang/String;)Lcom/touchlane/gridpad/GridPadPlacementPolicy$MainAxis;
+	public static fun values ()[Lcom/touchlane/gridpad/GridPadPlacementPolicy$MainAxis;
+}
+
+public final class com/touchlane/gridpad/GridPadPlacementPolicy$VerticalDirection : java/lang/Enum {
+	public static final field BOTTOM_TOP Lcom/touchlane/gridpad/GridPadPlacementPolicy$VerticalDirection;
+	public static final field TOP_BOTTOM Lcom/touchlane/gridpad/GridPadPlacementPolicy$VerticalDirection;
+	public static fun valueOf (Ljava/lang/String;)Lcom/touchlane/gridpad/GridPadPlacementPolicy$VerticalDirection;
+	public static fun values ()[Lcom/touchlane/gridpad/GridPadPlacementPolicy$VerticalDirection;
 }
 
 public abstract interface class com/touchlane/gridpad/GridPadScope {
-	public abstract fun item (Ljava/lang/Integer;Ljava/lang/Integer;IILkotlin/jvm/functions/Function2;)V
+	public abstract fun item (IIIILkotlin/jvm/functions/Function3;)V
+	public abstract fun item (IILkotlin/jvm/functions/Function3;)V
 }
 
 public final class com/touchlane/gridpad/GridPadScope$DefaultImpls {
-	public static synthetic fun item$default (Lcom/touchlane/gridpad/GridPadScope;Ljava/lang/Integer;Ljava/lang/Integer;IILkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
+	public static synthetic fun item$default (Lcom/touchlane/gridpad/GridPadScope;IIIILkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public static synthetic fun item$default (Lcom/touchlane/gridpad/GridPadScope;IILkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
 }
 
 public abstract interface annotation class com/touchlane/gridpad/GridPadScopeMarker : java/lang/annotation/Annotation {

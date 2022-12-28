@@ -1,4 +1,4 @@
-name: Test
+name: Quality Control
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
     branches: ['*']
 
 jobs:
-  test:
-    name: Test
+  quality-control:
+    name: Quality Control
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -19,6 +19,11 @@ jobs:
         with:
           distribution: adopt
           java-version: 11
+
+      # Run static analyze
+      - name: Run static analyze
+        run: ./gradlew :gridpad:detekt
+
       # Run unit testing
       - name: Run unit testing
         run: ./gradlew :gridpad:test

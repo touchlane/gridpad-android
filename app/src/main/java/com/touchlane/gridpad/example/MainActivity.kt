@@ -30,17 +30,18 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.touchlane.gridpad.GridPad
 import com.touchlane.gridpad.GridPadCellSize
 import com.touchlane.gridpad.GridPadCells
+import com.touchlane.gridpad.GridPadPlacementPolicy
 import com.touchlane.gridpad.example.ui.component.*
 import com.touchlane.gridpad.example.ui.theme.*
 
@@ -75,7 +76,7 @@ fun PadCard(ratio: Float = 1f, content: @Composable () -> Unit) {
 }
 
 @Composable
-fun BlueprintCard(ratio: Float = 1f, content: @Composable () -> Unit) {
+fun BlueprintCard(ratio: Float = 1f, title: String? = null, content: @Composable () -> Unit) {
     Card(
         Modifier
             .fillMaxWidth()
@@ -83,27 +84,21 @@ fun BlueprintCard(ratio: Float = 1f, content: @Composable () -> Unit) {
             .padding(16.dp),
         colors = CardDefaults.cardColors(AndreaBlue)
     ) {
+        if (title != null) {
+            Text(
+                text = title,
+                modifier = Modifier
+                    .padding(top = 32.dp, start = 32.dp, end = 32.dp)
+                    .background(AndreaBlue),
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
         Box(
             modifier = Modifier
                 .padding(32.dp)
                 .background(AndreaBlue)
         ) {
             content()
-        }
-    }
-}
-
-@Composable
-fun PinPadCard() {
-    PadCard(ratio = 1.2f) {
-        PinPadTheme(
-            colors = PinPadColors(
-                content = White,
-                removeContent = HeatWave,
-                background = AswadBlack
-            )
-        ) {
-            PinPad()
         }
     }
 }
@@ -185,7 +180,7 @@ fun SimpleBlueprintCard() {
         GridPad(
             cells = GridPadCells(rowCount = 3, columnCount = 4)
         ) {
-            repeat(12) { item { BlueprintBox() } }
+            repeat(13) { item { BlueprintBox() } }
         }
     }
 }
@@ -208,10 +203,14 @@ fun CustomSizeBlueprintCard() {
 @Composable
 fun SimpleBlueprintCardWithContent() {
     BlueprintCard(ratio = 1.5f) {
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
-            repeat(12) { item { BlueprintBox() } }
+        val rowCount = 3
+        val columnCount = 4
+        GridPad(cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)) {
+            repeat(rowCount * columnCount) { item { BlueprintBox() } }
         }
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
+        GridPad(
+            cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)
+        ) {
             item { ContentBlueprintBox("[0;0]") }
             item { ContentBlueprintBox("[0;1]") }
         }
@@ -221,10 +220,14 @@ fun SimpleBlueprintCardWithContent() {
 @Composable
 fun SimpleBlueprintCardWithContentMixOrdering() {
     BlueprintCard(ratio = 1.5f) {
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
-            repeat(12) { item { BlueprintBox() } }
+        val rowCount = 3
+        val columnCount = 4
+        GridPad(cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)) {
+            repeat(rowCount * columnCount) { item { BlueprintBox() } }
         }
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
+        GridPad(
+            cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)
+        ) {
             item(row = 1, column = 2) { ContentBlueprintBox("[1;2]\nOrder: 1") }
             item(row = 0, column = 1) { ContentBlueprintBox("[0;1]\nOrder: 2") }
         }
@@ -234,11 +237,13 @@ fun SimpleBlueprintCardWithContentMixOrdering() {
 @Composable
 fun SimpleBlueprintCardWithSpans() {
     BlueprintCard(ratio = 1.5f) {
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
-            repeat(12) { item { BlueprintBox() } }
+        val rowCount = 3
+        val columnCount = 4
+        GridPad(cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)) {
+            repeat(rowCount * columnCount) { item { BlueprintBox() } }
         }
         GridPad(
-            cells = GridPadCells(rowCount = 3, columnCount = 4)
+            cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)
         ) {
             item(rowSpan = 3, columnSpan = 2) {
                 ContentBlueprintBox("[0;0]\nSpan: 3x2")
@@ -253,17 +258,124 @@ fun SimpleBlueprintCardWithSpans() {
 @Composable
 fun SimpleBlueprintCardWithSpansOverlapped() {
     BlueprintCard(ratio = 1.5f) {
-        GridPad(cells = GridPadCells(rowCount = 3, columnCount = 4)) {
-            repeat(12) { item { BlueprintBox() } }
+        val rowCount = 3
+        val columnCount = 4
+        GridPad(cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)) {
+            repeat(rowCount * columnCount) { item { BlueprintBox() } }
         }
         GridPad(
-            cells = GridPadCells(rowCount = 3, columnCount = 4)
+            cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)
         ) {
             item(rowSpan = 3, columnSpan = 2) {
                 ContentBlueprintBox("[0;0]\nSpan: 3x2")
             }
             item(row = 2, column = 1, columnSpan = 3) {
                 ContentBlueprintBox("[2;1]\nSpan: 1x3, overlapped")
+            }
+        }
+    }
+}
+
+@Composable
+fun SimpleBlueprintCardPolicyHorizontalSeTb() {
+    SimpleBlueprintCardPolicy(
+        mainAxis = GridPadPlacementPolicy.MainAxis.HORIZONTAL,
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.START_END,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.TOP_BOTTOM
+    )
+}
+
+@Composable
+fun SimpleBlueprintCardPolicyHorizontalEsTb() {
+    SimpleBlueprintCardPolicy(
+        mainAxis = GridPadPlacementPolicy.MainAxis.HORIZONTAL,
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.END_START,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.TOP_BOTTOM
+    )
+}
+
+@Composable
+fun SimpleBlueprintCardPolicyHorizontalSeBt() {
+    SimpleBlueprintCardPolicy(
+        mainAxis = GridPadPlacementPolicy.MainAxis.HORIZONTAL,
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.START_END,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.BOTTOM_TOP
+    )
+}
+
+@Composable
+fun SimpleBlueprintCardPolicyHorizontalEsBt() {
+    SimpleBlueprintCardPolicy(
+        mainAxis = GridPadPlacementPolicy.MainAxis.HORIZONTAL,
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.END_START,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.BOTTOM_TOP
+    )
+}
+
+@Composable
+fun SimpleBlueprintCardPolicyVerticalSeTb() {
+    SimpleBlueprintCardPolicy(
+        mainAxis = GridPadPlacementPolicy.MainAxis.VERTICAL,
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.START_END,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.TOP_BOTTOM
+    )
+}
+
+@Composable
+fun SimpleBlueprintCardPolicyVerticalEsTb() {
+    SimpleBlueprintCardPolicy(
+        mainAxis = GridPadPlacementPolicy.MainAxis.VERTICAL,
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.END_START,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.TOP_BOTTOM
+    )
+}
+
+@Composable
+fun SimpleBlueprintCardPolicyVerticalSeBt() {
+    SimpleBlueprintCardPolicy(
+        mainAxis = GridPadPlacementPolicy.MainAxis.VERTICAL,
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.START_END,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.BOTTOM_TOP
+    )
+}
+
+@Composable
+fun SimpleBlueprintCardPolicyVerticalEsBt() {
+    SimpleBlueprintCardPolicy(
+        mainAxis = GridPadPlacementPolicy.MainAxis.VERTICAL,
+        horizontalDirection = GridPadPlacementPolicy.HorizontalDirection.END_START,
+        verticalDirection = GridPadPlacementPolicy.VerticalDirection.BOTTOM_TOP
+    )
+}
+
+@Composable
+fun SimpleBlueprintCardPolicy(
+    mainAxis: GridPadPlacementPolicy.MainAxis,
+    horizontalDirection: GridPadPlacementPolicy.HorizontalDirection,
+    verticalDirection: GridPadPlacementPolicy.VerticalDirection
+) {
+    val layoutDirection = LocalLayoutDirection.current
+    BlueprintCard(
+        ratio = 1.2f,
+        title = "LayoutDirection = $layoutDirection\nmainAxis = $mainAxis\nhorizontal = $horizontalDirection\nvertical = $verticalDirection"
+    ) {
+        val rowCount = 3
+        val columnCount = 4
+        GridPad(cells = GridPadCells(rowCount = rowCount, columnCount = columnCount)) {
+            repeat(rowCount * columnCount) { item { BlueprintBox() } }
+        }
+        GridPad(
+            cells = GridPadCells(rowCount = rowCount, columnCount = columnCount),
+            placementPolicy = GridPadPlacementPolicy(
+                mainAxis = mainAxis,
+                horizontalDirection = horizontalDirection,
+                verticalDirection = verticalDirection
+            )
+        ) {
+            repeat(rowCount * columnCount) {
+                item {
+                    ContentBlueprintBox("$it")
+                }
             }
         }
     }
@@ -285,9 +397,6 @@ fun ListOfPads(modifier: Modifier = Modifier) {
             SimpleCalculatorPadCard()
         }
         item {
-            PinPadCard()
-        }
-        item {
             SimpleBlueprintCard()
         }
         item {
@@ -304,6 +413,35 @@ fun ListOfPads(modifier: Modifier = Modifier) {
         }
         item {
             SimpleBlueprintCardWithSpansOverlapped()
+        }
+        item {
+            SimpleBlueprintCardPolicyHorizontalSeTb()
+        }
+        item {
+            SimpleBlueprintCardPolicyHorizontalEsTb()
+        }
+        item {
+            SimpleBlueprintCardPolicyHorizontalSeBt()
+        }
+        item {
+            SimpleBlueprintCardPolicyHorizontalEsBt()
+        }
+        item {
+            SimpleBlueprintCardPolicyVerticalSeTb()
+        }
+        item {
+            SimpleBlueprintCardPolicyVerticalEsTb()
+        }
+        item {
+            SimpleBlueprintCardPolicyVerticalSeBt()
+        }
+        item {
+            SimpleBlueprintCardPolicyVerticalEsBt()
+        }
+        item {
+            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+                SimpleBlueprintCardPolicyHorizontalSeTb()
+            }
         }
     }
 }

@@ -24,8 +24,22 @@
 
 package com.touchlane.gridpad
 
-import androidx.compose.runtime.Stable
+/**
+ * Used to send diagnostic signals.
+ * Default implementation is `null` and doing nothing, to handle need to set custom
+ * [skippingItemListener].
+ */
+public object GridPadDiagnosticLogger {
 
-@Stable
-@GridPadScopeMarker
-public interface GridPadItemScope
+    /**
+     * Called when item has been skipped due to out the grid bounds.
+     */
+    public var skippingItemListener: ((message: String) -> Unit)? = null
+
+    /**
+     * Send skipped item signal
+     */
+    internal fun onItemSkipped(message: () -> String) {
+        skippingItemListener?.invoke(message())
+    }
+}
