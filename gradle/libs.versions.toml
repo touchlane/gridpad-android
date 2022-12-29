@@ -17,7 +17,7 @@ kotlinCompatibilityValidator = "0.12.1"
 kotlinxCollectionsImmutable = "0.3.5"
 kover = "0.6.1"
 nexusPublish = "1.1.0"
-robolectric = "4.9.1"
+robolectric = "4.9.2"
 versionsChecker = "0.44.0"
 versionsUpdater = "0.7.0"
 
@@ -56,7 +56,6 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinCompatibilityValidator" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublish" }
 versions-checker = { id = "com.github.ben-manes.versions", version.ref = "versionsChecker" }
