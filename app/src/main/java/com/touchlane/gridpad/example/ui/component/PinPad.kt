@@ -35,6 +35,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.touchlane.gridpad.GridPad
 import com.touchlane.gridpad.GridPadCells
+import com.touchlane.gridpad.GridPadPlacementPolicy
+import com.touchlane.gridpad.GridPadPlacementPolicy.VerticalDirection.BOTTOM_TOP
 import com.touchlane.gridpad.example.ui.theme.GridPadExampleTheme
 
 @Composable
@@ -47,38 +49,9 @@ fun PinPad(modifier: Modifier = Modifier, onClick: (action: Char) -> Unit = {}) 
     ) {
         GridPad(
             cells = GridPadCells.Builder(rowCount = 4, columnCount = 3).build(),
+            placementPolicy = GridPadPlacementPolicy(verticalDirection = BOTTOM_TOP),
             modifier = modifier
         ) {
-            //row 0
-            item {
-                LargeTextPadButton(text = "7", onClick = { onClick('7') })
-            }
-            item {
-                LargeTextPadButton(text = "8", onClick = { onClick('8') })
-            }
-            item {
-                LargeTextPadButton(text = "9", onClick = { onClick('9') })
-            }
-            //row 1
-            item {
-                LargeTextPadButton(text = "4", onClick = { onClick('4') })
-            }
-            item {
-                LargeTextPadButton(text = "5", onClick = { onClick('5') })
-            }
-            item {
-                LargeTextPadButton(text = "6", onClick = { onClick('6') })
-            }
-            //row 2
-            item {
-                LargeTextPadButton(text = "1", onClick = { onClick('1') })
-            }
-            item {
-                LargeTextPadButton(text = "2", onClick = { onClick('2') })
-            }
-            item {
-                LargeTextPadButton(text = "3", onClick = { onClick('3') })
-            }
             //row 3
             item(row = 3, column = 1) {
                 LargeTextPadButton(text = "0", onClick = { onClick('0') })
@@ -92,6 +65,36 @@ fun PinPad(modifier: Modifier = Modifier, onClick: (action: Char) -> Unit = {}) 
                 ) {
                     IconPadButton(icon = Icons.Default.Backspace, onClick = { onClick('r') })
                 }
+            }
+            //row 2
+            item {
+                LargeTextPadButton(text = "1", onClick = { onClick('1') })
+            }
+            item {
+                LargeTextPadButton(text = "2", onClick = { onClick('2') })
+            }
+            item {
+                LargeTextPadButton(text = "3", onClick = { onClick('3') })
+            }
+            //row 1
+            item {
+                LargeTextPadButton(text = "4", onClick = { onClick('4') })
+            }
+            item {
+                LargeTextPadButton(text = "5", onClick = { onClick('5') })
+            }
+            item {
+                LargeTextPadButton(text = "6", onClick = { onClick('6') })
+            }
+            //row 0
+            item {
+                LargeTextPadButton(text = "7", onClick = { onClick('7') })
+            }
+            item {
+                LargeTextPadButton(text = "8", onClick = { onClick('8') })
+            }
+            item {
+                LargeTextPadButton(text = "9", onClick = { onClick('9') })
             }
         }
     }
