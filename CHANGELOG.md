@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+## Version 1.1.0
+
+* **API Change**: helper extension signature from
+  `GridPadCellSize.Companion.fixed(sizes: Array<Dp>)`
+  to `GridPadCellSize.Companion.fixed(vararg sizes: Dp)`
+* **API Change**: helper extension signature from
+  `GridPadCellSize.Companion.weight(sizes: FloatArray)` to
+  `GridPadCellSize.Companion.weight(vararg sizes: Float)`
+
 ## Version 1.0.0
 
 _2022-12-28_
@@ -14,8 +23,8 @@ _2022-12-28_
 * **Behavior Change**: implicit placement of elements depends on `placementPolicy` property
 * **Behavior Change**: span expands depends on `placementPolicy` property
 
-The new API shouldn't affect your code by default. Only one case can be affected by library 
-update - cases when only one of the `row` or `column` parameters was defined in GridPad.item. 
+The new API shouldn't affect your code by default. Only one case can be affected by library
+update - cases when only one of the `row` or `column` parameters was defined in GridPad.item.
 This way of using is no more acceptable for not enough clear behavior reasons.
 
 ## Version 0.0.4

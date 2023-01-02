@@ -38,6 +38,8 @@ public object GridPadDiagnosticLogger {
 
     /**
      * Send skipped item signal
+     *
+     * @param message detailed message
      */
     internal fun onItemSkipped(message: () -> String) {
         skippingItemListener?.invoke(message())
