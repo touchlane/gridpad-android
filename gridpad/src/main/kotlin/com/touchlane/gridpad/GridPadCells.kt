@@ -215,9 +215,10 @@ public fun GridPadCellSize.Companion.fixed(count: Int, size: Dp): MutableList<Gr
  * Create a list of fixed cell sizes with passed fixed sizes in dp.
  *
  * @param sizes array of fixed sizes in dp
+ *
+ * TODO: replace to vararg after fix https://youtrack.jetbrains.com/issue/KT-33565/Allow-vararg-parameter-of-inline-class-type
  */
-@Suppress("FINAL_UPPER_BOUND") //remove after fix https://youtrack.jetbrains.com/issue/KT-33565/Allow-vararg-parameter-of-inline-class-type
-public fun <T : Dp> GridPadCellSize.Companion.fixed(vararg sizes: T): MutableList<GridPadCellSize> {
+public fun GridPadCellSize.Companion.fixed(sizes: Array<Dp>): MutableList<GridPadCellSize> {
     return sizes.map { GridPadCellSize.Fixed(size = it) }.toMutableList()
 }
 

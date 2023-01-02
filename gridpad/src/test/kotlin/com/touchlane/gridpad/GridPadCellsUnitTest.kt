@@ -111,7 +111,7 @@ class GridPadCellsUnitTest {
         )
         assertEquals(
             listOf(GridPadCellSize.Fixed(1.dp), GridPadCellSize.Fixed(2.dp)),
-            GridPadCellSize.fixed(1.dp, 2.dp)
+            GridPadCellSize.fixed(arrayOf(1.dp, 2.dp))
         )
         assertEquals(
             listOf(GridPadCellSize.Weight(0.5f), GridPadCellSize.Weight(0.5f)),

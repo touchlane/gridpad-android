@@ -4,9 +4,6 @@ Change Log
 ## Version 1.1.0
 
 * **API Change**: helper extension signature from
-  `GridPadCellSize.Companion.fixed(sizes: Array<Dp>)`
-  to `GridPadCellSize.Companion.fixed(vararg sizes: Dp)`
-* **API Change**: helper extension signature from
   `GridPadCellSize.Companion.weight(sizes: FloatArray)` to
   `GridPadCellSize.Companion.weight(vararg sizes: Float)`
 
