@@ -24,21 +24,14 @@
 
 package com.touchlane.gridpad
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.Before
+import org.robolectric.shadows.ShadowLog
 
-class GridPadDiagnosticLoggerUnitTest : LoggerTest() {
+open class LoggerTest {
 
-    @Test
-    fun `Test diagnostic logger message`() {
-        var consumedMessage = ""
-        val callback: (message: String) -> Unit = { message ->
-            consumedMessage = message
-        }
-        GridPadDiagnosticLogger.onItemSkipped { "Message" }
-        assertEquals("", consumedMessage)
-        GridPadDiagnosticLogger.skippingItemListener = callback
-        GridPadDiagnosticLogger.onItemSkipped { "Message" }
-        assertEquals("Message", consumedMessage)
+    @Before
+    @Throws(Exception::class)
+    fun setUp() {
+        ShadowLog.stream = System.out
     }
 }

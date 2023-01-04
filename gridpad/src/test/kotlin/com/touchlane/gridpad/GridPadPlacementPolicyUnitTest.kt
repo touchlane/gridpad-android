@@ -38,7 +38,7 @@ import org.junit.Test
 /**
  * Tests for GridPadPlacementPolicy
  */
-class GridPadPlacementPolicyUnitTest {
+class GridPadPlacementPolicyUnitTest : LoggerTest() {
 
     @Test
     fun `Test anchor default initialization`() {
