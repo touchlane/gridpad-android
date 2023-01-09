@@ -79,6 +79,19 @@ internal class GridPadScopeImpl(
         }
     }
 
+    /**
+     * Place content into the grid implicitly.
+     * Content may not be placed if the last item has already been placed or if the content goes
+     * beyond the grid.
+     * This method searches the row and column indices for the content and passes the information
+     * to the [placeExplicitly] method.
+     *
+     * @see placeExplicitly
+     *
+     * @param rowSpan row span size, in cells, must be >0
+     * @param columnSpan column span size, in cells, must be >0
+     * @param itemContent placed content
+     */
     private fun placeImplicitly(
         rowSpan: Int,
         columnSpan: Int,
@@ -112,6 +125,18 @@ internal class GridPadScopeImpl(
         )
     }
 
+    /**
+     * Place content into the grid explicitly.
+     * Content may not be placed if the content goes beyond the grid.
+     *
+     * @see placeImplicitly
+     *
+     * @param row row index
+     * @param column column index
+     * @param rowSpan row span size, in cells, must be >0
+     * @param columnSpan column span size, in cells, must be >0
+     * @param itemContent placed content
+     */
     private fun placeExplicitly(
         row: Int,
         column: Int,
@@ -144,6 +169,15 @@ internal class GridPadScopeImpl(
         }
     }
 
+    /**
+     * Put cell content into internal display list.
+     *
+     * @param left left index of the cell
+     * @param top top index of the cell
+     * @param right right index of the cell
+     * @param bottom bottom index of the cell
+     * @param itemContent content
+     */
     private fun onPlaced(
         left: Int,
         top: Int,
