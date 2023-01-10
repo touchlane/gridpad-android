@@ -31,12 +31,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.touchlane.gridpad.GridPadPlacementPolicy.HorizontalDirection.*
 import com.touchlane.gridpad.GridPadPlacementPolicy.MainAxis.*
@@ -200,7 +203,7 @@ class GridPadScopeTest : LoggerTest() {
     }
 
     @Test
-    fun `Check placement mainH horSE verTB`() = with(composeTestRule) {
+    fun `Check placement mainH horSE verTB LTR`() = with(composeTestRule) {
         placeItems(
             GridPadPlacementPolicy(
                 mainAxis = HORIZONTAL,
@@ -216,7 +219,24 @@ class GridPadScopeTest : LoggerTest() {
     }
 
     @Test
-    fun `Check placement mainH horES verTB`() = with(composeTestRule) {
+    fun `Check placement mainH horSE verTB RTL`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = HORIZONTAL,
+                horizontalDirection = START_END,
+                verticalDirection = TOP_BOTTOM
+            ),
+            LayoutDirection.Rtl
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheLeftOf(cell0))
+        assertTrue(cell3.isLocatedToTheBottomOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainH horES verTB LTR`() = with(composeTestRule) {
         placeItems(
             GridPadPlacementPolicy(
                 mainAxis = HORIZONTAL,
@@ -232,7 +252,7 @@ class GridPadScopeTest : LoggerTest() {
     }
 
     @Test
-    fun `Check placement mainH horES verBT`() = with(composeTestRule) {
+    fun `Check placement mainH horES verBT LTR`() = with(composeTestRule) {
         placeItems(
             GridPadPlacementPolicy(
                 mainAxis = HORIZONTAL,
@@ -248,7 +268,7 @@ class GridPadScopeTest : LoggerTest() {
     }
 
     @Test
-    fun `Check placement mainH horSE verBT`() = with(composeTestRule) {
+    fun `Check placement mainH horSE verBT LTR`() = with(composeTestRule) {
         placeItems(
             GridPadPlacementPolicy(
                 mainAxis = HORIZONTAL,
@@ -264,7 +284,7 @@ class GridPadScopeTest : LoggerTest() {
     }
 
     @Test
-    fun `Check placement mainV horSE verTB`() = with(composeTestRule) {
+    fun `Check placement mainV horSE verTB LTR`() = with(composeTestRule) {
         placeItems(
             GridPadPlacementPolicy(
                 mainAxis = VERTICAL,
@@ -280,7 +300,7 @@ class GridPadScopeTest : LoggerTest() {
     }
 
     @Test
-    fun `Check placement mainV horES verTB`() = with(composeTestRule) {
+    fun `Check placement mainV horES verTB LTR`() = with(composeTestRule) {
         placeItems(
             GridPadPlacementPolicy(
                 mainAxis = VERTICAL,
@@ -296,7 +316,7 @@ class GridPadScopeTest : LoggerTest() {
     }
 
     @Test
-    fun `Check placement mainV horES verBT`() = with(composeTestRule) {
+    fun `Check placement mainV horES verBT LTR`() = with(composeTestRule) {
         placeItems(
             GridPadPlacementPolicy(
                 mainAxis = VERTICAL,
@@ -312,7 +332,7 @@ class GridPadScopeTest : LoggerTest() {
     }
 
     @Test
-    fun `Check placement mainV horSE verBT`() = with(composeTestRule) {
+    fun `Check placement mainV horSE verBT LTR`() = with(composeTestRule) {
         placeItems(
             GridPadPlacementPolicy(
                 mainAxis = VERTICAL,
@@ -327,17 +347,22 @@ class GridPadScopeTest : LoggerTest() {
         assertTrue(cell3.isLocatedToTheRightOf(cell0))
     }
 
-    private fun ComposeContentTestRule.placeItems(policy: GridPadPlacementPolicy) {
+    private fun ComposeContentTestRule.placeItems(
+        policy: GridPadPlacementPolicy,
+        layoutDirection: LayoutDirection = LayoutDirection.Ltr
+    ) {
         setContent {
             val rowCount = 3
             val columnCount = 3
-            Box(modifier = Modifier.size(30.dp, 30.dp)) {
-                GridPad(
-                    cells = GridPadCells(rowCount = rowCount, columnCount = columnCount),
-                    placementPolicy = policy
-                ) {
-                    repeat(rowCount * columnCount) {
-                        item { MaxSizeText(text = "$it") }
+            CompositionLocalProvider(LocalLayoutDirection provides layoutDirection) {
+                Box(modifier = Modifier.size(30.dp, 30.dp)) {
+                    GridPad(
+                        cells = GridPadCells(rowCount = rowCount, columnCount = columnCount),
+                        placementPolicy = policy
+                    ) {
+                        repeat(rowCount * columnCount) {
+                            item { MaxSizeText(text = "$it") }
+                        }
                     }
                 }
             }
