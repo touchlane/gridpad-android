@@ -1,24 +1,24 @@
 [versions]
-androidGradlePlugin = "7.4.0"
+androidGradlePlugin = "7.4.2"
 androidxActivity = "1.6.1"
 androidxComposeBom = "2023.01.00"
 # @keep for plugin, not used directly
-androidxComposeCompiler = "1.4.0"
+androidxComposeCompiler = "1.4.3"
 androidxCore = "1.9.0"
 androidxEspresso = "3.5.1"
 androidxLifecycleRuntime = "2.5.1"
 androidxTestExt = "1.1.5"
 detekt = "1.22.0"
-dokka = "1.7.20"
+dokka = "1.8.10"
 junit4 = "4.13.2"
 # @pin to use with compose
-kotlin = "1.8.0"
-kotlinCompatibilityValidator = "0.12.1"
+kotlin = "1.8.10"
+kotlinCompatibilityValidator = "0.13.0"
 kotlinxCollectionsImmutable = "0.3.5"
 kover = "0.6.1"
-nexusPublish = "1.1.0"
+nexusPublish = "1.2.0"
 robolectric = "4.9.2"
-versionsChecker = "0.44.0"
+versionsChecker = "0.46.0"
 versionsUpdater = "0.7.0"
 
 [libraries]
