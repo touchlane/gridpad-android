@@ -207,6 +207,14 @@ private fun MeasureScope.calculateSizesForDimension(
     return sizes
 }
 
+/**
+ * Stores information about the position and size of the cell in the parent bounds.
+ *
+ * @param x x position, in pixels
+ * @param y y position, in pixels
+ * @param width cell width, in pixels
+ * @param height cell height, in pixels
+ */
 private data class CellPlaceInfo(val x: Int, val y: Int, val width: Int, val height: Int)
 
 /**

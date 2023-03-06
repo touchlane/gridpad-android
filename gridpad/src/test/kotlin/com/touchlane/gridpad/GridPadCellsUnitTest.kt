@@ -33,7 +33,7 @@ import org.junit.Test
 /**
  * Tests for GridPadCells
  */
-class GridPadCellsUnitTest {
+class GridPadCellsUnitTest : LoggerTest() {
     @Test
     fun `Check equals() and hashCode() for the same GridPadCells`() {
         val left = GridPadCells.Builder(2, 4)
@@ -119,7 +119,7 @@ class GridPadCellsUnitTest {
         )
         assertEquals(
             listOf(GridPadCellSize.Weight(0.5f), GridPadCellSize.Weight(1.5f)),
-            GridPadCellSize.weight(floatArrayOf(0.5f, 1.5f))
+            GridPadCellSize.weight(0.5f, 1.5f)
         )
     }
 

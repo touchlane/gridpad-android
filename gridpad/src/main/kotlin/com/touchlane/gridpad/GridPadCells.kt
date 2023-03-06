@@ -82,7 +82,14 @@ public data class GridPadCells(
      */
     public class Builder(rowCount: Int, columnCount: Int) {
 
+        /**
+         * List of row sizes
+         */
         private val rowSizes: MutableList<GridPadCellSize> = GridPadCellSize.weight(rowCount)
+
+        /**
+         * List of column sizes
+         */
         private val columnSizes: MutableList<GridPadCellSize> = GridPadCellSize.weight(columnCount)
 
         /**
@@ -131,6 +138,9 @@ public data class GridPadCells(
     }
 }
 
+/**
+ * Calculate the total size for the defined cell sizes list.
+ */
 @VisibleForTesting
 internal fun Iterable<GridPadCellSize>.calculateTotalSize(): TotalSize {
     var totalWeightSize = 0f
@@ -191,14 +201,33 @@ public sealed class GridPadCellSize {
     public companion object
 }
 
+/**
+ * Create a list with length [count] of fixed cell sizes with size [size] in dp.
+ *
+ * @param count list size
+ * @param size size in dp
+ */
 public fun GridPadCellSize.Companion.fixed(count: Int, size: Dp): MutableList<GridPadCellSize> {
     return mutableListOfElement(count, GridPadCellSize.Fixed(size = size))
 }
 
+/**
+ * Create a list of fixed cell sizes with passed fixed sizes in dp.
+ *
+ * @param sizes array of fixed sizes in dp
+ *
+ * TODO: replace to vararg after fix https://youtrack.jetbrains.com/issue/KT-33565/Allow-vararg-parameter-of-inline-class-type
+ */
 public fun GridPadCellSize.Companion.fixed(sizes: Array<Dp>): MutableList<GridPadCellSize> {
     return sizes.map { GridPadCellSize.Fixed(size = it) }.toMutableList()
 }
 
+/**
+ * Create a list with length [count] of weight cell sizes with weight size [size].
+ *
+ * @param count list size
+ * @param size weight size
+ */
 public fun GridPadCellSize.Companion.weight(
     count: Int,
     size: Float = 1f
@@ -206,7 +235,12 @@ public fun GridPadCellSize.Companion.weight(
     return mutableListOfElement(count, GridPadCellSize.Weight(size = size))
 }
 
-public fun GridPadCellSize.Companion.weight(sizes: FloatArray): MutableList<GridPadCellSize> {
+/**
+ * Create a list of weight cell sizes with passed weight sizes.
+ *
+ * @param sizes array of weight sizes
+ */
+public fun GridPadCellSize.Companion.weight(vararg sizes: Float): MutableList<GridPadCellSize> {
     return sizes.map { GridPadCellSize.Weight(size = it) }.toMutableList()
 }
 

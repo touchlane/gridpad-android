@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022 Touchlane LLC tech@touchlane.com
+ * Copyright (c) 2023 Touchlane LLC tech@touchlane.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,24 +24,21 @@
 
 package com.touchlane.gridpad
 
-/**
- * Used to send diagnostic signals.
- * Default implementation is `null` and doing nothing, to handle need to set custom
- * [skippingItemListener].
- */
-public object GridPadDiagnosticLogger {
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
-    /**
-     * Called when item has been skipped due to out the grid bounds.
-     */
-    public var skippingItemListener: ((message: String) -> Unit)? = null
+class GridPadDiagnosticLoggerUnitTest : LoggerTest() {
 
-    /**
-     * Send skipped item signal
-     *
-     * @param message detailed message
-     */
-    internal fun onItemSkipped(message: () -> String) {
-        skippingItemListener?.invoke(message())
+    @Test
+    fun `Test diagnostic logger message`() {
+        var consumedMessage = ""
+        val callback: (message: String) -> Unit = { message ->
+            consumedMessage = message
+        }
+        GridPadDiagnosticLogger.onItemSkipped { "Message" }
+        assertEquals("", consumedMessage)
+        GridPadDiagnosticLogger.skippingItemListener = callback
+        GridPadDiagnosticLogger.onItemSkipped { "Message" }
+        assertEquals("Message", consumedMessage)
     }
 }

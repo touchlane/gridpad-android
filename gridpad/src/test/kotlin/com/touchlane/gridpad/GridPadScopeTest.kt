@@ -31,33 +31,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.touchlane.gridpad.GridPadPlacementPolicy.HorizontalDirection.*
+import com.touchlane.gridpad.GridPadPlacementPolicy.MainAxis.*
+import com.touchlane.gridpad.GridPadPlacementPolicy.VerticalDirection.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.shadows.ShadowLog
 
 @RunWith(RobolectricTestRunner::class)
-class GridPadScopeTest {
+class GridPadScopeTest : LoggerTest() {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-
-    @Before
-    @Throws(Exception::class)
-    fun setUp() {
-        ShadowLog.stream = System.out
-    }
 
     @Test
     fun `Check sequential addition of elements`() = with(composeTestRule) {
@@ -203,6 +201,284 @@ class GridPadScopeTest {
         val bounds06 = boundsForNodeWithText("0:6")
         assertEquals(Rect(65f, 0f, 76f, 10f), bounds06)
     }
+
+    @Test
+    fun `Check placement mainH horSE verTB LTR`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = HORIZONTAL,
+                horizontalDirection = START_END,
+                verticalDirection = TOP_BOTTOM
+            ), LayoutDirection.Ltr
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheRightOf(cell0))
+        assertTrue(cell3.isLocatedToTheBottomOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainH horSE verTB RTL`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = HORIZONTAL,
+                horizontalDirection = START_END,
+                verticalDirection = TOP_BOTTOM
+            ), LayoutDirection.Rtl
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheLeftOf(cell0))
+        assertTrue(cell3.isLocatedToTheBottomOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainH horES verTB LTR`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = HORIZONTAL,
+                horizontalDirection = END_START,
+                verticalDirection = TOP_BOTTOM
+            ), LayoutDirection.Ltr
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheLeftOf(cell0))
+        assertTrue(cell3.isLocatedToTheBottomOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainH horES verTB RTL`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = HORIZONTAL,
+                horizontalDirection = END_START,
+                verticalDirection = TOP_BOTTOM
+            ), LayoutDirection.Rtl
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheRightOf(cell0))
+        assertTrue(cell3.isLocatedToTheBottomOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainH horES verBT LTR`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = HORIZONTAL,
+                horizontalDirection = END_START,
+                verticalDirection = BOTTOM_TOP
+            ), LayoutDirection.Ltr
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheLeftOf(cell0))
+        assertTrue(cell3.isLocatedToTheTopOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainH horES verBT RTL`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = HORIZONTAL,
+                horizontalDirection = END_START,
+                verticalDirection = BOTTOM_TOP
+            ), LayoutDirection.Rtl
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheRightOf(cell0))
+        assertTrue(cell3.isLocatedToTheTopOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainH horSE verBT LTR`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = HORIZONTAL,
+                horizontalDirection = START_END,
+                verticalDirection = BOTTOM_TOP
+            ), LayoutDirection.Ltr
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheRightOf(cell0))
+        assertTrue(cell3.isLocatedToTheTopOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainH horSE verBT RTL`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = HORIZONTAL,
+                horizontalDirection = START_END,
+                verticalDirection = BOTTOM_TOP
+            ), LayoutDirection.Rtl
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheLeftOf(cell0))
+        assertTrue(cell3.isLocatedToTheTopOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainV horSE verTB LTR`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = VERTICAL,
+                horizontalDirection = START_END,
+                verticalDirection = TOP_BOTTOM
+            ), LayoutDirection.Ltr
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheBottomOf(cell0))
+        assertTrue(cell3.isLocatedToTheRightOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainV horSE verTB RTL`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = VERTICAL,
+                horizontalDirection = START_END,
+                verticalDirection = TOP_BOTTOM
+            ), LayoutDirection.Rtl
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheBottomOf(cell0))
+        assertTrue(cell3.isLocatedToTheLeftOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainV horES verTB LTR`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = VERTICAL,
+                horizontalDirection = END_START,
+                verticalDirection = TOP_BOTTOM
+            ), LayoutDirection.Ltr
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheBottomOf(cell0))
+        assertTrue(cell3.isLocatedToTheLeftOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainV horES verTB RTL`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = VERTICAL,
+                horizontalDirection = END_START,
+                verticalDirection = TOP_BOTTOM
+            ), LayoutDirection.Rtl
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheBottomOf(cell0))
+        assertTrue(cell3.isLocatedToTheRightOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainV horES verBT LTR`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = VERTICAL,
+                horizontalDirection = END_START,
+                verticalDirection = BOTTOM_TOP
+            ), LayoutDirection.Ltr
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheTopOf(cell0))
+        assertTrue(cell3.isLocatedToTheLeftOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainV horES verBT RTL`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = VERTICAL,
+                horizontalDirection = END_START,
+                verticalDirection = BOTTOM_TOP
+            ), LayoutDirection.Rtl
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheTopOf(cell0))
+        assertTrue(cell3.isLocatedToTheRightOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainV horSE verBT LTR`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = VERTICAL,
+                horizontalDirection = START_END,
+                verticalDirection = BOTTOM_TOP
+            ), LayoutDirection.Ltr
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheTopOf(cell0))
+        assertTrue(cell3.isLocatedToTheRightOf(cell0))
+    }
+
+    @Test
+    fun `Check placement mainV horSE verBT RTL`() = with(composeTestRule) {
+        placeItems(
+            GridPadPlacementPolicy(
+                mainAxis = VERTICAL,
+                horizontalDirection = START_END,
+                verticalDirection = BOTTOM_TOP
+            ), LayoutDirection.Rtl
+        )
+        val cell0 = boundsForNodeWithText("0")
+        val cell1 = boundsForNodeWithText("1")
+        val cell3 = boundsForNodeWithText("3")
+        assertTrue(cell1.isLocatedToTheTopOf(cell0))
+        assertTrue(cell3.isLocatedToTheLeftOf(cell0))
+    }
+
+    private fun ComposeContentTestRule.placeItems(
+        policy: GridPadPlacementPolicy,
+        layoutDirection: LayoutDirection
+    ) {
+        setContent {
+            val rowCount = 3
+            val columnCount = 3
+            CompositionLocalProvider(LocalLayoutDirection provides layoutDirection) {
+                Box(modifier = Modifier.size(30.dp, 30.dp)) {
+                    GridPad(
+                        cells = GridPadCells(rowCount = rowCount, columnCount = columnCount),
+                        placementPolicy = policy
+                    ) {
+                        repeat(rowCount * columnCount) {
+                            item { MaxSizeText(text = "$it") }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -215,4 +491,20 @@ private fun MaxSizeText(text: String) {
 
 internal fun ComposeContentTestRule.boundsForNodeWithText(text: String): Rect {
     return onNode(hasText(text)).fetchSemanticsNode("Node with '$text' not found").boundsInRoot
+}
+
+internal fun Rect.isLocatedToTheLeftOf(target: Rect): Boolean {
+    return left < target.left
+}
+
+internal fun Rect.isLocatedToTheRightOf(target: Rect): Boolean {
+    return right > target.right
+}
+
+internal fun Rect.isLocatedToTheTopOf(target: Rect): Boolean {
+    return top < target.top
+}
+
+internal fun Rect.isLocatedToTheBottomOf(target: Rect): Boolean {
+    return bottom > target.bottom
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022 Touchlane LLC tech@touchlane.com
+ * Copyright (c) 2023 Touchlane LLC tech@touchlane.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,24 +24,14 @@
 
 package com.touchlane.gridpad
 
-/**
- * Used to send diagnostic signals.
- * Default implementation is `null` and doing nothing, to handle need to set custom
- * [skippingItemListener].
- */
-public object GridPadDiagnosticLogger {
+import org.junit.Before
+import org.robolectric.shadows.ShadowLog
 
-    /**
-     * Called when item has been skipped due to out the grid bounds.
-     */
-    public var skippingItemListener: ((message: String) -> Unit)? = null
+open class LoggerTest {
 
-    /**
-     * Send skipped item signal
-     *
-     * @param message detailed message
-     */
-    internal fun onItemSkipped(message: () -> String) {
-        skippingItemListener?.invoke(message())
+    @Before
+    @Throws(Exception::class)
+    fun setUp() {
+        ShadowLog.stream = System.out
     }
 }
