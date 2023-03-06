@@ -3,6 +3,8 @@ Change Log
 
 ## Version 1.1.0
 
+_2023-03-06_
+
 * **API Change**: helper extension signature from
   `GridPadCellSize.Companion.weight(sizes: FloatArray)` to
   `GridPadCellSize.Companion.weight(vararg sizes: Float)`
