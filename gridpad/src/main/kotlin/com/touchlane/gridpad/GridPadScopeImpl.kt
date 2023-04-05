@@ -315,10 +315,6 @@ internal class GridPadContent(
     val columnSpan: Int = right - left + 1
 }
 
-private fun <T : Comparable<T>> ClosedRange<T>.isOutOf(value: T): Boolean {
-    return !contains(value)
-}
-
 /**
  * Returns the first row index for a specific grid, depends on the placement policy.
  *
@@ -363,7 +359,7 @@ private fun GridPadCells.isRowOutsideOfGrid(
 ): Boolean {
     val top = anchor.topBound(row, rowSpan)
     val bottom = anchor.bottomBound(row, rowSpan)
-    return (0 until rowCount).isOutOf(top) || (0 until rowCount).isOutOf(bottom)
+    return top < 0 || bottom >= rowCount
 }
 
 /**
@@ -382,7 +378,7 @@ private fun GridPadCells.isColumnOutsideOfGrid(
 ): Boolean {
     val left = anchor.leftBound(column, columnSpan)
     val right = anchor.rightBound(column, columnSpan)
-    return (0 until columnCount).isOutOf(left) || (0 until columnCount).isOutOf(right)
+    return left < 0 || right >= columnCount
 }
 
 /**
