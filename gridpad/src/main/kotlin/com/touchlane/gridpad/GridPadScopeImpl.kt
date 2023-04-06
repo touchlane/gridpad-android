@@ -101,19 +101,23 @@ internal class GridPadScopeImpl(
         val lastItem = data.lastOrNull()
         var row: Int
         var column: Int
-        if (placementPolicy.mainAxis == GridPadPlacementPolicy.MainAxis.HORIZONTAL) {
-            row = findCurrentRow(cells, placementPolicy, lastItem)
-            column = findNextColumn(cells, placementPolicy, lastItem)
-            if (cells.isColumnOutsideOfGrid(column, columnSpan, anchor)) {
-                column = cells.firstColumn(placementPolicy)
-                row = findNextRow(cells, placementPolicy, lastItem)
-            }
-        } else {
-            column = findCurrentColumn(cells, placementPolicy, lastItem)
-            row = findNextRow(cells, placementPolicy, lastItem)
-            if (cells.isRowOutsideOfGrid(row, rowSpan, anchor)) {
-                row = cells.firstRow(placementPolicy)
+        when (placementPolicy.mainAxis) {
+            GridPadPlacementPolicy.MainAxis.HORIZONTAL -> {
+                row = findCurrentRow(cells, placementPolicy, lastItem)
                 column = findNextColumn(cells, placementPolicy, lastItem)
+                if (cells.isColumnOutsideOfGrid(column, columnSpan, anchor)) {
+                    column = cells.firstColumn(placementPolicy)
+                    row = findNextRow(cells, placementPolicy, lastItem)
+                }
+            }
+
+            GridPadPlacementPolicy.MainAxis.VERTICAL -> {
+                column = findCurrentColumn(cells, placementPolicy, lastItem)
+                row = findNextRow(cells, placementPolicy, lastItem)
+                if (cells.isRowOutsideOfGrid(row, rowSpan, anchor)) {
+                    row = cells.firstRow(placementPolicy)
+                    column = findNextColumn(cells, placementPolicy, lastItem)
+                }
             }
         }
         placeExplicitly(
