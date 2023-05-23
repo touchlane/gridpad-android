@@ -26,11 +26,7 @@ package com.touchlane.gridpad
 
 import com.android.build.api.dsl.LibraryExtension
 
-@Suppress("UnstableApiUsage")
 internal fun configureAndroidLibrary(
     extension: LibraryExtension,
 ) = extension.apply {
-    defaultConfig {
-        targetSdk = 33
-    }
 }

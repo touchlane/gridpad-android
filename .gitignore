@@ -83,4 +83,10 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
-/.idea/
+/.idea/inspectionProfiles/
+/.idea/.gitignore
+/.idea/.name
+/.idea/androidTestResultsUserPreferences.xml
+/.idea/compiler.xml
+/.idea/kotlinc.xml
+/.idea/misc.xml

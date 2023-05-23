@@ -114,17 +114,23 @@ class GridPadScopeTest : LoggerTest() {
                 item(row = 0, column = 3) { Text(text = "0:3") }
                 item(row = 3, column = 0) { Text(text = "3:0") }
                 item(row = -1, column = 1) { Text(text = "-1:0") }
-                item(row = 0, column = 0, rowSpan = 4, columnSpan = 1) { Text(text = "0:0") }
+                item(row = -1, column = 0, rowSpan = 6, columnSpan = 1) { Text(text = "-1:0[6x1]") }
+                item(row = -1, column = 0, rowSpan = 2, columnSpan = 1) { Text(text = "-1:0[2x1]") }
+                item(row = 1, column = 0, rowSpan = 6, columnSpan = 1) { Text(text = "1:0[6x1]") }
+                item(row = 0, column = -1, rowSpan = 1, columnSpan = 6) { Text(text = "0:-1[1x6]") }
+                item(row = 0, column = -1, rowSpan = 1, columnSpan = 2) { Text(text = "0:-1[1x2]") }
+                item(row = 0, column = 1, rowSpan = 1, columnSpan = 6) { Text(text = "0:1[1x6]") }
             }
         }
-        onNode(hasText("0:3"))
-            .assertDoesNotExist()
-        onNode(hasText("3:0"))
-            .assertDoesNotExist()
-        onNode(hasText("-1:0"))
-            .assertDoesNotExist()
-        onNode(hasText("0:0"))
-            .assertDoesNotExist()
+        onNode(hasText("0:3")).assertDoesNotExist()
+        onNode(hasText("3:0")).assertDoesNotExist()
+        onNode(hasText("-1:0")).assertDoesNotExist()
+        onNode(hasText("-1:0[6x1]")).assertDoesNotExist()
+        onNode(hasText("-1:0[2x1]")).assertDoesNotExist()
+        onNode(hasText("1:0[6x1]")).assertDoesNotExist()
+        onNode(hasText("0:-1[1x6]")).assertDoesNotExist()
+        onNode(hasText("0:-1[1x2]")).assertDoesNotExist()
+        onNode(hasText("0:1[1x6]")).assertDoesNotExist()
     }
 
     @Test

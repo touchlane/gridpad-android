@@ -101,19 +101,23 @@ internal class GridPadScopeImpl(
         val lastItem = data.lastOrNull()
         var row: Int
         var column: Int
-        if (placementPolicy.mainAxis == GridPadPlacementPolicy.MainAxis.HORIZONTAL) {
-            row = findCurrentRow(cells, placementPolicy, lastItem)
-            column = findNextColumn(cells, placementPolicy, lastItem)
-            if (cells.isColumnOutsideOfGrid(column, columnSpan, anchor)) {
-                column = cells.firstColumn(placementPolicy)
-                row = findNextRow(cells, placementPolicy, lastItem)
-            }
-        } else {
-            column = findCurrentColumn(cells, placementPolicy, lastItem)
-            row = findNextRow(cells, placementPolicy, lastItem)
-            if (cells.isRowOutsideOfGrid(row, rowSpan, anchor)) {
-                row = cells.firstRow(placementPolicy)
+        when (placementPolicy.mainAxis) {
+            GridPadPlacementPolicy.MainAxis.HORIZONTAL -> {
+                row = findCurrentRow(cells, placementPolicy, lastItem)
                 column = findNextColumn(cells, placementPolicy, lastItem)
+                if (cells.isColumnOutsideOfGrid(column, columnSpan, anchor)) {
+                    column = cells.firstColumn(placementPolicy)
+                    row = findNextRow(cells, placementPolicy, lastItem)
+                }
+            }
+
+            GridPadPlacementPolicy.MainAxis.VERTICAL -> {
+                column = findCurrentColumn(cells, placementPolicy, lastItem)
+                row = findNextRow(cells, placementPolicy, lastItem)
+                if (cells.isRowOutsideOfGrid(row, rowSpan, anchor)) {
+                    row = cells.firstRow(placementPolicy)
+                    column = findNextColumn(cells, placementPolicy, lastItem)
+                }
             }
         }
         placeExplicitly(
@@ -315,10 +319,6 @@ internal class GridPadContent(
     val columnSpan: Int = right - left + 1
 }
 
-private fun <T : Comparable<T>> ClosedRange<T>.isOutOf(value: T): Boolean {
-    return !contains(value)
-}
-
 /**
  * Returns the first row index for a specific grid, depends on the placement policy.
  *
@@ -363,7 +363,7 @@ private fun GridPadCells.isRowOutsideOfGrid(
 ): Boolean {
     val top = anchor.topBound(row, rowSpan)
     val bottom = anchor.bottomBound(row, rowSpan)
-    return (0 until rowCount).isOutOf(top) || (0 until rowCount).isOutOf(bottom)
+    return top < 0 || bottom >= rowCount
 }
 
 /**
@@ -382,7 +382,7 @@ private fun GridPadCells.isColumnOutsideOfGrid(
 ): Boolean {
     val left = anchor.leftBound(column, columnSpan)
     val right = anchor.rightBound(column, columnSpan)
-    return (0 until columnCount).isOutOf(left) || (0 until columnCount).isOutOf(right)
+    return left < 0 || right >= columnCount
 }
 
 /**
