@@ -40,7 +40,6 @@ import org.gradle.plugins.signing.SigningExtension
 internal fun Project.configurePublishingUpload(
     extension: PublishingExtension
 ) = extension.apply {
-    val sources = sources()
     val javadoc = javadoc()
 
     val properties = PublishingProperties.load(this@configurePublishingUpload)
@@ -52,7 +51,6 @@ internal fun Project.configurePublishingUpload(
             artifactId = properties.artifactId
             version = properties.version
 
-            artifact(sources.get())
             artifact(javadoc.get())
 
             pom {
@@ -103,24 +101,6 @@ internal fun Project.configurePublishingUpload(
             println("Signing skipped: not found credentials")
         }
     }
-}
-
-internal fun Project.sources(): TaskProvider<Jar> {
-    val sourcesJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
-        archiveClassifier.set("sources")
-
-        val sourceSet: SourceProvider = if (project.plugins.hasPlugin("com.android.library")) {
-            val ext = checkNotNull(project.extensions.findByType(LibraryExtension::class.java))
-            ext.sourceSets.getByName("main") as SourceProvider
-        } else {
-            val ext = checkNotNull(project.extensions.findByType(SourceSetContainer::class.java))
-            ext.getByName("main") as SourceProvider
-        }
-        from(sourceSet.kotlinDirectories)
-        from(sourceSet.javaDirectories)
-        println("Sources has been attached from directories:\n${sourceSet.kotlinDirectories}\n${sourceSet.javaDirectories}")
-    }
-    return sourcesJar
 }
 
 internal fun Project.javadoc(): TaskProvider<Jar> {
