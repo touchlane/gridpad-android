@@ -158,13 +158,7 @@ private fun MeasureScope.calculateCellPlaces(
 }
 
 /**
- * Calculate sizes for row or column.
- * The remaining pixels should be distributed equally between the last cells in cases where
- * the first pass did not distribute them. For example, we have to split 101px among 3 cells
- * with a weight equal to 1. This means that after the first pass the cell sizes
- * would be [33, 33, 33] with the remainder size equal to 2. In a second pass,
- * the remaining 2 pixels will be distributed between the last 2 cells and the final
- * result will be [33, 34, 34].
+ * Calculate sizes in pixels for each row or column.
  *
  * @param availableSize parent size that available for distribution
  * @param cellSizes sizes for rows or columns
@@ -173,38 +167,25 @@ private fun MeasureScope.calculateCellPlaces(
 private fun MeasureScope.calculateSizesForDimension(
     availableSize: Int, cellSizes: ImmutableList<GridPadCellSize>, totalSize: TotalSize
 ): List<Int> {
-    val availableWeight = availableSize - totalSize.fixed.roundToPx()
-
-    //First pass calculation
-    var distributedSize = 0
-    val sizes = cellSizes.map { cellSize ->
+    val availableWeight = availableSize - totalSize.fixed.toPx()
+    var reminder = 0f
+    return cellSizes.map { cellSize ->
         when (cellSize) {
             is GridPadCellSize.Fixed -> {
-                val size = cellSize.size.roundToPx()
-                distributedSize += size
+                val floatSize = cellSize.size.toPx() + reminder
+                val size = floatSize.roundToInt()
+                reminder = floatSize - size
                 size
             }
+
             is GridPadCellSize.Weight -> {
-                val size = (availableWeight * cellSize.size / totalSize.weight).toInt()
-                distributedSize += size
+                val floatSize = availableWeight * cellSize.size / totalSize.weight + reminder
+                val size = floatSize.roundToInt()
+                reminder = floatSize - size
                 size
             }
         }
     }.toMutableList()
-
-    //Distribute remaining pixels
-    var notDistributedSize = availableSize - distributedSize
-    cellSizes.reversed().mapIndexed { index, gridPadCellSize ->
-        if (notDistributedSize <= 0) {
-            return@mapIndexed
-        }
-        val originalIndex = cellSizes.size - index - 1
-        if (gridPadCellSize is GridPadCellSize.Weight) {
-            sizes[originalIndex] = sizes[originalIndex] + 1
-            notDistributedSize--
-        }
-    }
-    return sizes
 }
 
 /**

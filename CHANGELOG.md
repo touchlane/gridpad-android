@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 1.1.2
+
+_2023-07-13_
+
+* **Fix**: size distribution algorithm
+* Dependency updates
+ 
 ## Version 1.1.1
 
 _2023-05-23_
