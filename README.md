@@ -102,7 +102,7 @@ with a horizontal direction from start to end.
 
 ```kotlin
 GridPad(
-    cells = GridPadCells(rowCount = 3, columnCount = 4)
+    cells = GridPadCells(rowCount = 4, columnCount = 3)
 ) {
     item {
         // 1-st item, row = 0, column = 0
@@ -213,7 +213,7 @@ GridPad(
 ) {
     item(row = 1, column = 3, rowSpan = 1, columnSpan = 3) {
         // will be skipped in a drawing process because the item is placed in the column range [3;5] 
-        // but the maximum allowable 3
+        // but the maximum allowable is 3
     }
 }
 ```
