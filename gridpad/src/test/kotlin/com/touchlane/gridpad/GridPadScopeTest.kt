@@ -51,6 +51,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
+
 @RunWith(RobolectricTestRunner::class)
 class GridPadScopeTest : LoggerTest() {
 
@@ -149,13 +150,13 @@ class GridPadScopeTest : LoggerTest() {
         val bounds00 = boundsForNodeWithText("0:0")
         assertEquals(Rect(0f, 0f, 33f, 33f), bounds00)
         val bounds01 = boundsForNodeWithText("0:1")
-        assertEquals(Rect(33f, 0f, 66f, 33f), bounds01)
+        assertEquals(Rect(33f, 0f, 67f, 33f), bounds01)
         val bounds02 = boundsForNodeWithText("0:2")
-        assertEquals(Rect(66f, 0f, 100f, 33f), bounds02)
+        assertEquals(Rect(67f, 0f, 100f, 33f), bounds02)
         val bounds10 = boundsForNodeWithText("1:0")
-        assertEquals(Rect(0f, 33f, 33f, 66f), bounds10)
+        assertEquals(Rect(0f, 33f, 33f, 67f), bounds10)
         val bounds20 = boundsForNodeWithText("2:0")
-        assertEquals(Rect(0f, 66f, 33f, 100f), bounds20)
+        assertEquals(Rect(0f, 67f, 33f, 100f), bounds20)
     }
 
     @Test
@@ -170,9 +171,9 @@ class GridPadScopeTest : LoggerTest() {
             }
         }
         val bounds00 = boundsForNodeWithText("0:0")
-        assertEquals(Rect(0f, 0f, 33f, 10f), bounds00)
+        assertEquals(Rect(0f, 0f, 34f, 10f), bounds00)
         val bounds01 = boundsForNodeWithText("0:1")
-        assertEquals(Rect(33f, 0f, 67f, 10f), bounds01)
+        assertEquals(Rect(34f, 0f, 67f, 10f), bounds01)
         val bounds02 = boundsForNodeWithText("0:2")
         assertEquals(Rect(67f, 0f, 101f, 10f), bounds02)
     }
@@ -193,19 +194,44 @@ class GridPadScopeTest : LoggerTest() {
             }
         }
         val bounds00 = boundsForNodeWithText("0:0")
-        assertEquals(Rect(0f, 0f, 10f, 10f), bounds00)
+        assertEquals(Rect(0f, 0f, 11f, 10f), bounds00)
         val bounds01 = boundsForNodeWithText("0:1")
-        assertEquals(Rect(10f, 0f, 21f, 10f), bounds01)
+        assertEquals(Rect(11f, 0f, 22f, 10f), bounds01)
         val bounds02 = boundsForNodeWithText("0:2")
-        assertEquals(Rect(21f, 0f, 32f, 10f), bounds02)
+        assertEquals(Rect(22f, 0f, 33f, 10f), bounds02)
         val bounds03 = boundsForNodeWithText("0:3")
-        assertEquals(Rect(32f, 0f, 43f, 10f), bounds03)
+        assertEquals(Rect(33f, 0f, 43f, 10f), bounds03)
         val bounds04 = boundsForNodeWithText("0:4")
         assertEquals(Rect(43f, 0f, 54f, 10f), bounds04)
         val bounds05 = boundsForNodeWithText("0:5")
         assertEquals(Rect(54f, 0f, 65f, 10f), bounds05)
         val bounds06 = boundsForNodeWithText("0:6")
         assertEquals(Rect(65f, 0f, 76f, 10f), bounds06)
+    }
+
+    @Test
+    fun `Check size distribution 108x10 with spans 1x5`() = with(composeTestRule) {
+        setContent {
+            Box(modifier = Modifier.size(108.dp, 10.dp)) {
+                GridPad(cells = GridPadCells(rowCount = 1, columnCount = 50)) {
+                    repeat(10) {
+                        item(columnSpan = 5) { MaxSizeText(text = "0:$it") }
+                    }
+                }
+            }
+        }
+        val bounds00 = boundsForNodeWithText("0:0")
+        assertEquals(Rect(0f, 0f, 11f, 10f), bounds00)
+        val bounds01 = boundsForNodeWithText("0:1")
+        assertEquals(Rect(11f, 0f, 22f, 10f), bounds01)
+        val bounds02 = boundsForNodeWithText("0:2")
+        assertEquals(Rect(22f, 0f, 32f, 10f), bounds02)
+        val bounds03 = boundsForNodeWithText("0:3")
+        assertEquals(Rect(32f, 0f, 43f, 10f), bounds03)
+        val bounds04 = boundsForNodeWithText("0:4")
+        assertEquals(Rect(43f, 0f, 54f, 10f), bounds04)
+        val bounds05 = boundsForNodeWithText("0:5")
+        assertEquals(Rect(54f, 0f, 65f, 10f), bounds05)
     }
 
     @Test
