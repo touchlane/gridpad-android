@@ -30,6 +30,6 @@ internal fun configureAndroidApplication(
     extension: ApplicationExtension,
 ) = extension.apply {
     defaultConfig {
-        targetSdk = 33
+        targetSdk = 34
     }
 }

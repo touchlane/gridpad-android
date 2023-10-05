@@ -28,9 +28,9 @@ import com.android.build.api.dsl.CommonExtension
 
 @Suppress("UnstableApiUsage")
 internal fun configureAndroidCommon(
-    extension: CommonExtension<*, *, *, *>,
+    extension: CommonExtension<*, *, *, *, *>,
 ) = extension.apply {
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21

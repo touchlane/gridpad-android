@@ -32,7 +32,7 @@ import org.gradle.kotlin.dsl.getByType
 
 @Suppress("UnstableApiUsage")
 internal fun Project.configureAndroidCompose(
-    commonExtension: CommonExtension<*, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *>,
 ) = commonExtension.apply {
     val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
