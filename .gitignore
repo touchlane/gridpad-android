@@ -90,3 +90,4 @@ lint/tmp/
 /.idea/compiler.xml
 /.idea/kotlinc.xml
 /.idea/misc.xml
+/.idea/deploymentTargetDropDown.xml
